@@ -1,24 +1,24 @@
-package consultorio.data;
+package consultorio.logic;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "especialidades")
-public class Especialidade {
+@Table(name = "estados_cita")
+public class EstadosCita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Size(max = 50)
+    @Size(max = 20)
     @NotNull
-    @Column(name = "nombre", nullable = false, length = 50)
+    @Column(name = "nombre", nullable = false, length = 20)
     private String nombre;
 
-    @Lob
-    @Column(name = "descripcion")
+    @Size(max = 200)
+    @Column(name = "descripcion", length = 200)
     private String descripcion;
 
     public Integer getId() {

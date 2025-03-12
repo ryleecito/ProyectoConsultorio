@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Appointments</title>
+    <title>Login Exitoso</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/css/base-header-footer.css">
     <link rel="stylesheet" href="/css/style_login.css">
@@ -23,42 +23,14 @@
         <a href="#" class="nav-link">Login</a>
     </div>
 </header>
-
 <main>
     <div class="login-container">
         <div class="login-header">
-            <h2>Login</h2>
+            <h2>Login Exitoso</h2>
         </div>
         <div class="login-body">
-            <div class="avatar">
-                <img src="/images/user_login.png" alt="User Avatar">
-            </div>
-            <form th:action="@{/login}" method="post">
-                <div class="input-group">
-                    <div class="input-field">
-                        <div class="input-icon">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <input type="text" class="input-box" name="username" placeholder="User id" required>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <div class="input-field">
-                        <div class="input-icon">
-                            <i class="fa-solid fa-key"></i>
-                        </div>
-                        <input type="password" class="input-box" name="password" placeholder="User Password" required>
-                    </div>
-                </div>
-                <button type="submit" class="login-button">Log in</button>
-                <div th:if="${error}" class="error-message">
-                    <p th:text="${error}"></p>
-                </div>
-            </form>
-        </div>
-        <div class="login-footer">
-            <div>Don't have an account?</div>
-            <a href="#" class="register-link">Register here</a>
+            <p style="margin-bottom: 20px;">¡Has iniciado sesión exitosamente!</p>
+            <div> <a href="/presentation/login/show" class="login-button">Volver a la página de login</a></div>
         </div>
     </div>
 </main>
