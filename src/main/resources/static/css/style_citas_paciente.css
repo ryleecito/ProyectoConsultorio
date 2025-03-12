@@ -1,0 +1,234 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f8ff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #e6f7fd;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Main content */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    flex: 1;
+}
+
+/* Search section */
+.search-section {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+.search-field {
+    display: flex;
+    flex: 1;
+}
+
+.input-label {
+    display: inline-block;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ced4da;
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    font-size: 16px;
+    background-color: white;
+    border-radius: 0 8px 8px 0;
+}
+
+.btn-search {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Doctor cards */
+.doctor-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+    padding: 20px;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Doctor info section - modified for new layout */
+.doctor-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.doctor-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.doctor-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+.doctor-details {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Doctor name row */
+.doctor-name-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.doctor-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.doctor-cost {
+    color: #4a86e8;
+    margin-left: 10px;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.doctor-specialty {
+    color: #6c757d;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+/* New location container with separator */
+.location-container {
+    border-top: 1px solid #ddd;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.doctor-location {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.at-symbol {
+    color: #b58c43;
+}
+
+/* Appointments section */
+.appointments-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Date columns */
+.date-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.date-header {
+    color: #b58c43;
+    font-size: 16px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.time-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.time-slot {
+    background-color: #e3eeff;
+    color: #0d6efd;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 14px;
+    min-width: 60px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Schedule button */
+.btn-schedule {
+    background-color: #e3eeff;
+    color: #0d6efd;
+    border: none;
+    border-radius: 15px;
+    padding: 5px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.btn-schedule::after {
+    content: "→";
+    margin-left: 5px;
+}
+
+/* Footer */
+footer {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

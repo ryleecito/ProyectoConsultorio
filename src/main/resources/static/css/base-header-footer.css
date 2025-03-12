@@ -36,6 +36,8 @@ header {
     color: #888;
     font-size: 16px;
     margin-right: 180px;
+    margin-left: 85px;
+    text-align: center;
 }
 
 .phone i {
