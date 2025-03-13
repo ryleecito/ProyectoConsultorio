@@ -16,7 +16,7 @@ public class Controller {
 
     @GetMapping("/presentation/login/show")
     public String show() {
-        return "presentation/login/View"; // Apunta a tu plantilla HTML de login
+        return "presentation/login/View";
     }
 
     @PostMapping("/login")
