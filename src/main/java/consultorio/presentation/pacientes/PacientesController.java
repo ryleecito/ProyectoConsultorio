@@ -10,6 +10,7 @@ public class PacientesController {
     @Autowired
     private ConsultorioService service;
 
+
     @GetMapping("/presentation/pacientes/show")
     public String show(Model model) {
         model.addAttribute("pacientes",service.pacientesFindAll());
