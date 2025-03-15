@@ -29,6 +29,17 @@
         <div class="login-header">
             <h2>Login</h2>
         </div>
+
+        <!-- ✅ Mensaje de Éxito (Cuando se registra un usuario correctamente) -->
+        <div th:if="${successMessage}" class="success-message">
+            <p th:text="${successMessage}"></p>
+        </div>
+
+        <!-- ✅ Mensaje de Error (Si el login falla) -->
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+
         <div class="login-body">
             <div class="avatar">
                 <img src="/images/user_login.png" alt="User Avatar">
@@ -51,14 +62,12 @@
                     </div>
                 </div>
                 <button type="submit" class="login-button">Log in</button>
-                <div th:if="${error}" class="error-message">
-                    <p th:text="${error}"></p>
-                </div>
             </form>
         </div>
+
         <div class="login-footer">
             <div>Don't have an account?</div>
-            <a href="#" class="register-link">Register here</a>
+            <a href="/presentation/register/show" class="register-link">Register here</a>
         </div>
     </div>
 </main>
@@ -72,5 +81,7 @@
     </div>
     <div class="copyright">©2019 Tsf, Inc.</div>
 </footer>
+
+
 </body>
 </html>

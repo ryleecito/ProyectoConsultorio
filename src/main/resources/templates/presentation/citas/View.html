@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Appointments</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../../../static/css/style_citas_paciente.css">
-    <link rel="stylesheet" href="../../../static/css/base-header-footer.css">
-
+    <link rel="stylesheet" href="/css/style_citas_paciente.css">
+    <link rel="stylesheet" href="/css/base-header-footer.css">
 </head>
 <body>
 <header>
     <div class="logo">
-        <img src="../../../static/images/doctor_appointment_login.jpg" height="1371" width="1920"/>
+        <img src="/images/doctor_appointment_login.jpg" height="1371" width="1920"/>
         <div class="logo-text">Medical Appointments</div>
     </div>
     <div class="phone">
@@ -56,11 +55,9 @@
 
     <!-- Results Section -->
     <section class="results-section">
-        <!-- Doctor 1 - Modified layout with separated location info -->
+        <!-- Doctor 1 -->
         <div class="doctor-card">
-            <!-- Doctor info on the left -->
             <div class="doctor-info">
-
                 <div class="doctor-details">
                     <div class="doctor-header">
                         <img src="/api/placeholder/60/60" alt="Doctor" class="doctor-avatar">
@@ -72,20 +69,12 @@
                             <p class="doctor-specialty">Dermatology</p>
                         </div>
                     </div>
-
                 </div>
-
-                <!-- Separated location with horizontal line -->
                 <div class="location-container">
-                    <p class="doctor-location">
-                        Cima Hospital <span class="at-symbol">@</span> San Jose
-                    </p>
+                    <p class="doctor-location">Cima Hospital <span class="at-symbol">@</span> San Jose</p>
                 </div>
             </div>
-
-            <!-- Appointments section on the right -->
             <div class="appointments-section">
-                <!-- First date column -->
                 <div class="date-column">
                     <div class="date-header">18/02/2025</div>
                     <div class="time-slots">
@@ -93,8 +82,6 @@
                         <div class="time-slot">15:30</div>
                     </div>
                 </div>
-
-                <!-- Second date column -->
                 <div class="date-column">
                     <div class="date-header">19/02/2025</div>
                     <div class="time-slots">
@@ -102,65 +89,13 @@
                         <div class="time-slot">15:30</div>
                     </div>
                 </div>
-
-                <!-- Schedule button -->
-                <a href="#" class="btn-schedule">Schedule</a>
-            </div>
-        </div>
-
-        <!-- Doctor 2 - Modified layout with separated location info -->
-        <div class="doctor-card">
-            <!-- Doctor info on the left -->
-            <div class="doctor-info">
-
-                <div class="doctor-details">
-                    <div class="doctor-header">
-                        <img src="/api/placeholder/60/60" alt="Doctor" class="doctor-avatar">
-                        <div class="doctor-info">
-                            <div class="doctor-name-row">
-                                <span class="doctor-name">Juan José Perez</span>
-                                <span class="doctor-cost">60000</span>
-                            </div>
-                            <p class="doctor-specialty">Cardiology</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="location-container">
-                    <p class="doctor-location">
-                        Alajuela Medical Center <span class="at-symbol">@</span> Alajuela
-                    </p>
-                </div>
-            </div>
-
-            <!-- Appointments section on the right -->
-            <div class="appointments-section">
-                <!-- First date column -->
-                <div class="date-column">
-                    <div class="date-header">17/02/2025</div>
-                    <div class="time-slots">
-                        <div class="time-slot">15:00</div>
-                        <div class="time-slot">16:00</div>
-                    </div>
-                </div>
-
-                <!-- Second date column -->
-                <div class="date-column">
-                    <div class="date-header">19/02/2025</div>
-                    <div class="time-slots">
-                        <div class="time-slot">15:00</div>
-                        <div class="time-slot">16:00</div>
-                        <div class="time-slot">17:00</div>
-                    </div>
-                </div>
-
-                <!-- Schedule button -->
                 <a href="#" class="btn-schedule">Schedule</a>
             </div>
         </div>
     </section>
 </div>
 
-<!-- Footer placeholder -->
+<!-- Footer -->
 <footer>
     <div class="company-name">Total Soft Inc.</div>
     <div class="social-icons">
@@ -170,5 +105,57 @@
     </div>
     <div class="copyright">©2019 Tsf, Inc.</div>
 </footer>
+
+<!-- ✅ Mensaje flotante al iniciar sesión -->
+<div id="toast" class="toast">
+    <p id="toast-message"></p>
+</div>
+
+<!-- ✅ Script para mostrar el mensaje -->
+<script>
+    function showToast(message) {
+        let toast = document.getElementById("toast");
+        let toastMessage = document.getElementById("toast-message");
+        toastMessage.innerText = message;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 3000);
+    }
+
+    // ✅ Obtener mensaje desde la URL y mostrarlo
+    window.onload = function () {
+        let successMessage = new URLSearchParams(window.location.search).get("success");
+        if (successMessage) {
+            showToast(successMessage);
+        }
+    };
+</script>
+
+<!-- ✅ Estilos del mensaje flotante -->
+<style>
+    .toast {
+        visibility: hidden;
+        min-width: 250px;
+        background-color: #28a745;
+        color: white;
+        text-align: center;
+        border-radius: 5px;
+        padding: 10px;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.5s, visibility 0.5s;
+    }
+
+    .toast.show {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>
+
 </body>
 </html>

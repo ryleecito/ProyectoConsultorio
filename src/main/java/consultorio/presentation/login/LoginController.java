@@ -8,14 +8,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.stereotype.Controller;
 
-@org.springframework.stereotype.Controller("login")
-public class Controller {
+@Controller
+public class LoginController {
+
     @Autowired
     private ConsultorioService service;
 
     @GetMapping("/presentation/login/show")
-    public String show() {
+    public String showLogin(@RequestParam(value = "success", required = false) String successMessage, Model model) {
+        if (successMessage != null) {
+            model.addAttribute("successMessage", successMessage);
+        }
         return "presentation/login/View";
     }
 
@@ -24,42 +29,16 @@ public class Controller {
                                 @RequestParam String password,
                                 HttpSession session,
                                 Model model) {
-        // Verificar las credenciales
         if (service.autenticar(username, password)) {
-            // Guardar información en la sesión
             Usuario usuario = service.buscarPorUsername(username);
             session.setAttribute("usuarioId", usuario.getId());
             session.setAttribute("username", usuario.getNombre());
 
-            // Redirigir a página principal después del login
-            return "/presentation/login/success";
+            // ✅ Pasar mensaje como parámetro en la redirección
+            return "redirect:/presentation/citas/View?success=Has iniciado sesion correctamente";
         } else {
-            // Agregar mensaje de error y volver al formulario de login
             model.addAttribute("error", "Usuario o contraseña incorrectos");
             return "presentation/login/View";
         }
     }
-
-//    @GetMapping("/logout")
-//    public String logout(HttpSession session) {
-//        // Invalidar la sesión al cerrar sesión
-//        session.invalidate();
-//        return "redirect:/login/View";
-//    }
-
-//    @GetMapping("/presentation/login/success")
-//    public String dashboard(HttpSession session, Model model) {
-//        // Verificar si el usuario está autenticado
-//        if (session.getAttribute("usuarioId") == null) {
-//            return "redirect:presentation";
-//        }
-//
-//        // Agregar información del usuario al modelo
-//        model.addAttribute("username", session.getAttribute("username"));
-//        return "presentation/login/View";
-//    }
-
-
-
-
 }

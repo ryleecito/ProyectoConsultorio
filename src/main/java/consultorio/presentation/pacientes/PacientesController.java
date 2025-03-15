@@ -6,9 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @org.springframework.stereotype.Controller("pacientes")
-public class Controller {
+public class PacientesController {
     @Autowired
     private ConsultorioService service;
+
 
     @GetMapping("/presentation/pacientes/show")
     public String show(Model model) {
