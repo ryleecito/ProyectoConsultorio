@@ -28,4 +28,8 @@ public class ConsultorioService {
         }
         return usuario.getPassword().equals(password);
     }
+
+    public void guardarUsuario(Usuario usuario) {
+        usuarioRepository.save(usuario);
+    }
 }

@@ -30,12 +30,15 @@ header {
     color: #4cc3d9;
     font-size: 22px;
     font-style: italic;
+
 }
 
 .phone {
     color: #888;
     font-size: 16px;
     margin-right: 180px;
+    margin-left: 85px;
+    text-align: center;
 }
 
 .phone i {
