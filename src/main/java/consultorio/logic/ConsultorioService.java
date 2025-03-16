@@ -1,5 +1,7 @@
 package consultorio.logic;
 
+import consultorio.Paciente;
+import consultorio.Usuario;
 import consultorio.data.MedicoRepository;
 import consultorio.data.PacientesRepository;
 import consultorio.data.UsuariosRepository;
