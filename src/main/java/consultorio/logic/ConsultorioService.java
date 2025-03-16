@@ -40,6 +40,10 @@ public class ConsultorioService {
         usuarioRepository.save(usuario);
     }
 
+    public void guardarMedico(Medico medico){
+        medicoRepository.save(medico);
+    }
+
     public List<Usuario> obtenerMedicosPendientes() {
         return usuarioRepository.findByRolAndEstado("MEDICO", "PENDIENTE");
     }
@@ -55,8 +59,23 @@ public class ConsultorioService {
     }
 
     public List<Medico> medicoSearch(String especialidad, String ciudad) {
-        return medicoRepository.findMedicosByEspecialidadAndCiudad(especialidad,ciudad);
 
+        if ((especialidad == null || especialidad.isEmpty()) &&
+                (ciudad == null || ciudad.isEmpty())) {
+            return medicoRepository.findAll();
+        }
+
+        // If only one parameter is empty
+        if (especialidad == null || especialidad.isEmpty()) {
+            return medicoRepository.findByCiudad(ciudad);
+        }
+
+        if (ciudad == null || ciudad.isEmpty()) {
+            return medicoRepository.findByEspecialidad(especialidad);
+        }
+
+        // Both parameters have values
+        return medicoRepository.findByEspecialidadAndCiudad(especialidad, ciudad);
     }
 }
 
