@@ -41,9 +41,9 @@ public class LoginController {
             if (Objects.equals(usuario.getRol(), "ADMIN")) {
                 return "redirect:/admin/medicos-pendientes"; // Vista del admin
             } else if (Objects.equals(usuario.getRol(), "MEDICO")) {
-                return "redirect:/presentation/citas/View"; // Vista del médico
+                return "redirect:/presentation/medicos/list"; // Vista del médico
             } else {
-                return "redirect:/presentation/citas/View"; // Vista del paciente
+                return "redirect:/presentation/medicos/list"; // Vista del paciente
             }
         } else {
             model.addAttribute("error", "Usuario o contraseña incorrectos");

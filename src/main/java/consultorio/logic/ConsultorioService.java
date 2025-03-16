@@ -55,8 +55,23 @@ public class ConsultorioService {
     }
 
     public List<Medico> medicoSearch(String especialidad, String ciudad) {
-        return medicoRepository.findMedicosByEspecialidadAndCiudad(especialidad,ciudad);
+        // If both parameters are empty, return all doctors
+        if ((especialidad == null || especialidad.isEmpty()) &&
+                (ciudad == null || ciudad.isEmpty())) {
+            return medicoRepository.findAll();
+        }
 
+        // If only one parameter is empty
+        if (especialidad == null || especialidad.isEmpty()) {
+            return medicoRepository.findByCiudad(ciudad);
+        }
+
+        if (ciudad == null || ciudad.isEmpty()) {
+            return medicoRepository.findByEspecialidad(especialidad);
+        }
+
+        // Both parameters have values
+        return medicoRepository.findByEspecialidadAndCiudad(especialidad, ciudad);
     }
 }
 
