@@ -59,7 +59,7 @@ public class ConsultorioService {
     }
 
     public List<Medico> medicoSearch(String especialidad, String ciudad) {
-        // If both parameters are empty, return all doctors
+
         if ((especialidad == null || especialidad.isEmpty()) &&
                 (ciudad == null || ciudad.isEmpty())) {
             return medicoRepository.findAll();
