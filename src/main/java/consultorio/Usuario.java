@@ -1,4 +1,4 @@
-package consultorio.logic;
+package consultorio;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -43,6 +43,7 @@ public class Usuario {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "fecha_registro")
     private Instant fechaRegistro;
+
 
     public String getId() {
         return id;
@@ -99,5 +100,6 @@ public class Usuario {
     public void setFechaRegistro(Instant fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
+
 
 }

@@ -1,12 +1,12 @@
-package consultorio.logic;
+package consultorio;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "pacientes")
@@ -16,8 +16,11 @@ public class Paciente {
     @Column(name = "id", nullable = false, length = 20)
     private String id;
 
-    @Column(name = "fecha_nacimiento")
-    private LocalDate fechaNacimiento;
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "id", nullable = false)
+    private consultorio.Usuario usuarios;
 
     @Size(max = 20)
     @Column(name = "telefono", length = 20)
@@ -27,6 +30,9 @@ public class Paciente {
     @Column(name = "direccion", length = 200)
     private String direccion;
 
+    @OneToMany(mappedBy = "paciente")
+    private Set<Cita> citas = new LinkedHashSet<>();
+
     public String getId() {
         return id;
     }
@@ -35,12 +41,12 @@ public class Paciente {
         this.id = id;
     }
 
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
+    public consultorio.Usuario getUsuarios() {
+        return usuarios;
     }
 
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public void setUsuarios(consultorio.Usuario usuarios) {
+        this.usuarios = usuarios;
     }
 
     public String getTelefono() {
@@ -57,6 +63,14 @@ public class Paciente {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public Set<Cita> getCitas() {
+        return citas;
+    }
+
+    public void setCitas(Set<Cita> citas) {
+        this.citas = citas;
     }
 
 }
