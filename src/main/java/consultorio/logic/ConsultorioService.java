@@ -40,6 +40,10 @@ public class ConsultorioService {
         usuarioRepository.save(usuario);
     }
 
+    public void guardarMedico(Medico medico){
+        medicoRepository.save(medico);
+    }
+
     public List<Usuario> obtenerMedicosPendientes() {
         return usuarioRepository.findByRolAndEstado("MEDICO", "PENDIENTE");
     }
