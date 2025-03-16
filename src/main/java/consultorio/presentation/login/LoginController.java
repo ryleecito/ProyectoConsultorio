@@ -1,6 +1,6 @@
 package consultorio.presentation.login;
 
-import consultorio.Usuario;
+import consultorio.logic.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import consultorio.logic.ConsultorioService;

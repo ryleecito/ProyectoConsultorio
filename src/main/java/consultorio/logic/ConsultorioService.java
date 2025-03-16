@@ -1,7 +1,5 @@
 package consultorio.logic;
 
-import consultorio.Paciente;
-import consultorio.Usuario;
 import consultorio.data.MedicoRepository;
 import consultorio.data.PacientesRepository;
 import consultorio.data.UsuariosRepository;
@@ -54,6 +52,11 @@ public class ConsultorioService {
 
     public void rechazarMedico(String id) {
         usuarioRepository.deleteById(id);
+    }
+
+    public List<Medico> medicoSearch(String especialidad, String ciudad) {
+        return medicoRepository.findMedicosByEspecialidadAndCiudad(especialidad,ciudad);
+
     }
 }
 

@@ -1,4 +1,4 @@
-package consultorio;
+package consultorio.logic;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -20,7 +20,7 @@ public class Paciente {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id", nullable = false)
-    private consultorio.Usuario usuarios;
+    private Usuario usuarios;
 
     @Size(max = 20)
     @Column(name = "telefono", length = 20)
@@ -41,11 +41,11 @@ public class Paciente {
         this.id = id;
     }
 
-    public consultorio.Usuario getUsuarios() {
+    public Usuario getUsuarios() {
         return usuarios;
     }
 
-    public void setUsuarios(consultorio.Usuario usuarios) {
+    public void setUsuarios(Usuario usuarios) {
         this.usuarios = usuarios;
     }
 
