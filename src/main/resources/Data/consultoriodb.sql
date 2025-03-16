@@ -58,5 +58,5 @@ CREATE TABLE IF NOT EXISTS citas (
     FOREIGN KEY (paciente_id) REFERENCES pacientes(id) ON DELETE CASCADE
     );
 
-
-
+INSERT INTO usuarios (id, password, nombre, email, rol, estado) VALUES
+    ('admin', 'root', 'Administrador del Sistema', 'admin@consultorio.com', 'ADMIN', 'ACTIVO');
