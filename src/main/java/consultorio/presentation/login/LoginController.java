@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Objects;
 
@@ -19,10 +20,18 @@ public class LoginController {
     private ConsultorioService service;
 
     @GetMapping("/presentation/login/show")
-    public String showLogin(@RequestParam(value = "success", required = false) String successMessage, Model model) {
+    public String showLogin(@RequestParam(value = "success", required = false) String successMessage,
+                            HttpSession session, Model model) {
+        // ✅ Agregar mensaje de éxito si viene en la URL
         if (successMessage != null) {
             model.addAttribute("successMessage", successMessage);
         }
+
+        // ✅ Eliminar mensaje de error cuando se recarga la página
+        if (session.getAttribute("error") != null) {
+            session.removeAttribute("error");
+        }
+
         return "presentation/login/View";
     }
 
@@ -30,7 +39,7 @@ public class LoginController {
     public String procesarLogin(@RequestParam String username,
                                 @RequestParam String password,
                                 HttpSession session,
-                                Model model) {
+                                RedirectAttributes redirectAttributes) {
         if (service.autenticar(username, password)) {
             Usuario usuario = service.buscarPorUsername(username);
             session.setAttribute("usuarioId", usuario.getId());
@@ -46,8 +55,9 @@ public class LoginController {
                 return "redirect:/presentation/medicos/list"; // Vista del paciente
             }
         } else {
-            model.addAttribute("error", "Usuario o contraseña incorrectos");
-            return "presentation/login/View";
+            // ✅ Usamos RedirectAttributes para evitar que el error permanezca tras recargar
+            redirectAttributes.addFlashAttribute("error", "Usuario o contraseña incorrectos");
+            return "redirect:/presentation/login/show";
         }
     }
 }

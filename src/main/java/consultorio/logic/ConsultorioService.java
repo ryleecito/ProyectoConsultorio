@@ -77,5 +77,23 @@ public class ConsultorioService {
         // Both parameters have values
         return medicoRepository.findByEspecialidadAndCiudad(especialidad, ciudad);
     }
+    public Medico buscarMedicoPorId(String id) {
+        return medicoRepository.findById(id).orElse(null);
+    }
+    public void actualizarMedico(Medico medico) {
+        medicoRepository.save(medico);
+    }
+
+    // MÉTODOS PARA PACIENTES:
+    public Paciente buscarPacientePorId(String id) {
+        return pacientesRepository.findById(id).orElse(null);
+    }
+
+    public void actualizarPaciente(Paciente paciente) {
+        pacientesRepository.save(paciente);
+    }
+
+
+
 }
 

@@ -18,15 +18,19 @@
         <i class="fa-solid fa-phone"></i>+506 5467 0937
     </div>
     <div class="nav-menu">
-        <a href="#" class="nav-link">About...</a>
-        <a href="#" class="nav-link">Search</a>
-        <a href="#" class="nav-link">Login</a>
+        <a href="/about" class="nav-link">About</a>
+        <a href="/profile/paciente" class="nav-link">Search</a>
+        <a href="/profile/medico" class="nav-link">Profile</a>
     </div>
 </header>
 
+<!-- ✅ Mensaje de éxito al iniciar sesión -->
+<div th:if="${successMessage}" class="success-message">
+    <p th:text="${successMessage}"></p>
+</div>
+
 <!-- Main Content -->
 <div class="container">
-    <!-- Search Section -->
     <section class="search-section">
         <form th:action="@{/presentation/medicos/search}" method="post" th:object="${medicosSearch}" class="search-form">
             <div class="search-field">
@@ -62,9 +66,7 @@
         </form>
     </section>
 
-    <!-- Results Section -->
     <section class="results-section">
-        <!-- Solo mostrar médicos si hay resultados -->
         <div th:if="${not #lists.isEmpty(medicoSearch)}" th:each="medico : ${medicoSearch}" class="doctor-card">
             <div class="doctor-info">
                 <div class="doctor-details">
@@ -104,6 +106,7 @@
         </div>
     </section>
 </div>
+
 <footer>
     <div class="company-name">Total Soft Inc.</div>
     <div class="social-icons">
@@ -113,57 +116,6 @@
     </div>
     <div class="copyright">©2019 Tsf, Inc.</div>
 </footer>
-
-<!-- ✅ Mensaje flotante al iniciar sesión -->
-<div id="toast" class="toast">
-    <p id="toast-message"></p>
-</div>
-
-<!-- ✅ Script para mostrar el mensaje -->
-<script>
-    function showToast(message) {
-        let toast = document.getElementById("toast");
-        let toastMessage = document.getElementById("toast-message");
-        toastMessage.innerText = message;
-        toast.classList.add("show");
-
-        setTimeout(() => {
-            toast.classList.remove("show");
-        }, 3000);
-    }
-
-    // ✅ Obtener mensaje desde la URL y mostrarlo
-    window.onload = function () {
-        let successMessage = new URLSearchParams(window.location.search).get("success");
-        if (successMessage) {
-            showToast(successMessage);
-        }
-    };
-</script>
-
-<!-- ✅ Estilos del mensaje flotante -->
-<style>
-    .toast {
-        visibility: hidden;
-        min-width: 250px;
-        background-color: #28a745;
-        color: white;
-        text-align: center;
-        border-radius: 5px;
-        padding: 10px;
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-        opacity: 0;
-        transition: opacity 0.5s, visibility 0.5s;
-    }
-
-    .toast.show {
-        visibility: visible;
-        opacity: 1;
-    }
-</style>
 
 </body>
 </html>
