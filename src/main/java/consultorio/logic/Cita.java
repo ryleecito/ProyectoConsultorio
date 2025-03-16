@@ -1,4 +1,4 @@
-package consultorio;
+package consultorio.logic;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -22,19 +22,19 @@ public class Cita {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "medico_id", nullable = false)
-    private consultorio.Medico medico;
+    private Medico medico;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "paciente_id", nullable = false)
-    private consultorio.Paciente paciente;
+    private Paciente paciente;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "slot_id", nullable = false)
-    private consultorio.Slot slot;
+    private Slot slot;
 
     @NotNull
     @Column(name = "fecha", nullable = false)
@@ -65,27 +65,27 @@ public class Cita {
         this.id = id;
     }
 
-    public consultorio.Medico getMedico() {
+    public Medico getMedico() {
         return medico;
     }
 
-    public void setMedico(consultorio.Medico medico) {
+    public void setMedico(Medico medico) {
         this.medico = medico;
     }
 
-    public consultorio.Paciente getPaciente() {
+    public Paciente getPaciente() {
         return paciente;
     }
 
-    public void setPaciente(consultorio.Paciente paciente) {
+    public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
 
-    public consultorio.Slot getSlot() {
+    public Slot getSlot() {
         return slot;
     }
 
-    public void setSlot(consultorio.Slot slot) {
+    public void setSlot(Slot slot) {
         this.slot = slot;
     }
 

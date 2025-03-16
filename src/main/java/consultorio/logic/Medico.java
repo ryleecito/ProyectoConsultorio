@@ -1,4 +1,4 @@
-package consultorio;
+package consultorio.logic;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +23,7 @@ public class Medico {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id", nullable = false)
-    private consultorio.Usuario usuarios;
+    private Usuario usuarios;
 
     @Size(max = 100)
     @NotNull
@@ -57,7 +57,7 @@ public class Medico {
     private Set<Cita> citas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "medico")
-    private Set<consultorio.Slot> slots = new LinkedHashSet<>();
+    private Set<Slot> slots = new LinkedHashSet<>();
 
     public String getId() {
         return id;
@@ -67,11 +67,11 @@ public class Medico {
         this.id = id;
     }
 
-    public consultorio.Usuario getUsuarios() {
+    public Usuario getUsuarios() {
         return usuarios;
     }
 
-    public void setUsuarios(consultorio.Usuario usuarios) {
+    public void setUsuarios(Usuario usuarios) {
         this.usuarios = usuarios;
     }
 
@@ -131,11 +131,11 @@ public class Medico {
         this.citas = citas;
     }
 
-    public Set<consultorio.Slot> getSlots() {
+    public Set<Slot> getSlots() {
         return slots;
     }
 
-    public void setSlots(Set<consultorio.Slot> slots) {
+    public void setSlots(Set<Slot> slots) {
         this.slots = slots;
     }
 
