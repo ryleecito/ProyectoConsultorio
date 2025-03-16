@@ -1,6 +1,8 @@
 package consultorio.presentation.register;
 
+import consultorio.data.PacientesRepository;
 import consultorio.logic.Medico;
+import consultorio.logic.Paciente;
 import consultorio.logic.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ public class RegisterController {
 
     @Autowired
     private ConsultorioService service;
+    @Autowired
+    private PacientesRepository pacientesRepository;
 
     @GetMapping("/presentation/register/show")
     public String showRegister() {
@@ -42,7 +46,6 @@ public class RegisterController {
         usuario.setEmail(email);
         usuario.setRol(rol.equalsIgnoreCase("Medico") ? "MEDICO" : "PACIENTE");
 
-
         // 🔹 Establecer estado en PENDIENTE si es médico, ACTIVO si es paciente
         usuario.setEstado(rol.equalsIgnoreCase("Medico") ? "PENDIENTE" : "ACTIVO");
 
@@ -50,12 +53,13 @@ public class RegisterController {
 
         service.guardarUsuario(usuario);
 
-        //Crear un medico nuevo
-        Medico medico = new Medico();
-        medico.setId(id);
-        medico.setCiudad(null);
-        medico.setEspecialidad(null);
-        service.guardarMedico(medico);
+        if(usuario.getRol().equals("PACIENTE")) {
+            Paciente paciente = new Paciente();
+            paciente.setId(id);
+            paciente.setDireccion("");
+            paciente.setTelefono("");
+            pacientesRepository.save(paciente);
+        }
 
         if (usuario.getRol().equalsIgnoreCase("MEDICO")) {
             return "redirect:/presentation/login/show?success=Te has registrado correctamente, esperando aprobación del administrador";
