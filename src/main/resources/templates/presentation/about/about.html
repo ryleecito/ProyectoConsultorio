@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="presentation/fragments/fragments :: head">
+  <link rel="stylesheet" href="/css/style_citas_paciente.css">
+</head>
+<body>
+
+<header th:replace="presentation/fragments/fragments :: header"></header>
+
+<main class="about-container">
+  <section class="about-header">
+    <h1>Sobre Nosotros</h1>
+    <p>Bienvenido a nuestra plataforma de gestión de citas médicas en línea.</p>
+  </section>
+
+  <section class="about-content">
+    <div class="about-box">
+      <h2>Nuestra Misión</h2>
+      <p>Facilitar la conexión entre pacientes y médicos mediante un sistema intuitivo y eficiente.</p>
+    </div>
+
+    <div class="about-box">
+      <h2>Nuestro Equipo</h2>
+      <p>Somos un grupo de estudiantes comprometidos con la tecnología y la salud, desarrollando soluciones digitales para mejorar el acceso a la atención médica.</p>
+    </div>
+
+    <div class="about-box contact">
+      <h2>Contacto</h2>
+      <p>Si tienes dudas o sugerencias, contáctanos en <strong>soporte@consultoriodb.com</strong>.</p>
+    </div>
+  </section>
+</main>
+
+<footer th:replace="presentation/fragments/fragments :: footer"></footer>
+
+</body>
+</html>
