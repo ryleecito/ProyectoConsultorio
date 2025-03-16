@@ -9,8 +9,6 @@ import java.util.List;
 
 @Repository
 public interface MedicoRepository extends JpaRepository<Medico, String>{
-    List<Medico> findMedicosByEspecialidadAndCiudad( @Param("especialidad") String especialidad, @Param("ciudad") String ciudad);
-
     List<Medico> findByCiudad(String ciudad);
 
     List<Medico> findByEspecialidad(String especialidad);

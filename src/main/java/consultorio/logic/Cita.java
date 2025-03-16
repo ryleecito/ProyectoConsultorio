@@ -31,18 +31,8 @@ public class Cita {
     private Paciente paciente;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "slot_id", nullable = false)
-    private Slot slot;
-
-    @NotNull
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
-
-    @Lob
-    @Column(name = "estado")
-    private String estado;
 
     @Size(max = 100)
     @Column(name = "notas", length = 100)
@@ -56,6 +46,10 @@ public class Cita {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "fecha_creacion", nullable = false)
     private Instant fechaCreacion;
+
+    @Lob
+    @Column(name = "estado")
+    private String estado;
 
     public Integer getId() {
         return id;
@@ -81,28 +75,12 @@ public class Cita {
         this.paciente = paciente;
     }
 
-    public Slot getSlot() {
-        return slot;
-    }
-
-    public void setSlot(Slot slot) {
-        this.slot = slot;
-    }
-
     public LocalDate getFecha() {
         return fecha;
     }
 
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public String getNotas() {
@@ -127,6 +105,14 @@ public class Cita {
 
     public void setFechaCreacion(Instant fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
 }
