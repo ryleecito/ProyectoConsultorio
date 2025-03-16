@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head th:replace="~{/presentation/fragments/fragments.html :: head}">
+</head>
+<body>
+<header th:replace="~{/presentation/fragments/fragments.html :: header}"></header>
+<main>
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Médicos Pendientes de Aprobación</h1>
+
+        <!-- Results Section -->
+        <section class="results-section">
+            <div th:each="medico : ${medicos}" class="doctor-card">
+                <div class="doctor-info">
+                    <div class="doctor-details">
+                        <div class="doctor-header">
+                            <img src="/images/default-doctor.jpg" alt="Doctor" class="doctor-avatar">
+                            <div class="doctor-info">
+                                <div class="doctor-name-row">
+                                    <span class="doctor-name" th:text="${medico.nombre}"></span>
+                                </div>
+                                <p class="doctor-id">ID: <span th:text="${medico.id}"></span></p>
+                                <p class="doctor-email">Correo: <span th:text="${medico.email}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="appointments-section">
+                    <form th:action="@{/admin/aprobar-medico/{id}(id=${medico.id})}" method="post">
+                        <button type="submit" class="btn-approve">Aprobar</button>
+                    </form>
+                    <form th:action="@{/admin/rechazar-medico/{id}(id=${medico.id})}" method="post">
+                        <button type="submit" class="btn-reject">Rechazar</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+<footer th:replace="~{/presentation/fragments/fragments.html :: footer}"></footer>
+</body>
+</html>

@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
+<head th:fragment="head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Exitoso</title>
+    <title>Medical Appointments</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/css/base-header-footer.css">
     <link rel="stylesheet" href="/css/style_login.css">
+    <link rel="stylesheet" href="/css/style_citas_paciente.css">
 </head>
-<body>
-<header>
+
+
+<header th:fragment="header">
     <div class="logo">
         <img src="/images/doctor_appointment_login.jpg" alt="Medical Appointments Logo">
         <div class="logo-text">Medical Appointments</div>
@@ -20,22 +20,13 @@
     <div class="nav-menu">
         <a href="#" class="nav-link">About...</a>
         <a href="#" class="nav-link">Search</a>
-        <a href="#" class="nav-link">Login</a>
+        <a href="/presentation/login/show" class="nav-link">Login</a>
     </div>
 </header>
-<main>
-    <div class="login-container">
-        <div class="login-header">
-            <h2>Login Exitoso</h2>
-        </div>
-        <div class="login-body">
-            <p style="margin-bottom: 20px;">¡Has iniciado sesión exitosamente!</p>
-            <div> <a href="/presentation/login/show" class="login-button">Volver a la página de login</a></div>
-        </div>
-    </div>
-</main>
 
-<footer>
+
+
+<footer th:fragment="footer">
     <div class="company-name">Total Soft Inc.</div>
     <div class="social-icons">
         <div class="social-icon"><i class="fa-brands fa-twitter"></i></div>
@@ -44,5 +35,3 @@
     </div>
     <div class="copyright">©2019 Tsf, Inc.</div>
 </footer>
-</body>
-</html>
