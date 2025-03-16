@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{presentation/fragments/fragments :: head}">
+  <link rel="stylesheet" href="/css/style_confirmar_cita.css">
+  <link rel="stylesheet" href="/css/base-header-footer.css">
+</head>
+<body>
+
+<header th:replace="~{presentation/fragments/fragments :: header}"></header>
+
+<main class="profile-container">
+  <h1>Gestión del Perfil Médico</h1>
+
+  <!-- Vista previa de la foto -->
+  <div class="profile-image-container">
+    <img th:src="@{${medico.foto} ?: '/images/default-profile.png'}" alt="Foto de Perfil" id="preview-image">
+  </div>
+
+  <form th:action="@{/medico/perfil}" method="post" enctype="multipart/form-data" class="profile-form">
+
+    <div class="form-group">
+      <label for="foto">Foto de Perfil:</label>
+      <input type="file" id="foto" name="foto" accept="image/*" onchange="previewImage(event)">
+    </div>
+
+    <div class="form-group">
+      <label for="especialidad">Especialidad:</label>
+      <input type="text" id="especialidad" name="especialidad" th:value="${medico.especialidad}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="ciudad">Ciudad:</label>
+      <input type="text" id="ciudad" name="ciudad" th:value="${medico.ciudad}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="costo_consulta">Costo de Consulta:</label>
+      <input type="number" id="costo_consulta" name="costo_consulta" step="0.01" th:value="${medico.costo_consulta}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="duracion_cita">Duración de Cita (minutos):</label>
+      <input type="number" id="duracion_cita" name="duracion_cita" th:value="${medico.duracion_cita}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="hospital">Hospital:</label>
+      <input type="text" id="hospital" name="hospital" th:value="${medico.hospital}" required>
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn-save">Guardar Cambios</button>
+    </div>
+  </form>
+</main>
+
+<footer th:replace="~{presentation/fragments/fragments :: footer}"></footer>
+
+<!-- Script para previsualizar la imagen antes de subir -->
+<script>
+  function previewImage(event) {
+    var reader = new FileReader();
+    reader.onload = function(){
+      var output = document.getElementById('preview-image');
+      output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+</script>
+
+</body>
+</html>
