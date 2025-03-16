@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface MedicoRepository extends JpaRepository<Usuario, String> {
     List<Usuario> findByRolAndEstado(@NotNull String rol, @NotNull String estado);
+    
 }

@@ -44,13 +44,6 @@ public class Usuario {
     @Column(name = "fecha_registro")
     private Instant fechaRegistro;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Medico medico;
-
-    // One-to-one relationship with Paciente (no mappedBy)
-    @OneToOne(cascade = CascadeType.ALL)
-    private Paciente paciente;
-
 
     public String getId() {
         return id;
@@ -108,20 +101,5 @@ public class Usuario {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public Medico getMedico() {
-        return medico;
-    }
-
-    public void setMedico(Medico medico) {
-        this.medico = medico;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
 
 }

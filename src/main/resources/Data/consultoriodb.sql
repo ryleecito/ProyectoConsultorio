@@ -17,9 +17,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- Tabla de médicos
 CREATE TABLE IF NOT EXISTS medicos (
                                        id VARCHAR(20) PRIMARY KEY,
-    especialidad VARCHAR(100) NOT NULL,
-    ciudad VARCHAR(100) NOT NULL,
-    costo_consulta DECIMAL(10,2) NOT NULL,
+    especialidad VARCHAR(100),
+    ciudad VARCHAR(100),
+    costo_consulta DECIMAL(10,2),
     duracion_cita INT NOT NULL DEFAULT 30, -- en minutos
     hospital VARCHAR(100) NOT NULL,
     foto VARCHAR(255),

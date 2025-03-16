@@ -43,17 +43,17 @@ public class ConsultorioService {
     }
 
     public List<Usuario> obtenerMedicosPendientes() {
-        return medicoRepository.findByRolAndEstado("MEDICO", "PENDIENTE");
+        return usuarioRepository.findByRolAndEstado("MEDICO", "PENDIENTE");
     }
 
     public void aprobarMedico(String id) {
-        Usuario medico = medicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Médico no encontrado"));
+        Usuario medico = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Médico no encontrado"));
         medico.setEstado("ACTIVO");
-        medicoRepository.save(medico);
+        usuarioRepository.save(medico);
     }
 
     public void rechazarMedico(String id) {
-        medicoRepository.deleteById(id);
+        usuarioRepository.deleteById(id);
     }
 }
 
