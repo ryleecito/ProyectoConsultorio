@@ -219,3 +219,67 @@ footer {
     align-items: center;
     justify-content: center;
 }
+
+/* Contenedor principal */
+.profile-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Título */
+.profile-container h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* Formulario */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Grupo de formulario */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* Etiquetas */
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #34495e;
+}
+
+/* Campos de entrada */
+.form-group input {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+}
+
+/* Botón de guardar */
+.btn-save {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-save:hover {
+    background-color: #0056b3;
+}
