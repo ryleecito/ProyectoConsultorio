@@ -1,5 +1,6 @@
 package consultorio.presentation.register;
 
+import consultorio.logic.Medico;
 import consultorio.logic.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class RegisterController {
             model.addAttribute("error", "El usuario ya existe.");
             return "presentation/register/View";
         }
-
+        //Crear un nuevo usuario
         Usuario usuario = new Usuario();
         usuario.setId(id);
         usuario.setPassword(password);
@@ -41,12 +42,20 @@ public class RegisterController {
         usuario.setEmail(email);
         usuario.setRol(rol.equalsIgnoreCase("Medico") ? "MEDICO" : "PACIENTE");
 
+
         // 🔹 Establecer estado en PENDIENTE si es médico, ACTIVO si es paciente
         usuario.setEstado(rol.equalsIgnoreCase("Medico") ? "PENDIENTE" : "ACTIVO");
 
         usuario.setFechaRegistro(java.time.Instant.now());
 
         service.guardarUsuario(usuario);
+
+        //Crear un medico nuevo
+        Medico medico = new Medico();
+        medico.setId(id);
+        medico.setCiudad(null);
+        medico.setEspecialidad(null);
+        service.guardarMedico(medico);
 
         if (usuario.getRol().equalsIgnoreCase("MEDICO")) {
             return "redirect:/presentation/login/show?success=Te has registrado correctamente, esperando aprobación del administrador";
