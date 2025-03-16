@@ -1,6 +1,6 @@
 package consultorio.data;
 
-import consultorio.Usuario;
+import consultorio.logic.Usuario;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.springframework.data.jpa.repository.JpaRepository;

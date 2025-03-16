@@ -1,6 +1,6 @@
 package consultorio.presentation.admin;
 
-import consultorio.Usuario;
+import consultorio.logic.Usuario;
 import consultorio.logic.ConsultorioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
