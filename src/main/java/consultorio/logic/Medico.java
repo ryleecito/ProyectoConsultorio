@@ -3,8 +3,13 @@ package consultorio.logic;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "medicos")
@@ -14,31 +19,45 @@ public class Medico {
     @Column(name = "id", nullable = false, length = 20)
     private String id;
 
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "id", nullable = false)
+    private Usuario usuarios;
+
+    @Size(max = 100)
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "especialidad_id", nullable = false)
-    private Especialidade especialidad;
+    @Column(name = "especialidad", nullable = false, length = 100)
+    private String especialidad;
+
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "ciudad", nullable = false, length = 100)
+    private String ciudad;
 
     @NotNull
     @Column(name = "costo_consulta", nullable = false, precision = 10, scale = 2)
     private BigDecimal costoConsulta;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "localidad_id", nullable = false)
-    private Localidade localidad;
-
-    @NotNull
+    @ColumnDefault("30")
     @Column(name = "duracion_cita", nullable = false)
     private Integer duracionCita;
 
-    @Lob
-    @Column(name = "descripcion")
-    private String descripcion;
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "hospital", nullable = false, length = 100)
+    private String hospital;
 
     @Size(max = 255)
     @Column(name = "foto")
     private String foto;
+
+    @OneToMany(mappedBy = "medico")
+    private Set<Cita> citas = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "medico")
+    private Set<Slot> slots = new LinkedHashSet<>();
 
     public String getId() {
         return id;
@@ -48,12 +67,28 @@ public class Medico {
         this.id = id;
     }
 
-    public Especialidade getEspecialidad() {
+    public Usuario getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(Usuario usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    public String getEspecialidad() {
         return especialidad;
     }
 
-    public void setEspecialidad(Especialidade especialidad) {
+    public void setEspecialidad(String especialidad) {
         this.especialidad = especialidad;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
 
     public BigDecimal getCostoConsulta() {
@@ -64,14 +99,6 @@ public class Medico {
         this.costoConsulta = costoConsulta;
     }
 
-    public Localidade getLocalidad() {
-        return localidad;
-    }
-
-    public void setLocalidad(Localidade localidad) {
-        this.localidad = localidad;
-    }
-
     public Integer getDuracionCita() {
         return duracionCita;
     }
@@ -80,12 +107,12 @@ public class Medico {
         this.duracionCita = duracionCita;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getHospital() {
+        return hospital;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setHospital(String hospital) {
+        this.hospital = hospital;
     }
 
     public String getFoto() {
@@ -94,6 +121,22 @@ public class Medico {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public Set<Cita> getCitas() {
+        return citas;
+    }
+
+    public void setCitas(Set<Cita> citas) {
+        this.citas = citas;
+    }
+
+    public Set<Slot> getSlots() {
+        return slots;
+    }
+
+    public void setSlots(Set<Slot> slots) {
+        this.slots = slots;
     }
 
 }

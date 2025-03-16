@@ -44,6 +44,7 @@ public class Usuario {
     @Column(name = "fecha_registro")
     private Instant fechaRegistro;
 
+
     public String getId() {
         return id;
     }
@@ -99,5 +100,6 @@ public class Usuario {
     public void setFechaRegistro(Instant fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
+
 
 }

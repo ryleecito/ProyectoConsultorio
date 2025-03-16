@@ -41,17 +41,37 @@ public class ConsultorioService {
     }
 
     public List<Usuario> obtenerMedicosPendientes() {
-        return medicoRepository.findByRolAndEstado("MEDICO", "PENDIENTE");
+        return usuarioRepository.findByRolAndEstado("MEDICO", "PENDIENTE");
     }
 
     public void aprobarMedico(String id) {
-        Usuario medico = medicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Médico no encontrado"));
+        Usuario medico = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Médico no encontrado"));
         medico.setEstado("ACTIVO");
-        medicoRepository.save(medico);
+        usuarioRepository.save(medico);
     }
 
     public void rechazarMedico(String id) {
-        medicoRepository.deleteById(id);
+        usuarioRepository.deleteById(id);
+    }
+
+    public List<Medico> medicoSearch(String especialidad, String ciudad) {
+        // If both parameters are empty, return all doctors
+        if ((especialidad == null || especialidad.isEmpty()) &&
+                (ciudad == null || ciudad.isEmpty())) {
+            return medicoRepository.findAll();
+        }
+
+        // If only one parameter is empty
+        if (especialidad == null || especialidad.isEmpty()) {
+            return medicoRepository.findByCiudad(ciudad);
+        }
+
+        if (ciudad == null || ciudad.isEmpty()) {
+            return medicoRepository.findByEspecialidad(especialidad);
+        }
+
+        // Both parameters have values
+        return medicoRepository.findByEspecialidadAndCiudad(especialidad, ciudad);
     }
 }
 
