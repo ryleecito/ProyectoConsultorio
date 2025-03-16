@@ -1,6 +1,6 @@
 package consultorio.presentation.register;
 
-import consultorio.logic.Usuario;
+import consultorio.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import consultorio.logic.ConsultorioService;
@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.stereotype.Controller;
-
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 @Controller
 public class RegisterController {
