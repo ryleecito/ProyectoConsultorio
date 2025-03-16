@@ -43,17 +43,18 @@ public class RegisterController {
         usuario.setNombre(nombre);
         usuario.setEmail(email);
         usuario.setRol(rol.equalsIgnoreCase("Medico") ? "MEDICO" : "PACIENTE");
-        usuario.setEstado("ACTIVO");
+
+        // 🔹 Establecer estado en PENDIENTE si es médico, ACTIVO si es paciente
+        usuario.setEstado(rol.equalsIgnoreCase("Medico") ? "PENDIENTE" : "ACTIVO");
+
         usuario.setFechaRegistro(java.time.Instant.now());
 
         service.guardarUsuario(usuario);
 
-        if(usuario.getRol().equalsIgnoreCase("Medico")) {
-            return "redirect:/presentation/login/show?success=Te has registrado correctamente, esperando aprobacion de administrador";
+        if (usuario.getRol().equalsIgnoreCase("MEDICO")) {
+            return "redirect:/presentation/login/show?success=Te has registrado correctamente, esperando aprobación del administrador";
         } else {
-
             return "redirect:/presentation/login/show?success=Te has registrado correctamente";
         }
-
     }
 }

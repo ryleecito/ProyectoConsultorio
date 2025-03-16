@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.stereotype.Controller;
 
+import java.util.Objects;
+
 @Controller
 public class LoginController {
 
@@ -33,9 +35,16 @@ public class LoginController {
             Usuario usuario = service.buscarPorUsername(username);
             session.setAttribute("usuarioId", usuario.getId());
             session.setAttribute("username", usuario.getNombre());
+            session.setAttribute("rol", usuario.getRol()); // Guardamos el rol en sesión
 
-            // ✅ Pasar mensaje como parámetro en la redirección
-            return "redirect:/presentation/citas/View?success=Has iniciado sesion correctamente";
+            // ✅ Redirigir según el rol
+            if (Objects.equals(usuario.getRol(), "ADMIN")) {
+                return "redirect:/admin/medicos-pendientes"; // Vista del admin
+            } else if (Objects.equals(usuario.getRol(), "MEDICO")) {
+                return "redirect:/presentation/citas/View"; // Vista del médico
+            } else {
+                return "redirect:/presentation/citas/View"; // Vista del paciente
+            }
         } else {
             model.addAttribute("error", "Usuario o contraseña incorrectos");
             return "presentation/login/View";
