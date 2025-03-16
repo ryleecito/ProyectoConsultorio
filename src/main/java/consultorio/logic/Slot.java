@@ -35,9 +35,6 @@ public class Slot {
     @Column(name = "hora_fin", nullable = false)
     private LocalTime horaFin;
 
-    @OneToMany(mappedBy = "slot")
-    private Set<Cita> citas = new LinkedHashSet<>();
-
     public Integer getId() {
         return id;
     }
@@ -76,14 +73,6 @@ public class Slot {
 
     public void setHoraFin(LocalTime horaFin) {
         this.horaFin = horaFin;
-    }
-
-    public Set<Cita> getCitas() {
-        return citas;
-    }
-
-    public void setCitas(Set<Cita> citas) {
-        this.citas = citas;
     }
 
 }
