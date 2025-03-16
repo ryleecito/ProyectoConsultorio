@@ -16,11 +16,6 @@ public class Paciente {
     @Column(name = "id", nullable = false, length = 20)
     private String id;
 
-    @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "id", nullable = false)
-    private Usuario usuarios;
 
     @Size(max = 20)
     @Column(name = "telefono", length = 20)
@@ -41,13 +36,9 @@ public class Paciente {
         this.id = id;
     }
 
-    public Usuario getUsuarios() {
-        return usuarios;
-    }
 
-    public void setUsuarios(Usuario usuarios) {
-        this.usuarios = usuarios;
-    }
+
+
 
     public String getTelefono() {
         return telefono;
