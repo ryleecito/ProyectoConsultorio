@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil del Paciente</title>
+  <link rel="stylesheet" href="/css/base-header-footer.css">
+  <link rel="stylesheet" href="/css/style_perfil.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+<header th:replace="~{presentation/fragments/fragments :: header}"></header>
+<main class="profile-container">
+  <div class="profile-card">
+    <h1 class="title">Gestión del Perfil del Paciente</h1>
+
+    <!-- ✅ Mensaje de éxito -->
+    <div th:if="${param.success}" class="success-message">
+      <p>Perfil actualizado correctamente.</p>
+    </div>
+    <!-- Add this to your presentation/profile/profilePaciente.html form -->
+    <form th:action="@{/profile/paciente/update}" method="post" class="profile-form" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" th:value="${paciente.telefono}" required>
+      </div>
+      <div class="form-group">
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" name="direccion" th:value="${paciente.direccion}" required>
+      </div>
+      <div class="form-group">
+        <label for="profilePhoto">Foto de Perfil:</label>
+        <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*">
+      </div>
+      <div class="form-group form-submit">
+        <button type="submit" class="btn-save">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</main>
+<footer th:replace="~{presentation/fragments/fragments :: footer}"></footer>
+
+</body>
+</html>

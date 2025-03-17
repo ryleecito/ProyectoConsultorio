@@ -16,22 +16,23 @@ CREATE TABLE IF NOT EXISTS usuarios (
 
 -- Tabla de médicos
 CREATE TABLE IF NOT EXISTS medicos (
-                                       id VARCHAR(20) PRIMARY KEY,
+                                       id VARCHAR(100) PRIMARY KEY,
     especialidad VARCHAR(100),
     ciudad VARCHAR(100),
     costo_consulta DECIMAL(10,2),
     duracion_cita INT DEFAULT 30, -- en minutos
     hospital VARCHAR(100),
-    foto VARCHAR(255),
-    FOREIGN KEY (id) REFERENCES usuarios(id) ON DELETE CASCADE
+    foto VARCHAR(255)
+
     );
 
 -- Tabla de pacientes
 CREATE TABLE IF NOT EXISTS pacientes (
-                                         id VARCHAR(20) PRIMARY KEY,
+                                         id VARCHAR(100) PRIMARY KEY,
     telefono VARCHAR(20) NULL DEFAULT NULL,
     direccion VARCHAR(200) NULL DEFAULT NULL,
-    FOREIGN KEY (id) REFERENCES usuarios(id) ON DELETE CASCADE
+    foto VARCHAR(255)
+
     );
 
 -- Tabla de disponibilidad de médicos (slots)

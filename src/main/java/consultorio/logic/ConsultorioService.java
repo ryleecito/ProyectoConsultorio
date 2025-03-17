@@ -6,6 +6,7 @@ import consultorio.data.UsuariosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -49,9 +50,25 @@ public class ConsultorioService {
     }
 
     public void aprobarMedico(String id) {
-        Usuario medico = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Médico no encontrado"));
-        medico.setEstado("ACTIVO");
-        usuarioRepository.save(medico);
+
+        Usuario usuarioMedico = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Médico no encontrado"));
+
+        usuarioMedico.setEstado("ACTIVO");
+        usuarioRepository.updateEstado(usuarioMedico.getId(), usuarioMedico.getEstado());
+
+        if (!medicoRepository.existsById(id)) {
+            Medico medico = new Medico();
+            medico.setId(id);
+            medico.setCiudad("");
+            medico.setEspecialidad("");
+            medico.setCostoConsulta(BigDecimal.valueOf(0));
+            medico.setDuracionCita(30);
+            medico.setHospital("");
+            medico.setFoto(null);
+
+            guardarMedico(medico);
+        }
     }
 
     public void rechazarMedico(String id) {
@@ -77,5 +94,23 @@ public class ConsultorioService {
         // Both parameters have values
         return medicoRepository.findByEspecialidadAndCiudad(especialidad, ciudad);
     }
+    public Medico buscarMedicoPorId(String id) {
+        return medicoRepository.findById(id).orElse(null);
+    }
+    public void actualizarMedico(Medico medico) {
+        medicoRepository.save(medico);
+    }
+
+    // MÉTODOS PARA PACIENTES:
+    public Paciente buscarPacientePorId(String id) {
+        return pacientesRepository.findById(id).orElse(null);
+    }
+
+    public void actualizarPaciente(Paciente paciente) {
+        pacientesRepository.save(paciente);
+    }
+
+
+
 }
 

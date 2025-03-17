@@ -24,11 +24,6 @@ public class Medico {
     @Column(name = "id", nullable = false, length = 20)
     private String id;
 
-    @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "id", nullable = false)
-    private Usuario usuarios;
 
     @Size(max = 100)
     @NotNull
@@ -72,13 +67,6 @@ public class Medico {
         this.id = id;
     }
 
-    public Usuario getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(Usuario usuarios) {
-        this.usuarios = usuarios;
-    }
 
     public String getEspecialidad() {
         return especialidad;

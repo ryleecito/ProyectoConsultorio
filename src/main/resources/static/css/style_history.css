@@ -1,0 +1,223 @@
+/* Reset básico y tipografía */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f8ff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #e6f3f8;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Main content */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    flex: 1;
+}
+
+/* Encabezado del paciente */
+.patient-header {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+}
+
+.patient-name {
+    color: #4a86e8;
+    font-style: italic;
+}
+
+/* Tarjeta de cita */
+.appointment-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 20px;
+    border: 1px solid #eee;
+    gap: 15px;
+}
+
+/* Columnas */
+.doctor-column {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.appointment-date-column,
+.appointment-status-column,
+.view-button-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+}
+
+/* Foto del doctor */
+.doctor-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Status badges */
+.pending {
+    background-color: yellow;
+    color: black;
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+
+.attended {
+    background-color: green;
+    color: black;
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+
+.cancelled {
+    background-color: red;
+    color: black;
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+
+/* Botón de ver detalles */
+.btn-view {
+    background-color: #e3eeff;
+    color: #0d6efd;
+    padding: 5px 15px;
+    border-radius: 15px;
+    text-decoration: none;
+}
+
+.btn-view i {
+    margin-right: 5px;
+}
+
+/* Encabezado del doctor */
+
+.doctor-header {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Asegura que todo esté alineado en el centro */
+    gap: 8px; /* Espacio entre elementos */
+    line-height: 1.2; /* Ajusta la altura de línea para evitar que el texto se mueva */
+}
+
+/* Nombre del doctor */
+.doctor-name {
+    color: #4a86e8;
+    font-style: italic;
+    white-space: nowrap; /* Evita que el nombre se divida en dos líneas */
+    display: inline-block;
+    vertical-align: middle; /* Asegura que el nombre no se mueva hacia arriba */
+}
+
+/* Tarjeta de cita */
+.appointment-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 20px;
+    border: 1px solid #eee;
+    gap: 15px;
+}
+
+/* Columnas */
+.patient-column {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Corrección para alinear imagen y nombre */
+.patient-details {
+    display: flex;
+    align-items: center;
+}
+
+/* Foto del paciente */
+.patient-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Status badges */
+.pending {
+    background-color: yellow;
+    color: black;
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+
+.attended {
+    background-color: green;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+
+.cancelled {
+    background-color: red;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+
+/* Botón de ver detalles */
+.btn-view {
+    background-color: #e3eeff;
+    color: #0d6efd;
+    padding: 5px 15px;
+    border-radius: 15px;
+    text-decoration: none;
+}
+
+.btn-view i {
+    margin-right: 5px;
+}
+
+
+.attend-action {
+    color: green;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.cancel-action {
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+}
