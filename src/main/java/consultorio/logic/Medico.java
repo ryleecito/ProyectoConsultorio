@@ -24,11 +24,6 @@ public class Medico {
     @Column(name = "id", nullable = false, length = 20)
     private String id;
 
-    @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "id", nullable = false)
-    private Usuario usuarios;
 
     @Size(max = 100)
     @NotNull
@@ -72,13 +67,6 @@ public class Medico {
         this.id = id;
     }
 
-    public Usuario getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(Usuario usuarios) {
-        this.usuarios = usuarios;
-    }
 
     public String getEspecialidad() {
         return especialidad;
@@ -144,5 +132,49 @@ public class Medico {
         this.slots = slots;
     }
 
+    public List<List<Cita>> obtenerCitasDeLaSemana(LocalDate start) {
+        List<List<Cita>> resultados = new ArrayList<>(); // Lista que contendrá las citas de cada día
 
+        // Ajustar al lunes de la semana actual
+        LocalDate inicioSemana = start.with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
+
+        for (int i = 0; i < 7; i++) {
+            LocalDate fecha = inicioSemana.plusDays(i); // Avanzamos día por día
+            List<Cita> citasDelDia = citasDeFecha(fecha); // Llamamos al método para obtener las citas de ese día
+
+            // Siempre agregamos la lista, incluso si está vacía
+            resultados.add(citasDelDia);
+        }
+        return resultados; // Retornamos todos los días, con o sin citas
+    }
+    public List<Cita> citasDeFecha(LocalDate fecha) {
+        List<Cita> citasDisponibles = new ArrayList<>();
+        int diaSemana = fecha.getDayOfWeek().getValue(); // 1-Lunes, 7-Domingo
+
+        for (Slot slot : this.slots) {
+            if (slot.getDia() == diaSemana) {
+                LocalTime horaActual = slot.getHoraInicio();
+
+                // Continuar generando citas mientras no excedamos la hora de fin del slot
+                while (!horaActual.plus(java.time.Duration.ofMinutes(this.duracionCita)).isAfter(slot.getHoraFin())) {
+                    // Crear una nueva cita vacía
+                    Cita cita = new Cita();
+                    cita.setMedico(this);
+                    cita.setPaciente(null); // Sin paciente asignado aún
+                    // Convertir LocalDate a LocalDateTime y agregar la hora de inicio
+                    cita.setFecha(fecha.atTime(horaActual));  // Aquí combinamos la fecha con la hora
+
+                    cita.setFechaCreacion(java.time.Instant.now());
+                    cita.setEstado("Disponible");
+
+                    // Agregar la cita a la lista
+                    citasDisponibles.add(cita);
+
+                    // Avanzar a la siguiente hora de cita basada en la duración configurada
+                    horaActual = horaActual.plusMinutes(this.duracionCita);
+                }
+            }
+        }
+        return citasDisponibles;
+    }
 }

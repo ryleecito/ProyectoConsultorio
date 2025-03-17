@@ -16,11 +16,6 @@ public class Paciente {
     @Column(name = "id", nullable = false, length = 20)
     private String id;
 
-    @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "id", nullable = false)
-    private Usuario usuarios;
 
     @Size(max = 20)
     @Column(name = "telefono", length = 20)
@@ -29,6 +24,10 @@ public class Paciente {
     @Size(max = 200)
     @Column(name = "direccion", length = 200)
     private String direccion;
+
+    @Size(max = 255)
+    @Column(name = "foto")
+    private String foto;
 
     @OneToMany(mappedBy = "paciente")
     private Set<Cita> citas = new LinkedHashSet<>();
@@ -41,13 +40,9 @@ public class Paciente {
         this.id = id;
     }
 
-    public Usuario getUsuarios() {
-        return usuarios;
-    }
 
-    public void setUsuarios(Usuario usuarios) {
-        this.usuarios = usuarios;
-    }
+
+
 
     public String getTelefono() {
         return telefono;
@@ -73,4 +68,7 @@ public class Paciente {
         this.citas = citas;
     }
 
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
 }

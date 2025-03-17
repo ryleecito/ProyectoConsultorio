@@ -6,6 +6,7 @@
   <title>Perfil del Médico</title>
   <link rel="stylesheet" href="/css/base-header-footer.css">
   <link rel="stylesheet" href="/css/style_perfil.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 </head>
 <body>
@@ -22,7 +23,7 @@
     </div>
 
     <!-- Formulario para actualizar los datos del médico -->
-    <form th:action="@{/profile/medico/update}" method="post" class="profile-form">
+    <form th:action="@{/profile/medico/update}" method="post" class="profile-form" enctype="multipart/form-data">
       <div class="form-grid">
         <div class="form-group">
           <label for="especialidad">Especialidad:</label>
@@ -43,6 +44,11 @@
         <div class="form-group">
           <label for="hospital">Hospital:</label>
           <input type="text" id="hospital" name="hospital" th:value="${medico.hospital}" required>
+        </div>
+        <div class="form-group">
+          <label for="profilePhoto">Foto de Perfil:</label>
+          <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*">
+          <p class="photo-hint" th:if="${medico.foto != null && !medico.foto.isEmpty()}">Foto actual: <span th:text="${medico.foto}"></span></p>
         </div>
       </div>
       <div class="form-group form-submit">

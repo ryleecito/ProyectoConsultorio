@@ -6,7 +6,9 @@ import consultorio.data.UsuariosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ConsultorioService {
@@ -49,9 +51,25 @@ public class ConsultorioService {
     }
 
     public void aprobarMedico(String id) {
-        Usuario medico = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Médico no encontrado"));
-        medico.setEstado("ACTIVO");
-        usuarioRepository.save(medico);
+
+        Usuario usuarioMedico = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Médico no encontrado"));
+
+        usuarioMedico.setEstado("ACTIVO");
+        usuarioRepository.updateEstado(usuarioMedico.getId(), usuarioMedico.getEstado());
+
+        if (!medicoRepository.existsById(id)) {
+            Medico medico = new Medico();
+            medico.setId(id);
+            medico.setCiudad("");
+            medico.setEspecialidad("");
+            medico.setCostoConsulta(BigDecimal.valueOf(0));
+            medico.setDuracionCita(30);
+            medico.setHospital("");
+            medico.setFoto(null);
+
+            guardarMedico(medico);
+        }
     }
 
     public void rechazarMedico(String id) {
@@ -95,5 +113,11 @@ public class ConsultorioService {
 
 
 
+
+
+
+    public Optional<Medico> buscarMedicoPorNombre(String nombre) {
+        return medicoRepository.findById(nombre);
+    }
 }
 
