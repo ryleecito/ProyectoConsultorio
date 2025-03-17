@@ -71,7 +71,7 @@
             <div class="doctor-info">
                 <div class="doctor-details">
                     <div class="doctor-header">
-                        <img th:if="${medico.foto != null && !medico.foto.isEmpty()}" th:src="@{'/images/' + ${medico.foto}}" alt="Doctor" class="doctor-avatar">
+                        <img th:if="${medico.foto != null && !medico.foto.isEmpty()}" th:src="${medico.foto}" alt="Doctor" class="doctor-avatar">
                         <img th:unless="${medico.foto != null && !medico.foto.isEmpty()}" src="/api/placeholder/60/60" alt="Doctor" class="doctor-avatar">
                         <div class="doctor-info">
                             <div class="doctor-name-row">
