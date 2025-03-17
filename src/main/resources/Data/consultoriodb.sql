@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS medicos (
 CREATE TABLE IF NOT EXISTS pacientes (
                                          id VARCHAR(100) PRIMARY KEY,
     telefono VARCHAR(20) NULL DEFAULT NULL,
-    direccion VARCHAR(200) NULL DEFAULT NULL
+    direccion VARCHAR(200) NULL DEFAULT NULL,
+    foto VARCHAR(255)
 
     );
 

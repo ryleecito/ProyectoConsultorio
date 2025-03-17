@@ -25,6 +25,10 @@ public class Paciente {
     @Column(name = "direccion", length = 200)
     private String direccion;
 
+    @Size(max = 255)
+    @Column(name = "foto")
+    private String foto;
+
     @OneToMany(mappedBy = "paciente")
     private Set<Cita> citas = new LinkedHashSet<>();
 
@@ -64,4 +68,7 @@ public class Paciente {
         this.citas = citas;
     }
 
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
 }
