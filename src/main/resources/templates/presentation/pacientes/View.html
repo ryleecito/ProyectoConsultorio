@@ -1,10 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Appointments - History</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../../static/css/style_history.css">
+    <link rel="stylesheet" href="../../../static/css/style_citas_paciente.css">
+    <link rel="stylesheet" href="../../../static/css/base-header-footer.css">
 </head>
 <body>
+<header>
+    <div class="logo">
+        <img src="/images/doctor_appointment_login.jpg" height="50" width="50" alt="Logo"/>
+        <div class="logo-text">Medical Appointments</div>
+    </div>
+    <div class="phone">
+        <i class="fa-solid fa-phone"></i> +506 5467 0937
+    </div>
+    <div class="nav-menu">
+        <a href="/about" class="nav-link">About...</a>
+        <a href="/presentation/patient/history/show" class="nav-link">History</a>
+        <a href="/search" class="nav-link">Search</a>
+        <a href="/profile/paciente" class="nav-link">Profile</a>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+    <h1 class="patient-header">
+        Patient - <span class="patient-name">Stan Lee</span> - appointment history
+    </h1>
+
+    <!-- Filter Section -->
+    <div class="search-section">
+        <form action="#" method="post" class="search-form">
+            <div class="search-field">
+                <select class="form-control">
+                    <option value="">All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Attended">Attended</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="search-field">
+                <input type="text" class="form-control" placeholder="Doctor">
+            </div>
+            <button type="submit" class="btn-search">Search</button>
+        </form>
+    </div>
+
+    <!-- Appointment List -->
+    <div class="appointment-list">
+        <!-- Cita 1 -->
+        <div class="appointment-card">
+            <div class="doctor-column">
+                <img src="/images/doctor1.jpg" alt="Doctor" class="doctor-avatar">
+                <div class="doctor-details">
+                    <div class="doctor-name">
+                        <b>Luis Alonso Kajero</b>
+                        <span class="doctor-cost">₡70,000</span>
+                    </div>
+                    <div class="doctor-specialty">Cardiology</div>
+                    <div class="doctor-location">
+                        Heart Care Center <span class="at-symbol">@</span> Alajuela
+                    </div>
+                </div>
+            </div>
+
+            <div class="appointment-date-column">
+                <span class="appointment-date">20/02/2025 - 14:00</span>
+            </div>
+
+            <div class="appointment-status-column">
+                <div class="appointment-status pending">Pending</div>
+            </div>
+
+            <div class="view-button-column"></div>
+        </div>
+
+        <!-- Cita 2 -->
+        <div class="appointment-card">
+            <div class="doctor-column">
+                <img src="/images/doctor2.jpg" alt="Doctor" class="doctor-avatar">
+                <div class="doctor-details">
+                    <div class="doctor-name">
+                        <b>Bruce Banner</b>
+                        <span class="doctor-cost">₡50,000</span>
+                    </div>
+                    <div class="doctor-specialty">Dermatology</div>
+                    <div class="doctor-location">
+                        Derma Clinic <span class="at-symbol">@</span> San José
+                    </div>
+                </div>
+            </div>
+
+            <div class="appointment-date-column">
+                <span class="appointment-date">12/02/2025 - 15:30</span>
+            </div>
+
+            <div class="appointment-status-column">
+                <div class="appointment-status attended">Attended</div>
+            </div>
+
+            <div class="view-button-column">
+                <a href="#" class="btn-view"><i class="fa-solid fa-eye"></i> View</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="company-name">Total Soft Inc.</div>
+    <div class="social-icons">
+        <div class="social-icon"><i class="fa-brands fa-twitter"></i></div>
+        <div class="social-icon"><i class="fa-brands fa-facebook-f"></i></div>
+        <div class="social-icon"><i class="fa-brands fa-instagram"></i></div>
+    </div>
+    <div class="copyright">©2019 Tsf, Inc.</div>
+</footer>
 
 </body>
 </html>
