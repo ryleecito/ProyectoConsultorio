@@ -1,29 +1,11 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Appointments</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<head th:replace="presentation/fragments/fragments :: head">
     <link rel="stylesheet" href="/css/style_citas_paciente.css">
     <link rel="stylesheet" href="/css/base-header-footer.css">
-
 </head>
 <body>
-<header>
-    <div class="logo">
-        <img src="/images/doctor_appointment_login.jpg" height="1371" width="1920"/>
-        <div class="logo-text">Medical Appointments</div>
-    </div>
-    <div class="phone">
-        <i class="fa-solid fa-phone"></i>+506 5467 0937
-    </div>
-    <div class="nav-menu">
-        <a href="/about" class="nav-link">About</a>
-        <a href="/profile/paciente" class="nav-link">Search</a>
-        <a href="/profile/medico" class="nav-link">Profile</a>
-    </div>
-</header>
+<header th:replace="presentation/fragments/fragments :: header"></header>
 
 <!-- ✅ Mensaje de éxito al iniciar sesión -->
 <div th:if="${successMessage}" class="success-message">
@@ -87,7 +69,11 @@
                     </div>
                 </div>
                 <div class="location-container">
-                    <p class="doctor-location"><span th:text="${medico.hospital}">Hospital</span> <span class="at-symbol">@</span> <span th:text="${medico.ciudad}">City</span></p>
+                    <p class="doctor-location">
+                        <span th:text="${medico.hospital}">Hospital</span>
+                        <span class="at-symbol">@</span>
+                        <span th:text="${medico.ciudad}">City</span>
+                    </p>
                 </div>
             </div>
             <div class="appointments-section">
@@ -119,15 +105,6 @@
     </section>
 </div>
 
-<footer>
-    <div class="company-name">Total Soft Inc.</div>
-    <div class="social-icons">
-        <div class="social-icon"><i class="fa-brands fa-twitter"></i></div>
-        <div class="social-icon"><i class="fa-brands fa-facebook-f"></i></div>
-        <div class="social-icon"><i class="fa-brands fa-instagram"></i></div>
-    </div>
-    <div class="copyright">©2019 Tsf, Inc.</div>
-</footer>
-
+<footer th:replace="presentation/fragments/fragments :: footer"></footer>
 </body>
 </html>

@@ -1,28 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmar Cita - Medical Appointments</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="presentation/fragments/fragments :: head">
     <link rel="stylesheet" href="/css/style_confirmar_cita.css">
 </head>
 <body>
-<header>
-    <div class="logo">
-        <img src="../../../static/images/doctor_appointment_login.jpg" alt="Medical Appointments">
-        <div class="logo-text">Medical Appointments</div>
-    </div>
-    <div class="phone">
-        <i class="fa-solid fa-phone"></i>+506 5487 0937
-    </div>
-    <div class="nav-menu">
-        <a href="/about" class="nav-link">About</a>
-        <a href="#" class="nav-link">History</a>
-        <a href="#" class="nav-link">Search</a>
-        <a href="#" class="nav-link">Profile</a>
-    </div>
-</header>
+<header th:replace="presentation/fragments/fragments :: header"></header>
 
 <!-- Main Content -->
 <div class="container">
@@ -32,7 +14,6 @@
                 <div class="profile-header">
                     <!-- Imagen del doctor -->
                     <img src="/api/placeholder/100/100" alt="Doctor" class="doctor-avatar">
-
                     <!-- Datos del doctor -->
                     <div class="doctor-details">
                         <div class="profile-info">
@@ -59,15 +40,6 @@
     </section>
 </div>
 
-<!-- Footer -->
-<footer>
-    <div class="company-name">Total Soft Inc.</div>
-    <div class="social-icons">
-        <div class="social-icon"><i class="fa-brands fa-twitter"></i></div>
-        <div class="social-icon"><i class="fa-brands fa-facebook-f"></i></div>
-        <div class="social-icon"><i class="fa-brands fa-instagram"></i></div>
-    </div>
-    <div class="copyright">©2019 Tsf, Inc.</div>
-</footer>
+<footer th:replace="presentation/fragments/fragments :: footer"></footer>
 </body>
 </html>

@@ -28,11 +28,11 @@ header {
     align-items: center;
 }
 
-.logo img {
-    height: auto;
-    max-height: 40px;
-    width: auto;
-}
+/*.logo img {*/
+/*    height: auto;*/
+/*    max-height: 40px;*/
+/*    width: auto;*/
+/*}*/
 
 .logo-text {
     margin-left: 10px;

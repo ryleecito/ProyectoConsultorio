@@ -1,27 +1,23 @@
-body {
-    background-color: #f0f8ff;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
+    padding: 20px 40px;
+    min-height: 120px;
     background-color: #e6f3f8;
+    position: relative; /* Asegura que los elementos se posicionen correctamente */
 }
 
 .logo {
     display: flex;
     align-items: center;
+    flex: 1;
     margin-left: 50px;
 }
 
 .logo img {
-    width: 120px;
-    height: 100px;
+    width: 180px;
+    height: auto;
     border-radius: 90%;
 }
 
@@ -30,14 +26,17 @@ header {
     color: #4cc3d9;
     font-size: 22px;
     font-style: italic;
-
 }
 
+/* Se centra el teléfono absoluta y completamente */
 .phone {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     color: #888;
     font-size: 16px;
-    margin-right: 180px;
-    margin-left: 85px;
+    display: flex;
+    align-items: center;
     text-align: center;
 }
 
@@ -49,52 +48,12 @@ header {
 .nav-menu {
     display: flex;
     gap: 20px;
+    flex: 1;
+    justify-content: flex-end;
     margin-right: 50px;
 }
 
 .nav-link {
     color: #888;
     text-decoration: none;
-}
-
-
-footer {
-    background-color: #2c3e50;
-    color: white;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.company-name {
-    font-size: 16px;
-    margin-right: 20px;
-}
-
-.social-icons {
-    display: flex;
-    gap: 10px;
-    margin-right: auto;
-}
-
-.social-icon {
-    width: 24px;
-    height: 24px;
-    background-color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.social-icon i {
-    font-size: 14px;
-    color: #2c3e50;
-}
-
-.copyright {
-    font-size: 14px;
-    margin-left: auto;
 }
