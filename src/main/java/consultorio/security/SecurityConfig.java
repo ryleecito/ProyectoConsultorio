@@ -26,7 +26,7 @@ public class SecurityConfig {
                         .requestMatchers("/medicos/**").hasAnyAuthority("ADMIN", "MEDICO") // 🔒 Médicos y Admins pueden acceder
                         .requestMatchers("/profile/medico").hasAuthority("MEDICO")
                         .requestMatchers("/profile/paciente").hasAuthority("PACIENTE")
-                        .requestMatchers("/presentation/citas/show").hasAuthority("MEDICO")
+                        .requestMatchers("/presentation/medicos/appointments").hasAuthority("MEDICO")
                         .requestMatchers("/admin/medicos-pendientes").hasAuthority("ADMIN")
                         .requestMatchers("/presentation/medicos/list").hasAuthority("PACIENTE")
 
@@ -52,7 +52,7 @@ public class SecurityConfig {
                             String redirectUrl;
                             switch (usuarioRol) {
                                 case "MEDICO":
-                                    redirectUrl = "/presentation/citas/show";
+                                    redirectUrl = "/presentation/medicos/show";
                                     break;
                                 case "ADMIN":
                                     redirectUrl = "/admin/medicos-pendientes";

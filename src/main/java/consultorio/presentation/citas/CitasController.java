@@ -16,9 +16,9 @@ public class CitasController {
     @Autowired
     private ConsultorioService service;
 
-    @GetMapping("/presentation/citas/View")
+    @GetMapping("/presentation/medicos/show")
     public String mostrarCitas(Model model) {
-        return "presentation/citas/View";
+        return "/presentation/medicos/appointments";
     }
 
     @GetMapping("/presentation/citas/show")
@@ -28,6 +28,6 @@ public class CitasController {
             List<Cita> citas = service.obtenerCitasPorMedico(medicoId);
             model.addAttribute("citas", citas);
         }
-        return "presentation/citas/show";
+        return "/presentation/medicos/appointments";
     }
 }
