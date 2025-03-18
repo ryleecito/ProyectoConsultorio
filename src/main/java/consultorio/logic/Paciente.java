@@ -2,9 +2,6 @@ package consultorio.logic;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,7 +13,6 @@ public class Paciente {
     @Column(name = "id", nullable = false, length = 20)
     private String id;
 
-
     @Size(max = 20)
     @Column(name = "telefono", length = 20)
     private String telefono;
@@ -26,10 +22,10 @@ public class Paciente {
     private String direccion;
 
     @Size(max = 255)
-    @Column(name = "foto")
+    @Column(name = "foto", length = 255)
     private String foto;
 
-    @OneToMany(mappedBy = "paciente")
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Cita> citas = new LinkedHashSet<>();
 
     public String getId() {
@@ -40,9 +36,13 @@ public class Paciente {
         this.id = id;
     }
 
+    public String getFoto() {
+        return foto;
+    }
 
-
-
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
 
     public String getTelefono() {
         return telefono;
@@ -66,9 +66,5 @@ public class Paciente {
 
     public void setCitas(Set<Cita> citas) {
         this.citas = citas;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
     }
 }

@@ -1,28 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Appointments</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/css/style_citas_paciente.css">
-    <link rel="stylesheet" href="/css/base-header-footer.css">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="presentation/fragments/fragments :: head">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/autentificacion.css">
 </head>
 <body>
-<header>
-    <div class="logo">
-        <img src="/images/doctor_appointment_login.jpg" height="1371" width="1920"/>
-        <div class="logo-text">Medical Appointments</div>
-    </div>
-    <div class="phone">
-        <i class="fa-solid fa-phone"></i>+506 5467 0937
-    </div>
-    <div class="nav-menu">
-        <a href="/about" class="nav-link">About</a>
-        <a href="/profile/paciente" class="nav-link">Search</a>
-        <a href="/profile/medico" class="nav-link">Profile</a>
-    </div>
-</header>
+<header th:replace="presentation/fragments/fragments :: header"></header>
 
 <!-- ✅ Mensaje de éxito al iniciar sesión -->
 <div th:if="${successMessage}" class="success-message">
@@ -31,6 +14,7 @@
 
 <!-- Main Content -->
 <div class="container">
+    <!-- Search Section -->
     <section class="search-section">
         <form th:action="@{/presentation/medicos/search}" method="post" th:object="${medicosSearch}" class="search-form">
             <div class="search-field">
@@ -66,56 +50,61 @@
         </form>
     </section>
 
+    <!-- Results Section -->
     <section class="results-section">
+        <!-- Solo mostrar médicos si hay resultados -->
         <div th:if="${not #lists.isEmpty(medicoSearch)}" th:each="medico : ${medicoSearch}" class="doctor-card">
             <div class="doctor-info">
                 <div class="doctor-details">
                     <div class="doctor-header">
-                        <img th:if="${medico.foto != null && !medico.foto.isEmpty()}" th:src="${medico.foto}" alt="Doctor" class="doctor-avatar">
+                        <img th:if="${medico.foto != null && !medico.foto.isEmpty()}" th:src="@{'/' + ${medico.foto}}" alt="Doctor" class="doctor-avatar">
                         <img th:unless="${medico.foto != null && !medico.foto.isEmpty()}" src="/api/placeholder/60/60" alt="Doctor" class="doctor-avatar">
                         <div class="doctor-info">
                             <div class="doctor-name-row">
-                                <span class="doctor-name" th:text="${medico.id}"></span>
-                                <span class="doctor-cost" th:text="${medico.costoConsulta}"></span>
+                                <span class="doctor-name" th:text="${medico.id}">Doctor Name</span>
+                                <span class="doctor-cost" th:text="${medico.costoConsulta}">Cost</span>
                             </div>
                             <p class="doctor-specialty" th:text="${medico.especialidad}">Specialty</p>
                         </div>
                     </div>
                 </div>
                 <div class="location-container">
-                    <p class="doctor-location"><span th:text="${medico.hospital}">Hospital</span> <span class="at-symbol">@</span> <span th:text="${medico.ciudad}">City</span></p>
+                    <p class="doctor-location">
+                        <span th:text="${medico.hospital}">Hospital</span>
+                        <span class="at-symbol">@</span>
+                        <span th:text="${medico.ciudad}">City</span>
+                    </p>
                 </div>
             </div>
             <div class="appointments-section">
-                <div class="date-column">
-                    <div class="date-header">18/02/2025</div>
-                    <div class="time-slots">
-                        <div class="time-slot">15:00</div>
-                        <div class="time-slot">15:30</div>
-                    </div>
-                </div>
-                <div class="date-column">
-                    <div class="date-header">19/02/2025</div>
-                    <div class="time-slots">
-                        <div class="time-slot">15:00</div>
-                        <div class="time-slot">15:30</div>
-                    </div>
-                </div>
-                <a href="#" class="btn-schedule">Schedule</a>
+                <th:block th:each="dia, iterStat : ${citasPorMedico[medico.id]}">
+                    <th:block th:if="${!#lists.isEmpty(dia) && dia.?[estado == 'Disponible'].size() > 0}">
+                        <div class="date-column">
+                            <div class="date-header">
+                                <div th:text="${#temporals.format(fechaInicio.plusDays(iterStat.index), 'EEEE')}">Day</div>
+                                <div th:text="${#temporals.format(fechaInicio.plusDays(iterStat.index), 'dd/MM/yyyy')}">Date</div>
+                            </div>
+                            <div class="time-slots">
+                                <th:block th:each="cita : ${dia}">
+                                    <div th:if="${cita.estado == 'Disponible'}"
+                                         class="time-slot"
+                                         th:text="${#temporals.format(cita.fecha, 'HH:mm')}"
+                                         th:data-cita-id="${cita.id}"
+                                         th:data-medico-id="${medico.id}"
+                                         onclick="seleccionarCita(this)">
+                                        Hora
+                                    </div>
+                                </th:block>
+                            </div>
+                        </div>
+                    </th:block>
+                </th:block>
             </div>
+            <a href="#" class="btn-schedule">Schedule</a>
         </div>
     </section>
 </div>
 
-<footer>
-    <div class="company-name">Total Soft Inc.</div>
-    <div class="social-icons">
-        <div class="social-icon"><i class="fa-brands fa-twitter"></i></div>
-        <div class="social-icon"><i class="fa-brands fa-facebook-f"></i></div>
-        <div class="social-icon"><i class="fa-brands fa-instagram"></i></div>
-    </div>
-    <div class="copyright">©2019 Tsf, Inc.</div>
-</footer>
-
+<footer th:replace="presentation/fragments/fragments :: footer"></footer>
 </body>
 </html>
