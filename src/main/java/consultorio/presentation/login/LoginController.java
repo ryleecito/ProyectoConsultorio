@@ -44,19 +44,18 @@ public class LoginController {
             Usuario usuario = service.buscarPorUsername(username);
             session.setAttribute("usuarioId", usuario.getId());
             session.setAttribute("username", usuario.getNombre());
-            session.setAttribute("rol", usuario.getRol()); // Guardamos el rol en sesión
+            session.setAttribute("rol", usuario.getRol());
 
-            // ✅ Redirigir según el rol
             if (Objects.equals(usuario.getRol(), "ADMIN")) {
-                return "redirect:/admin/medicos-pendientes"; // Vista del admin
+                return "redirect:/admin/medicos-pendientes";
             } else if (Objects.equals(usuario.getRol(), "MEDICO")) {
-                return "redirect:/presentation/medicos/list"; // Vista del médico
+                return "redirect:/presentation/medicos/list";
             } else {
-                return "redirect:/presentation/medicos/list"; // Vista del paciente
+                return "redirect:/presentation/medicos/list";
             }
         } else {
-            // ✅ Usamos RedirectAttributes para evitar que el error permanezca tras recargar
-            redirectAttributes.addFlashAttribute("error", "Usuario o contraseña incorrectos");
+            // ✅ Cambia el nombre del atributo a "errorMessage" para que coincida con Thymeleaf
+            redirectAttributes.addFlashAttribute("errorMessage", "Usuario o contraseña incorrectos");
             return "redirect:/presentation/login/show";
         }
     }

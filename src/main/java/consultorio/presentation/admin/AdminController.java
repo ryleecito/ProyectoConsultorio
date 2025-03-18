@@ -31,6 +31,7 @@ public class AdminController {
         return "redirect:/admin/medicos-pendientes";
     }
 
+
     @PostMapping("/rechazar-medico/{id}")
     public String rechazarMedico(@PathVariable String id, RedirectAttributes redirectAttributes) {
         medicoService.rechazarMedico(id);

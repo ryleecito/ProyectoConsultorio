@@ -40,7 +40,7 @@ public class ProfileController {
         if (medico == null) return "redirect:/presentation/login/show";
 
         model.addAttribute("medico", medico);
-        return "presentation/profile/profile";
+        return "profileMedico";
     }
 
 //    @PostMapping("/medico/update")
