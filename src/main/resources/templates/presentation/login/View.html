@@ -5,12 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Appointments</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/css/base-header-footer.css">
-    <link rel="stylesheet" href="/css/style_login.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/autentificacion.css">
+
+    <!-- Añade estas reglas dentro de un <style> o en tu global.css/autentificacion.css -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+    </style>
 </head>
 <body>
-
 <header th:replace="presentation/fragments/fragments :: header"></header>
+
 <main>
     <div class="login-container">
         <div class="login-header">
@@ -58,6 +75,7 @@
         </div>
     </div>
 </main>
+
 <footer th:replace="presentation/fragments/fragments :: footer"></footer>
 </body>
 </html>
