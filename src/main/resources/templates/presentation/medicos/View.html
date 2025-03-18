@@ -77,9 +77,7 @@
                 </div>
             </div>
             <div class="appointments-section">
-                <!-- Display appointments for THIS doctor using the map -->
                 <th:block th:each="dia, iterStat : ${citasPorMedico[medico.id]}">
-                    <!-- Solo mostrar días que tienen citas disponibles -->
                     <th:block th:if="${!#lists.isEmpty(dia) && dia.?[estado == 'Disponible'].size() > 0}">
                         <div class="date-column">
                             <div class="date-header">
@@ -93,7 +91,9 @@
                                          th:text="${#temporals.format(cita.fecha, 'HH:mm')}"
                                          th:data-cita-id="${cita.id}"
                                          th:data-medico-id="${medico.id}"
-                                         onclick="seleccionarCita(this)">Hora</div>
+                                         onclick="seleccionarCita(this)">
+                                        Hora
+                                    </div>
                                 </th:block>
                             </div>
                         </div>

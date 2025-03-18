@@ -40,8 +40,8 @@
         </div>
 
         <!-- ✅ Mensaje de Error (Si el login falla) -->
-        <div th:if="${error}" class="error-message">
-            <p th:text="${error}"></p>
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
         </div>
 
         <div class="login-body">

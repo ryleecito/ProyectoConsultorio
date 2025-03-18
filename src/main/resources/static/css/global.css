@@ -98,6 +98,7 @@ main {
     padding-left: 20px;
     padding-right: 20px;
 }
+
 /* -------- SECCIONES DE CITAS Y DETALLES -------- */
 
 /* Mensaje de éxito */
@@ -165,7 +166,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 800px;
+    max-width: 1000px; /* Caja más ancha para el doctor */
     margin: 15px auto;
 }
 .doctor-info {
@@ -224,26 +225,47 @@ main {
     color: #b58c43;
 }
 
+/* ------------------------------------------
+   EJEMPLO COMPLETO DEL CSS ACTUALIZADO
+   ------------------------------------------ */
+
 /* Sección de citas (appointments) */
 .appointments-section {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;       /* Para que si hay más de 3 columnas, bajen a otra línea */
     align-items: flex-start;
     padding-top: 8px;
-    overflow-x: auto;
+    overflow-x: hidden;    /* Quita el scroll horizontal */
     min-height: 120px;
     margin-bottom: 8px;
     gap: 15px;
-    max-width: 300px;
+    width: 100%;           /* O el ancho que necesites (en lugar de max-width) */
 }
+
 .date-column {
-    min-width: 45px;
+    min-width: 60px;       /* Ajusta para que cada día sea más ancho o más estrecho */
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0 10px;
+    max-height: 120px;
+    overflow-y: auto;      /* Cada columna maneja su scroll vertical */
+    overflow-x: hidden;    /* Evita un scroll horizontal en la columna */
 }
+
+/* Eliminamos lo siguiente para que todas las columnas
+   tengan el scrollbar vertical a la derecha:
+
+   .date-column:first-child {
+       direction: rtl;
+   }
+   .date-column:first-child .time-slots {
+       direction: ltr;
+   }
+*/
+
+/* Encabezado de fecha */
 .date-header {
     font-size: 14px;
     font-weight: bold;
@@ -252,6 +274,8 @@ main {
     text-align: center;
     padding: 3px 0;
 }
+
+/* Contenedor de horas */
 .time-slots {
     display: flex;
     flex-direction: column;
@@ -259,6 +283,8 @@ main {
     align-items: center;
     max-height: 120px;
 }
+
+/* Cada hora/cita */
 .time-slot {
     background-color: #e3eeff;
     color: #0d6efd;
@@ -274,9 +300,11 @@ main {
 .time-slot:hover {
     background-color: #cce5ff;
 }
-/* Scrollbars personalizados */
+
+/* Scrollbars personalizados (opcional) */
+/* Vertical en .time-slots */
 .time-slots::-webkit-scrollbar {
-    width: 4px;
+    width: 2px;  /* Ajusta grosor */
 }
 .time-slots::-webkit-scrollbar-track {
     background: #f1f1f1;
@@ -288,8 +316,10 @@ main {
 .time-slots::-webkit-scrollbar-thumb:hover {
     background: #a1a1a1;
 }
+
+/* No habrá scroll horizontal, pero si lo tuvieras en otra parte: */
 .appointments-section::-webkit-scrollbar {
-    height: 4px;
+    height: 2px; /* Ajusta grosor horizontal */
 }
 .appointments-section::-webkit-scrollbar-track {
     background: #f1f1f1;
@@ -301,6 +331,7 @@ main {
 .appointments-section::-webkit-scrollbar-thumb:hover {
     background: #a1a1a1;
 }
+
 /* Botón de agendar */
 .btn-schedule {
     background-color: #e3eeff;
