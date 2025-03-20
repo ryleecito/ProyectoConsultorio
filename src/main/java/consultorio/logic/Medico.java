@@ -49,15 +49,53 @@ public class Medico {
     @Column(name = "hospital", nullable = false, length = 100)
     private String hospital;
 
-    @Size(max = 255)
-    @Column(name = "foto")
-    private String foto;
-
     @OneToMany(mappedBy = "medico")
     private Set<Cita> citas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "medico")
     private Set<Slot> slots = new LinkedHashSet<>();
+
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private Usuario usuario;
+
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "email", nullable = false, length = 100)
+    private String email;
+
+    @Size(max = 20)
+    @Column(name = "telefono", length = 20)
+    private String telefono;
+
+    @Version
+    private Long version;
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuarios) {
+        this.usuario = usuarios;
+    }
 
     public String getId() {
         return id;
@@ -106,14 +144,6 @@ public class Medico {
 
     public void setHospital(String hospital) {
         this.hospital = hospital;
-    }
-
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
     }
 
     public Set<Cita> getCitas() {
@@ -177,4 +207,5 @@ public class Medico {
         }
         return citasDisponibles;
     }
+
 }

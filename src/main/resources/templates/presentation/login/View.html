@@ -5,24 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Appointments</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/css/base-header-footer.css">
-    <link rel="stylesheet" href="/css/style_login.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/autentificacion.css">
+
+    <!-- Añade estas reglas dentro de un <style> o en tu global.css/autentificacion.css -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+    </style>
 </head>
 <body>
-<header>
-    <div class="logo">
-        <img src="/images/doctor_appointment_login.jpg" alt="Medical Appointments Logo">
-        <div class="logo-text">Medical Appointments</div>
-    </div>
-    <div class="phone">
-        <i class="fa-solid fa-phone"></i>+506 5467 0937
-    </div>
-    <div class="nav-menu">
-        <a href="/about" class="nav-link">About...</a>
-        <a href="#" class="nav-link">Search</a>
-        <a href="/presentation/login/show" class="nav-link">Login</a>
-    </div>
-</header>
+<header th:replace="presentation/fragments/fragments :: header"></header>
 
 <main>
     <div class="login-container">
@@ -36,8 +40,8 @@
         </div>
 
         <!-- ✅ Mensaje de Error (Si el login falla) -->
-        <div th:if="${error}" class="error-message">
-            <p th:text="${error}"></p>
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
         </div>
 
         <div class="login-body">
@@ -72,16 +76,6 @@
     </div>
 </main>
 
-<footer>
-    <div class="company-name">Total Soft Inc.</div>
-    <div class="social-icons">
-        <div class="social-icon"><i class="fa-brands fa-twitter"></i></div>
-        <div class="social-icon"><i class="fa-brands fa-facebook-f"></i></div>
-        <div class="social-icon"><i class="fa-brands fa-instagram"></i></div>
-    </div>
-    <div class="copyright">©2019 Tsf, Inc.</div>
-</footer>
-
-
+<footer th:replace="presentation/fragments/fragments :: footer"></footer>
 </body>
 </html>

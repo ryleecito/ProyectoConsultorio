@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "citas")
@@ -36,12 +37,13 @@ public class Cita {
     private LocalDateTime fecha;
 
     @Size(max = 100)
-    @Column(name = "notas", length = 100)
-    private String notas;
-
-    @Size(max = 100)
     @Column(name = "notas_medico", length = 100)
     private String notasMedico;
+
+    @Size(max = 500)
+    @Column(name = "notas_paciente", length = 500)
+    private String notasPaciente;
+
 
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
@@ -51,6 +53,38 @@ public class Cita {
     @Lob
     @Column(name = "estado")
     private String estado;
+
+    @NotNull
+    @Column(name = "hora_inicio", nullable = false)
+    private LocalTime horaInicio;
+
+    @NotNull
+    @Column(name = "hora_fin", nullable = false)
+    private LocalTime horaFin;
+
+    public String getNotasPaciente() {
+        return notasPaciente;
+    }
+
+    public void setNotasPaciente(String notasPaciente) {
+        this.notasPaciente = notasPaciente;
+    }
+
+    public LocalTime getHoraFin() {
+        return horaFin;
+    }
+
+    public void setHoraFin(LocalTime horaFin) {
+        this.horaFin = horaFin;
+    }
+
+    public LocalTime getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(LocalTime horaInicio) {
+        this.horaInicio = horaInicio;
+    }
 
     public Integer getId() {
         return id;
@@ -82,14 +116,6 @@ public class Cita {
 
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
-    }
-
-    public String getNotas() {
-        return notas;
-    }
-
-    public void setNotas(String notas) {
-        this.notas = notas;
     }
 
     public String getNotasMedico() {

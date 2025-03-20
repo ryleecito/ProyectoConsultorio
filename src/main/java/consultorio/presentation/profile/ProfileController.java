@@ -40,7 +40,7 @@ public class ProfileController {
         if (medico == null) return "redirect:/presentation/login/show";
 
         model.addAttribute("medico", medico);
-        return "presentation/profile/profile";
+        return "profileMedico";
     }
 
 //    @PostMapping("/medico/update")
@@ -99,34 +99,6 @@ public class ProfileController {
         medico.setDuracionCita(duracionCita);
         medico.setHospital(hospital);
 
-        // Handle file upload
-        if (profilePhoto != null && !profilePhoto.isEmpty()) {
-            try {
-                // Generate unique filename
-                String fileName = userId + "_" + System.currentTimeMillis() + "_" +
-                        Objects.requireNonNull(profilePhoto.getOriginalFilename()).replaceAll("\\s+", "_");
-
-                // Define the path where the file will be saved
-                String uploadDir = "src/main/resources/static/images/";
-                Path uploadPath = Paths.get(uploadDir);
-
-                // Create directory if it doesn't exist
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                // Save the file
-                Path filePath = uploadPath.resolve(fileName);
-                Files.copy(profilePhoto.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-                // Store the relative path in the database
-                medico.setFoto("/images/" + fileName);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                // Handle error
-            }
-        }
 
         // Save updated medico
         medicoRepository.save(medico);
@@ -196,35 +168,6 @@ public class ProfileController {
         // Update paciente data
         paciente.setTelefono(telefono);
         paciente.setDireccion(direccion);
-
-        // Handle file upload
-        if (profilePhoto != null && !profilePhoto.isEmpty()) {
-            try {
-                // Generate unique filename
-                String fileName = userId + "_" + System.currentTimeMillis() + "_" +
-                        Objects.requireNonNull(profilePhoto.getOriginalFilename()).replaceAll("\\s+", "_");
-
-                // Define the path where the file will be saved
-                String uploadDir = "src/main/resources/static/images/";
-                Path uploadPath = Paths.get(uploadDir);
-
-                // Create directory if it doesn't exist
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                // Save the file
-                Path filePath = uploadPath.resolve(fileName);
-                Files.copy(profilePhoto.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-                // Store the relative path in the database
-                paciente.setFoto("/images/" + fileName);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                // Handle error
-            }
-        }
 
         // Save updated paciente
         consultorioService.actualizarPaciente(paciente);

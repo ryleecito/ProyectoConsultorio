@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro de Usuario</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="/css/base-header-footer.css">
-  <link rel="stylesheet" href="/css/style_login.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/autentificacion.css">
+
 </head>
 <body>
 <header>
@@ -33,7 +34,7 @@
       <div class="avatar">
         <img src="/images/user_login.png" alt="User Avatar">
       </div>
-      <form th:action="@{/register}" method="post">
+      <form th:action="@{/presentation/register/process}" method="post" enctype="multipart/form-data">
         <div class="input-group">
           <div class="input-field">
             <div class="input-icon">
@@ -61,9 +62,9 @@
         <div class="input-group">
           <div class="input-field">
             <div class="input-icon">
-              <i class="fa-solid fa-envelope"></i>
+              <i class="fa-solid fa-camera"></i>
             </div>
-            <input type="email" class="input-box" name="email" placeholder="Email" required>
+            <input type="file" class="input-box file-input" id="profilePhoto" name="profilePhoto" accept="image/*" required>
           </div>
         </div>
         <div class="input-group">

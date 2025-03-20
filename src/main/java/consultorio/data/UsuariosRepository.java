@@ -10,9 +10,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UsuariosRepository extends JpaRepository<Usuario, String> {
+
     Usuario findUsuarioById(@Size(max = 20) String id);
 
     List<Usuario> findByRolAndEstado(@NotNull String rol, @NotNull String estado);
@@ -21,4 +23,9 @@ public interface UsuariosRepository extends JpaRepository<Usuario, String> {
     @Transactional
     @Query("UPDATE Usuario u SET u.estado = :estado WHERE u.id = :id")
     void updateEstado(@Size(max = 20) String id, @NotNull String estado);
+
+    // ✅ Corrección: Declaración correcta del método para buscar usuario por nombre de usuario
+    Optional<Usuario> findById(String id);
+
+
 }

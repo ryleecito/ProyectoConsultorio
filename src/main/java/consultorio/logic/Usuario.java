@@ -25,11 +25,6 @@ public class Usuario {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Size(max = 100)
-    @NotNull
-    @Column(name = "email", nullable = false, length = 100)
-    private String email;
-
     @NotNull
     @Lob
     @Column(name = "rol", nullable = false)
@@ -43,6 +38,44 @@ public class Usuario {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "fecha_registro")
     private Instant fechaRegistro;
+
+    @Size(max = 255)
+    @Column(name = "foto", nullable = false, length = 100)
+    private String foto;
+
+    @OneToOne
+    private consultorio.logic.Administrador administrador;
+
+    @OneToOne( mappedBy = "usuario")
+    private Medico medico;
+
+    @OneToOne( mappedBy = "usuario")
+    private Paciente paciente;
+
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
+
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    public consultorio.logic.Administrador getAdministradore() {
+        return administrador;
+    }
+
+    public void setAdministradore(consultorio.logic.Administrador administrador) {
+        this.administrador = administrador;
+    }
 
 
     public String getId() {
@@ -67,14 +100,6 @@ public class Usuario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getRol() {
@@ -102,4 +127,11 @@ public class Usuario {
     }
 
 
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
 }
