@@ -7,40 +7,65 @@
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/autentificacion.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="../../../static/css/global.css">
-  <link rel="stylesheet" href="../../../static/css/autentificacion.css">
 </head>
 <body>
 <header th:replace="~{presentation/fragments/fragments :: header}"></header>
+
 <main class="profile-container">
   <div class="profile-card">
+
+    <!-- Contenedor para la foto actual, si existe -->
+    <div class="profile-image-container"
+         th:if="${usuario.foto != null and !usuario.foto.isEmpty()}">
+      <img th:src="@{${usuario.foto}}"
+           alt="Foto de Perfil Actual"
+           class="profile-image" />
+    </div>
+
     <h1 class="title">Gestión del Perfil del Paciente</h1>
 
     <!-- ✅ Mensaje de éxito -->
     <div th:if="${param.success}" class="success-message">
       <p>Perfil actualizado correctamente.</p>
     </div>
-    <!-- Add this to your presentation/profile/profilePaciente.html form -->
+
+    <!-- Formulario para actualizar datos del paciente y su usuario -->
     <form th:action="@{/profile/paciente/update}" method="post" class="profile-form" enctype="multipart/form-data">
-      <div class="form-group">
-        <label for="telefono">Teléfono:</label>
-        <input type="text" id="telefono" name="telefono" th:value="${paciente.telefono}" required>
+      <div class="form-grid">
+
+        <!-- email (tabla 'pacientes') -->
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" th:value="${paciente.email}" required>
+        </div>
+
+        <!-- teléfono (tabla 'pacientes') -->
+        <div class="form-group">
+          <label for="telefono">Teléfono:</label>
+          <input type="text" id="telefono" name="telefono" th:value="${paciente.telefono}" required>
+        </div>
+
+        <!-- dirección (tabla 'pacientes') -->
+        <div class="form-group">
+          <label for="direccion">Dirección:</label>
+          <input type="text" id="direccion" name="direccion" th:value="${paciente.direccion}" required>
+        </div>
+
+        <!-- foto (tabla 'usuarios') -->
+        <div class="form-group">
+          <label for="profilePhoto">Foto de Perfil:</label>
+          <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*">
+        </div>
+
       </div>
-      <div class="form-group">
-        <label for="direccion">Dirección:</label>
-        <input type="text" id="direccion" name="direccion" th:value="${paciente.direccion}" required>
-      </div>
-      <div class="form-group">
-        <label for="profilePhoto">Foto de Perfil:</label>
-        <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*">
-      </div>
+
       <div class="form-group form-submit">
         <button type="submit" class="btn-save">Guardar Cambios</button>
       </div>
     </form>
   </div>
 </main>
-<footer th:replace="~{presentation/fragments/fragments :: footer}"></footer>
 
+<footer th:replace="~{presentation/fragments/fragments :: footer}"></footer>
 </body>
 </html>
