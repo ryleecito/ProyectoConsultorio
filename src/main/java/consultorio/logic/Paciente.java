@@ -44,6 +44,9 @@ public class Paciente {
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
 
+    @Version
+    private Long version;
+
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
