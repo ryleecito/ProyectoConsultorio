@@ -57,11 +57,10 @@
             <div class="doctor-info">
                 <div class="doctor-details">
                     <div class="doctor-header">
-                        <img th:if="${medico.foto != null && !medico.foto.isEmpty()}" th:src="@{'/' + ${medico.foto}}" alt="Doctor" class="doctor-avatar">
-                        <img th:unless="${medico.foto != null && !medico.foto.isEmpty()}" src="/api/placeholder/60/60" alt="Doctor" class="doctor-avatar">
+                        <img th:src="@{${medico.usuario.getFoto()}}" alt="Doctor" class="doctor-avatar">
                         <div class="doctor-info">
                             <div class="doctor-name-row">
-                                <span class="doctor-name" th:text="${medico.id}">Doctor Name</span>
+                                <span class="doctor-name" th:text="${medico.usuario.getNombre()}">Doctor Name</span>
                                 <span class="doctor-cost" th:text="${medico.costoConsulta}">Cost</span>
                             </div>
                             <p class="doctor-specialty" th:text="${medico.especialidad}">Specialty</p>
@@ -78,7 +77,7 @@
             </div>
             <div class="appointments-section">
                 <th:block th:each="dia, iterStat : ${citasPorMedico[medico.id]}">
-                    <th:block th:if="${!#lists.isEmpty(dia) && dia.?[estado == 'Disponible'].size() > 0}">
+                    <th:block th:if="${!#lists.isEmpty(dia) && dia[estado == 'Disponible'].size() > 0}">
                         <div class="date-column">
                             <div class="date-header">
                                 <div th:text="${#temporals.format(fechaInicio.plusDays(iterStat.index), 'EEEE')}">Day</div>

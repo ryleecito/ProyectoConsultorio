@@ -140,9 +140,12 @@ input[type="file"].input-box {
 /* --- Estilos para la página de Perfil --- */
 .profile-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 173px;
+    flex-direction: column; /* Para que el contenido se apile verticalmente */
+    justify-content: flex-start; /* Alineado hacia arriba (opcional) */
+    align-items: center; /* Centrado horizontal */
+    margin: 40px auto; /* Menos margen, y 'auto' para centrar horizontalmente */
+    width: 100%;
+    max-width: 600px; /* Ajusta según tus necesidades */
 }
 .profile-card {
     background: #ffffff;

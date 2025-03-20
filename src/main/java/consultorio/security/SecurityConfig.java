@@ -20,18 +20,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/medicos/list", "/presentation/login/show","/presentation/register/process").permitAll() // ✅ Páginas públicas
+                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show", "/presentation/register/process").permitAll() // ✅ Páginas públicas
                         .requestMatchers("/css/**", "/images/**", "/js/**").permitAll() // ✅ Archivos estáticos
                         .requestMatchers("/admin/**").hasAuthority("ADMIN") // 🔒 Solo Admins pueden acceder
                         .requestMatchers("/medicos/**").hasAnyAuthority("ADMIN", "MEDICO") // 🔒 Médicos y Admins pueden acceder
                         .requestMatchers("/profile/medico").hasAuthority("MEDICO")
-                        .requestMatchers("/profile/paciente").hasAuthority("PACIENTE")
+                        .requestMatchers("/profile/paciente/**").hasAuthority("PACIENTE")
                         .requestMatchers("/presentation/medicos/appointments").hasAuthority("MEDICO")
                         .requestMatchers("/admin/medicos-pendientes").hasAuthority("ADMIN")
                         .requestMatchers("/presentation/medicos/list").hasAuthority("PACIENTE")
-
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(form -> form
                         .loginPage("/presentation/login/show")
                         .loginProcessingUrl("/login")
