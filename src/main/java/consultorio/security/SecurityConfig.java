@@ -20,7 +20,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/medicos/list", "/presentation/login/show").permitAll() // ✅ Páginas públicas
+                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/medicos/list", "/presentation/login/show","/presentation/register/process").permitAll() // ✅ Páginas públicas
                         .requestMatchers("/css/**", "/images/**", "/js/**").permitAll() // ✅ Archivos estáticos
                         .requestMatchers("/admin/**").hasAuthority("ADMIN") // 🔒 Solo Admins pueden acceder
                         .requestMatchers("/medicos/**").hasAnyAuthority("ADMIN", "MEDICO") // 🔒 Médicos y Admins pueden acceder
