@@ -7,8 +7,6 @@
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/autentificacion.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-
 </head>
 <body>
 
@@ -26,6 +24,12 @@
     <!-- Formulario para actualizar los datos del médico -->
     <form th:action="@{/profile/medico/update}" method="post" class="profile-form" enctype="multipart/form-data">
       <div class="form-grid">
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" th:value="${medico.email}" required>
+        </div>
+
         <div class="form-group">
           <label for="especialidad">Especialidad:</label>
           <input type="text" id="especialidad" name="especialidad" th:value="${medico.especialidad}" required>
@@ -39,7 +43,7 @@
           <input type="number" id="costo_consulta" name="costo_consulta" th:value="${medico.costoConsulta}" required>
         </div>
         <div class="form-group">
-          <label for="duracion_cita">Duración Cita (minutos):</label>
+          <label for="duracion_cita">Duracion Cita (minutos):</label>
           <input type="number" id="duracion_cita" name="duracion_cita" th:value="${medico.duracionCita}" required>
         </div>
         <div class="form-group">
