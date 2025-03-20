@@ -92,6 +92,7 @@ public class ConsultorioService {
             medico.setCostoConsulta(BigDecimal.valueOf(0));
             medico.setDuracionCita(30);
             medico.setHospital("");
+            medico.setEmail("");
             medico.setUsuario(usuarioMedico);
 
             medicoRepository.save(medico);

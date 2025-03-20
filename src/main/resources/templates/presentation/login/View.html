@@ -38,12 +38,9 @@
         <div th:if="${successMessage}" class="success-message">
             <p th:text="${successMessage}"></p>
         </div>
-
-        <!-- ✅ Mensaje de Error (Si el login falla) -->
-        <div th:if="${errorMessage}" class="error-message">
-            <p th:text="${errorMessage}"></p>
+        <div th:if="${param.error}" class="error-message">
+            <p>Usuario o contraseña incorrectos</p>
         </div>
-
         <div class="login-body">
             <div class="avatar">
                 <img src="/images/user_login.png" alt="User Avatar">

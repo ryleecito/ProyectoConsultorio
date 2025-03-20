@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/presentation/login/show")
                         .loginProcessingUrl("/login")
+                        .failureUrl("/presentation/login/show?error=true")
                         .successHandler((HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
                             // Obtener el rol del usuario autenticado desde la sesión
                             String usuarioRol = (String) request.getSession().getAttribute("usuarioRol");
@@ -66,7 +67,7 @@ public class SecurityConfig {
                             }
 
                             System.out.println("➡️ Redirigiendo a: " + redirectUrl); // Debugging
-                            response.sendRedirect(response.encodeRedirectURL(redirectUrl)); // 🔹 Usa encodeRedirectURL() para mayor compatibilidad
+                            response.sendRedirect(response.encodeRedirectURL(redirectUrl));
                         })
                         .permitAll()
                 )
