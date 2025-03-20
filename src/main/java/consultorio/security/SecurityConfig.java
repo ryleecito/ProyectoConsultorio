@@ -20,7 +20,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/medicos/list", "/presentation/login/show").permitAll() // ✅ Páginas públicas
+                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/medicos/list", "/presentation/login/show","/presentation/register/process").permitAll() // ✅ Páginas públicas
                         .requestMatchers("/css/**", "/images/**", "/js/**").permitAll() // ✅ Archivos estáticos
                         .requestMatchers("/admin/**").hasAuthority("ADMIN") // 🔒 Solo Admins pueden acceder
                         .requestMatchers("/medicos/**").hasAnyAuthority("ADMIN", "MEDICO") // 🔒 Médicos y Admins pueden acceder
@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/presentation/login/show")
                         .loginProcessingUrl("/login")
+                        .failureUrl("/presentation/login/show?error=true")
                         .successHandler((HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
                             // Obtener el rol del usuario autenticado desde la sesión
                             String usuarioRol = (String) request.getSession().getAttribute("usuarioRol");
@@ -66,7 +67,7 @@ public class SecurityConfig {
                             }
 
                             System.out.println("➡️ Redirigiendo a: " + redirectUrl); // Debugging
-                            response.sendRedirect(response.encodeRedirectURL(redirectUrl)); // 🔹 Usa encodeRedirectURL() para mayor compatibilidad
+                            response.sendRedirect(response.encodeRedirectURL(redirectUrl));
                         })
                         .permitAll()
                 )

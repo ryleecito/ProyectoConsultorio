@@ -4,14 +4,17 @@ import consultorio.data.CitasRepository;
 import consultorio.data.MedicoRepository;
 import consultorio.data.PacientesRepository;
 import consultorio.data.UsuariosRepository;
-import consultorio.logic.Cita;
-import consultorio.logic.Medico;
-import consultorio.logic.Paciente;
-import consultorio.logic.Usuario;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+
+
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -33,7 +36,10 @@ public class ConsultorioService {
     private CitasRepository citasRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder; // ✅ Inyectamos PasswordEncoder para encriptar contraseñas
+    private PasswordEncoder passwordEncoder;
+
+    @PersistenceContext
+    private EntityManager entityManager; // Inyección de EntityManager// ✅ Inyectamos PasswordEncoder para encriptar contraseñas
 
     // ✅ Autenticación con comparación de contraseñas encriptadas
     public boolean autenticar(String id, String password) {
@@ -66,15 +72,19 @@ public class ConsultorioService {
         return usuarioRepository.findByRolAndEstado("MEDICO", "PENDIENTE");
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void aprobarMedico(String id) {
-        Usuario usuarioMedico = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Médico no encontrado"));
+        Usuario usuarioMedico = entityManager.find(Usuario.class, id);
+
+        if (usuarioMedico == null) {
+            throw new RuntimeException("Médico no encontrado");
+        }
 
         usuarioMedico.setEstado("ACTIVO");
-        usuarioRepository.updateEstado(usuarioMedico.getId(), usuarioMedico.getEstado());
 
-        if (!medicoRepository.existsById(id)) {
+        Optional<Medico> medicoOptional = medicoRepository.findById(id);
+
+        if (medicoOptional.isEmpty()) {
             Medico medico = new Medico();
             medico.setId(id);
             medico.setCiudad("");
@@ -82,9 +92,16 @@ public class ConsultorioService {
             medico.setCostoConsulta(BigDecimal.valueOf(0));
             medico.setDuracionCita(30);
             medico.setHospital("");
-            medico.setFoto(null);
-            guardarMedico(medico);
+            medico.setEmail("");
+            medico.setUsuario(usuarioMedico);
+
+            medicoRepository.save(medico);
         }
+
+        // Ahora sincronizamos la base de datos
+        entityManager.flush();
+        entityManager.refresh(usuarioMedico);
+
     }
 
     public void rechazarMedico(String id) {
