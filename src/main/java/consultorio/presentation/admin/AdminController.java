@@ -3,6 +3,8 @@ package consultorio.presentation.admin;
 import consultorio.logic.Usuario;
 import consultorio.logic.ConsultorioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,4 +40,7 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("mensaje", "Médico rechazado correctamente");
         return "redirect:/admin/medicos-pendientes";
     }
+
+
+
 }

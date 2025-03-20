@@ -156,114 +156,116 @@ main {
     cursor: pointer;
 }
 
-/* Tarjetas de doctor (Citas) */
+/* --------------------------------------------
+   Tarjetas de doctor (Citas)
+   -------------------------------------------- */
 .doctor-card {
+    display: flex;
+    flex-wrap: wrap;           /* Para que en pantallas pequeñas se apile la sección de citas */
+    justify-content: space-between;
+    align-items: flex-start;
     background-color: #fff;
     border: 1px solid #eee;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     padding: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1000px; /* Caja más ancha para el doctor */
     margin: 15px auto;
+    width: 100%;
+    max-width: 1000px;
+    gap: 1rem;
 }
+
 .doctor-info {
     display: flex;
     flex-direction: column;
-    max-width: 250px;
+    flex: 2;                   /* Ocupará más espacio que la sección de citas */
+    min-width: 250px;
 }
+
+.doctor-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .doctor-avatar {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
 }
-.doctor-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 8px;
-}
+
 .doctor-details {
     display: flex;
     flex-direction: column;
 }
+
 .doctor-name-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 3px;
-}
-.doctor-name {
-    font-size: 15px;
-    font-weight: bold;
-}
-.doctor-cost {
-    font-size: 15px;
-    font-weight: normal;
-    color: #4a86e8;
-    margin-left: 8px;
-}
-.doctor-specialty {
-    font-size: 13px;
-    color: #6c757d;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
 }
 
-/* Ubicación */
-.location-container {
-    border-top: 1px solid #ddd;
-    margin-top: 8px;
-    padding-top: 8px;
+.doctor-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
 }
+
+.doctor-cost {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #4a86e8;
+}
+
+.doctor-specialty {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-top: 2px;
+}
+
+/* Ubicación (hospital @ ciudad) */
+.location-container {
+    margin-top: 8px;
+}
+
 .doctor-location {
-    font-size: 13px;
+    font-size: 0.9rem;
     color: #6c757d;
 }
+
 .at-symbol {
+    margin: 0 4px;
     color: #b58c43;
 }
 
-/* ------------------------------------------
-   EJEMPLO COMPLETO DEL CSS ACTUALIZADO
-   ------------------------------------------ */
-
-/* Sección de citas (appointments) */
+/* --------------------------------------------
+   Sección de citas (appointments) a la derecha
+   -------------------------------------------- */
 .appointments-section {
     display: flex;
-    flex-wrap: wrap;       /* Para que si hay más de 3 columnas, bajen a otra línea */
+    flex-wrap: wrap;        /* Para que si hay más columnas, bajen a otra línea */
+    gap: 10px;
     align-items: flex-start;
+    flex: 1;                /* Ocupa menos espacio que la parte izquierda */
+    min-width: 200px;
     padding-top: 8px;
-    overflow-x: hidden;    /* Quita el scroll horizontal */
+    overflow-x: hidden;
     min-height: 120px;
     margin-bottom: 8px;
-    gap: 15px;
-    width: 100%;           /* O el ancho que necesites (en lugar de max-width) */
+    width: 100%;
 }
 
+/* Columnas de fechas */
 .date-column {
-    min-width: 60px;       /* Ajusta para que cada día sea más ancho o más estrecho */
+    min-width: 60px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0 10px;
     max-height: 120px;
-    overflow-y: auto;      /* Cada columna maneja su scroll vertical */
-    overflow-x: hidden;    /* Evita un scroll horizontal en la columna */
+    overflow-y: auto;
+    overflow-x: hidden;
 }
-
-/* Eliminamos lo siguiente para que todas las columnas
-   tengan el scrollbar vertical a la derecha:
-
-   .date-column:first-child {
-       direction: rtl;
-   }
-   .date-column:first-child .time-slots {
-       direction: ltr;
-   }
-*/
 
 /* Encabezado de fecha */
 .date-header {
@@ -302,9 +304,8 @@ main {
 }
 
 /* Scrollbars personalizados (opcional) */
-/* Vertical en .time-slots */
 .time-slots::-webkit-scrollbar {
-    width: 2px;  /* Ajusta grosor */
+    width: 2px;
 }
 .time-slots::-webkit-scrollbar-track {
     background: #f1f1f1;
@@ -317,9 +318,8 @@ main {
     background: #a1a1a1;
 }
 
-/* No habrá scroll horizontal, pero si lo tuvieras en otra parte: */
 .appointments-section::-webkit-scrollbar {
-    height: 2px; /* Ajusta grosor horizontal */
+    height: 2px;
 }
 .appointments-section::-webkit-scrollbar-track {
     background: #f1f1f1;
@@ -332,28 +332,26 @@ main {
     background: #a1a1a1;
 }
 
-/* Botón de agendar */
+/* Botón de agendar (Schedule) */
 .btn-schedule {
-    background-color: #e3eeff;
-    color: #0d6efd;
-    border: none;
-    border-radius: 15px;
-    padding: 4px 12px;
-    font-size: 13px;
-    cursor: pointer;
+    margin-top: auto;
+    align-self: flex-end;
+    background-color: #0d6efd;
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 16px;
     text-decoration: none;
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
+    font-size: 14px;
+    display: inline-block;
+    transition: background-color 0.2s ease;
+    border: none;
+    cursor: pointer;
 }
-.btn-schedule::after {
-    content: "→";
-    margin-left: 4px;
+.btn-schedule:hover {
+    background-color: #0b5ed7;
 }
 
 /* -------- ESTILOS PARA HISTORIAL Y CITAS DE PACIENTES -------- */
-
-/* Encabezado de paciente */
 .patient-header {
     text-align: center;
     font-size: 24px;
@@ -363,8 +361,6 @@ main {
     color: #4a86e8;
     font-style: italic;
 }
-
-/* Tarjeta de cita */
 .appointment-card {
     display: flex;
     align-items: center;
@@ -376,7 +372,6 @@ main {
     padding: 20px;
     gap: 15px;
 }
-/* Columnas en la tarjeta */
 .doctor-column,
 .patient-column {
     display: flex;
@@ -391,7 +386,6 @@ main {
     justify-content: center;
     min-width: 140px;
 }
-/* Para avatares (doctor y paciente) se reutiliza .doctor-avatar */
 
 /* Badges de estado */
 .pending {
@@ -523,4 +517,50 @@ footer {
         overflow-y: auto;
         max-height: 120px;
     }
+}
+
+/* Estilos únicos para la tarjeta de médicos pendientes de aprobación */
+.approval-doctor-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos exclusivos para los botones de aprobar y rechazar en la tarjeta de aprobación */
+.approval-doctor-card .btn-approve,
+.approval-doctor-card .btn-reject {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+/* Botón de Aprobar */
+.approval-doctor-card .btn-approve {
+    background-color: #4caf50;
+    color: #fff;
+}
+.approval-doctor-card .btn-approve:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón de Rechazar */
+.approval-doctor-card .btn-reject {
+    background-color: #f44336;
+    color: #fff;
+}
+.approval-doctor-card .btn-reject:hover {
+    background-color: #e53935;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

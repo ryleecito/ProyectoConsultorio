@@ -1,5 +1,8 @@
 <!DOCTYPE html>
+<html>
 <head th:replace="~{/presentation/fragments/fragments.html :: head}">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/autentificacion.css">
 </head>
 <body>
 <header th:replace="~{/presentation/fragments/fragments.html :: header}"></header>
@@ -10,17 +13,16 @@
 
         <!-- Results Section -->
         <section class="results-section">
-            <div th:each="medico : ${medicos}" class="doctor-card">
+            <div th:each="medico : ${medicos}" class="approval-doctor-card">
                 <div class="doctor-info">
                     <div class="doctor-details">
                         <div class="doctor-header">
-                            <img src="/images/default-doctor.jpg" alt="Doctor" class="doctor-avatar">
+                            <img th:src="@{${medico.foto}}" alt="Doctor" class="doctor-avatar">
                             <div class="doctor-info">
                                 <div class="doctor-name-row">
                                     <span class="doctor-name" th:text="${medico.nombre}"></span>
                                 </div>
                                 <p class="doctor-id">ID: <span th:text="${medico.id}"></span></p>
-                                <p class="doctor-email">Correo: <span th:text="${medico.email}"></span></p>
                             </div>
                         </div>
                     </div>
