@@ -4,6 +4,7 @@ import consultorio.data.MedicoRepository;
 import consultorio.data.SlotsRepository;
 import consultorio.logic.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,9 @@ public class ProfileController {
 
     @Autowired
     private SlotsRepository slotsRepository;
+
+    @Value("${picturesPath}")
+    private String picturesPath;
 
     // ======================== MÉDICO ========================
 
@@ -99,12 +103,16 @@ public class ProfileController {
 
         if (profilePhoto != null && !profilePhoto.isEmpty()) {
             try {
-                // Generate unique filename
-                String fileName = userId + "_" + System.currentTimeMillis() + "_" +
-                        Objects.requireNonNull(profilePhoto.getOriginalFilename()).replaceAll("\\s+", "_");
+                String originalFilename = profilePhoto.getOriginalFilename();
+                String fileExtension = "";
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                }
 
-                // Define the path where the file will be saved
-                String uploadDir = "C:\\Users\\Saul Francis\\Desktop\\images_consultorio";
+                String fileName = userId + fileExtension;
+
+
+                String uploadDir = picturesPath;  // This will be C:/AAA/images/
                 Path uploadPath = Paths.get(uploadDir);
 
                 // Create directory if it doesn't exist
@@ -117,16 +125,15 @@ public class ProfileController {
                 Files.copy(profilePhoto.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
                 // Store the relative path in the database
-                medico.getUsuario().setFoto("/images_consultorio/" + fileName);
+                medico.getUsuario().setFoto("/image/" + fileName);
 
             } catch (IOException e) {
                 e.printStackTrace();
                 // Handle error
             }
         }
-
-        // Save updated medico
-        medicoRepository.save(medico);
+        // Save updated paciente
+        consultorioService.actualizarMedico(medico);
 
         // Use the same redirect as in your original commented-out method
         return "redirect:/profile/medico?success";
@@ -261,12 +268,16 @@ public class ProfileController {
 
         if (profilePhoto != null && !profilePhoto.isEmpty()) {
             try {
-                // Generate unique filename
-                String fileName = userId + "_" + System.currentTimeMillis() + "_" +
-                        Objects.requireNonNull(profilePhoto.getOriginalFilename()).replaceAll("\\s+", "_");
+                String originalFilename = profilePhoto.getOriginalFilename();
+                String fileExtension = "";
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                }
 
-                // Define the path where the file will be saved
-                String uploadDir = "C:\\Users\\Saul Francis\\Desktop\\images_consultorio";
+                String fileName = userId + fileExtension;
+
+
+                String uploadDir = picturesPath;  // This will be C:/AAA/images/
                 Path uploadPath = Paths.get(uploadDir);
 
                 // Create directory if it doesn't exist
@@ -279,7 +290,7 @@ public class ProfileController {
                 Files.copy(profilePhoto.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
                 // Store the relative path in the database
-                paciente.getUsuario().setFoto("/images_consultorio/" + fileName);
+                paciente.getUsuario().setFoto("/image/" + fileName);
 
             } catch (IOException e) {
                 e.printStackTrace();

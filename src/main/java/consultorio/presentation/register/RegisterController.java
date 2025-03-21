@@ -9,6 +9,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import consultorio.logic.ConsultorioService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -38,6 +39,9 @@ public class RegisterController {
     private ConsultorioService service;
     @Autowired
     private PacientesRepository pacientesRepository;
+
+    @Value("${picturesPath}")
+    private String picturesPath;
 
     @PersistenceContext
     private EntityManager entityManager; // Inyección de EntityManager// ✅ Inyectamos PasswordEncoder para encriptar contraseñas
@@ -82,12 +86,16 @@ public class RegisterController {
 
         if (profilePhoto != null && !profilePhoto.isEmpty()) {
             try {
-                // Generate unique filename
-                String fileName = userId + "_" + System.currentTimeMillis() + "_" +
-                        Objects.requireNonNull(profilePhoto.getOriginalFilename()).replaceAll("\\s+", "_");
+                String originalFilename = profilePhoto.getOriginalFilename();
+                String fileExtension = "";
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                }
 
-                // Define the path where the file will be saved
-                String uploadDir = "C:\\Users\\Saul Francis\\Desktop\\images_consultorio";
+                String fileName = id + fileExtension;
+
+
+                String uploadDir = picturesPath;  // This will be C:/AAA/images/
                 Path uploadPath = Paths.get(uploadDir);
 
                 // Create directory if it doesn't exist
@@ -100,7 +108,7 @@ public class RegisterController {
                 Files.copy(profilePhoto.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
                 // Store the relative path in the database
-                usuario.setFoto("/images_consultorio/" + fileName);
+                usuario.setFoto("/image/"+fileName);
 
             } catch (IOException e) {
                 e.printStackTrace();
