@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "picturesPath",
+      "type": "java.lang.String",
+      "description": "This is where the images from the medicos and pacientes are stored."
+    }
+  ] }
