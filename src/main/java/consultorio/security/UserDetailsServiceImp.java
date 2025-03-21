@@ -27,8 +27,10 @@ public class UserDetailsServiceImp implements UserDetailsService {
         // Guardar ID y rol en la sesión después de autenticar
         session.setAttribute("usuarioId", usuario.getId());
         session.setAttribute("usuarioRol", usuario.getRol());
+        session.setAttribute("usuarioEstado", usuario.getEstado());
         System.out.println("Rol del usuario autenticado: " + usuario.getRol()); // Debug
-
+        System.out.println("ID: " + usuario.getId()); // Debug
+        System.out.println("Estado: " + usuario.getEstado()); // Debug
         return new UsersDetailsImp(usuario);
     }
 }

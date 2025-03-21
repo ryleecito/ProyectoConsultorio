@@ -17,7 +17,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/profile")
@@ -36,15 +38,30 @@ public class ProfileController {
 
     @GetMapping("/medico")
     public String profileMedico(Model model, HttpSession session) {
+
         String medicoId = (String) session.getAttribute("usuarioId");
-        if (medicoId == null) return "redirect:/presentation/login/show";
+        if (medicoId == null) {
+            return "redirect:/presentation/login/show";
+        }
 
         Medico medico = consultorioService.buscarMedicoPorId(medicoId);
-        if (medico == null) return "redirect:/presentation/login/show";
+        if (medico == null) {
+            return "redirect:/presentation/login/show";
+        }
+
+        Usuario usuario = consultorioService.buscarPorUsername(medicoId);
+
+        Optional<Slot> slots = consultorioService.obtenerSlotsDeMedico(medicoId);
+
 
         model.addAttribute("medico", medico);
-        return "profileMedico";
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("slots", slots);
+
+
+        return "presentation/profile/profileMedico";
     }
+
 
     @PostMapping("/medico/update")
     public String updateMedicoProfile(

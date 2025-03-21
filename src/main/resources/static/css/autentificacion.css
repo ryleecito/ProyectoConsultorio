@@ -321,3 +321,34 @@ input[type="file"].input-box {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+/* Sección para la disponibilidad (slot) */
+.slot-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    text-align: left;
+}
+.slot-section h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #333;
+}
+.slot-form .form-group {
+    margin-bottom: 15px;
+}
+.slot-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+.slot-form input,
+.slot-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.slot-form .form-submit {
+    text-align: center;
+}
