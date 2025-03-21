@@ -564,3 +564,104 @@ footer {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.slot-list {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    text-align: left;
+}
+
+.slot-list h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+}
+
+.slot-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-family: Arial, sans-serif;
+}
+
+.slot-list th {
+    background-color: #0056b3;
+    color: white;
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+    border: 1px solid #ddd;
+}
+
+.slot-list td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.slot-list tr:nth-child(even) {
+    background-color: #f2f7ff;
+}
+
+.slot-list tr:hover {
+    background-color: #e6f0ff;
+    transition: background-color 0.3s ease;
+}
+
+/* Para mostrar nombres de día en vez de números */
+.slot-list td:first-child {
+    font-weight: bold;
+}
+
+/* Mensaje cuando no hay slots */
+.slot-list p {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 15px;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+.delete-form {
+    margin: 0;
+}
+
+/* Ajuste para alineación en la tabla */
+.slot-list table td {
+    vertical-align: middle;
+}
+
+/* Estilo unificado para todos los selectores */
+select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    appearance: auto;
+}
+
+/* Eliminar cualquier estilo específico para el selector de día */
+select#dia {
+    /* Sobrescribir cualquier estilo específico con los valores predeterminados */
+    appearance: auto;
+    background-color: white;
+    border: 1px solid #ced4da;
+}
