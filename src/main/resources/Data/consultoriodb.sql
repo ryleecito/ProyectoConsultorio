@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- Tabla de médicos
 CREATE TABLE IF NOT EXISTS medicos (
                                        id VARCHAR(20) PRIMARY KEY,
-                                       email VARCHAR(100) NOT NULL,
+                                       email VARCHAR(100)  NOT NULL,
                                        especialidad VARCHAR(100),
                                        ciudad VARCHAR(100),
                                        costo_consulta DECIMAL(10,2),
