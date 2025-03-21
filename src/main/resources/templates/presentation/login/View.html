@@ -39,7 +39,7 @@
             <p th:text="${successMessage}"></p>
         </div>
         <div th:if="${param.error}" class="error-message">
-            <p>Usuario o contraseña incorrectos</p>
+            <p th:text="${param.errorMessage}">Usuario o contraseña incorrectos</p>
         </div>
         <div class="login-body">
             <div class="avatar">

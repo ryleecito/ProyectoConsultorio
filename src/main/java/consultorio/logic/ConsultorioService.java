@@ -1,9 +1,6 @@
 package consultorio.logic;
 
-import consultorio.data.CitasRepository;
-import consultorio.data.MedicoRepository;
-import consultorio.data.PacientesRepository;
-import consultorio.data.UsuariosRepository;
+import consultorio.data.*;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -37,6 +34,9 @@ public class ConsultorioService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private SlotsRepository slotsRepository;
 
     @PersistenceContext
     private EntityManager entityManager; // Inyección de EntityManager// ✅ Inyectamos PasswordEncoder para encriptar contraseñas
@@ -150,5 +150,9 @@ public class ConsultorioService {
 
     public Usuario buscarPorId(String id) {
         return usuarioRepository.findById(id).orElse(null);
+    }
+
+    public Optional<Slot> obtenerSlotsDeMedico(String medicoId) {
+        return slotsRepository.findById(Integer.valueOf(medicoId));
     }
 }

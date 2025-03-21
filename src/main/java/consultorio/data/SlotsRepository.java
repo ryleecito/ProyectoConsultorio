@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SlotsRepository extends JpaRepository<Slot, Integer> {
+    Slot findByMedicoIdAndDia(String medicoId, Integer dia);
 }
