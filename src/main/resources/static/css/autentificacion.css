@@ -12,6 +12,11 @@
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.register-container{
+    margin-bottom: 40px;
+}
+
 .login-header {
     background-color: #f2f2f2;
     padding: 15px;
@@ -307,8 +312,8 @@ input[type="file"].input-box {
     display: flex;
     align-items: center;
     padding: 8px 12px;
+    margin-top: -9px; /* Ajusta este valor según lo que necesites */
 }
-
 .dropdown-toggle i {
     margin-left: 5px;
 }
