@@ -26,7 +26,7 @@
     </style>
 </head>
 <body>
-<header th:replace="presentation/fragments/fragments :: header"></header>
+<header th:replace="~{presentation/fragments/fragments :: header}"></header>
 
 <main>
     <div class="login-container">
@@ -73,6 +73,6 @@
     </div>
 </main>
 
-<footer th:replace="presentation/fragments/fragments :: footer"></footer>
+<footer th:replace="~{presentation/fragments/fragments :: footer}"></footer>
 </body>
 </html>
