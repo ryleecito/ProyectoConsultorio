@@ -20,7 +20,7 @@
     </div>
     <div class="nav-menu">
         <!-- Siempre mostrar About -->
-        <a href="/presentation/about/show" class="nav-link">About...</a>
+        <a href="/presentation/about/show" class="nav-link">About</a>
 
         <!-- Opciones para usuario no logueado -->
         <th:block th:if="${session.usuarioId == null}">
@@ -36,10 +36,10 @@
             <!-- Menú desplegable mejorado -->
             <div class="user-menu">
                 <button class="dropdown-toggle">
-                    <span>SLee</span> <i class="fa-solid fa-angle-down"></i>
+                    <span th:text="${session.usuarioId}">BBanner</span> <i class="fa-solid fa-angle-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="/profile/paciente">Profile</a>
+                    <a href="/presentation/profile/paciente" class="nav-link">Profile</a>
                     <a href="/presentation/logout">Logout</a>
                 </div>
             </div>
@@ -48,8 +48,19 @@
         <!-- Opciones para médico logueado -->
         <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'MEDICO'}">
             <a href="/presentation/appointments/list" class="nav-link">Appointments</a>
-            <a href="/profile/medico" class="nav-link">Profile</a>
 
+            <!-- Menú desplegable mejorado -->
+            <div class="user-menu">
+                <button class="dropdown-toggle">
+                    <span th:text="${session.usuarioId}">BBanner</span> <i class="fa-solid fa-angle-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="/presentation/logout">Logout</a>
+                    <a href="/presentation/profile/medico" class="nav-link">Profile</a>
+                </div>
+            </div>
+        </th:block>
+        <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'ADMIN'}">
             <!-- Menú desplegable mejorado -->
             <div class="user-menu">
                 <button class="dropdown-toggle">

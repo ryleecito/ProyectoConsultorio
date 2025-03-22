@@ -38,8 +38,8 @@
         <div th:if="${successMessage}" class="success-message">
             <p th:text="${successMessage}"></p>
         </div>
-        <div th:if="${param.error}" class="error-message">
-            <p th:text="${param.errorMessage}">Usuario o contraseña incorrectos</p>
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}">Perfil no existente</p>
         </div>
         <div class="login-body">
             <div class="avatar">

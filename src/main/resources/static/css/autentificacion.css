@@ -12,6 +12,11 @@
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.register-container{
+    margin-bottom: 40px;
+}
+
 .login-header {
     background-color: #f2f2f2;
     padding: 15px;

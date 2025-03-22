@@ -26,7 +26,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show", "/presentation/register/process", "/presentation/medicos/View","/presentation/medicos/list", "/presentation/about/**").permitAll()
-                        .requestMatchers("/css/**", "/images/**", "/js/**").permitAll() // ✅ Archivos estáticos
+                        .requestMatchers("/css/**", "/images/**", "/js/**","/image/**").permitAll() // ✅ Archivos estáticos
                         .requestMatchers("/admin/**").hasAuthority("ADMIN") // 🔒 Solo Admins pueden acceder
                         .requestMatchers("/profile/paciente/**").hasAuthority("PACIENTE")
                         .requestMatchers("/admin/medicos-pendientes").hasAuthority("ADMIN")
@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/presentation/login/show")
                         .loginProcessingUrl("/login")
-                        .failureUrl("/presentation/login/show?error=true")
+                        .failureUrl("/presentation/login/show?error=true&errorMessage=Perfil no existente")
                         .successHandler((HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
                             // Obtener el rol y estado del usuario desde la sesión
                             String usuarioRol = (String) request.getSession().getAttribute("usuarioRol");
