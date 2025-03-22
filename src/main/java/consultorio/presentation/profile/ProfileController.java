@@ -4,6 +4,7 @@ import consultorio.data.MedicoRepository;
 import consultorio.data.SlotsRepository;
 import consultorio.logic.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +20,10 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.Set;
 
 @Controller
-@RequestMapping("/profile")
+@RequestMapping("/presentation/profile")
 public class ProfileController {
 
     @Autowired
@@ -33,6 +34,9 @@ public class ProfileController {
 
     @Autowired
     private SlotsRepository slotsRepository;
+
+    @Value("${picturesPath}")
+    private String picturesPath;
 
     // ======================== MÉDICO ========================
 
@@ -51,13 +55,12 @@ public class ProfileController {
 
         Usuario usuario = consultorioService.buscarPorUsername(medicoId);
 
-        Optional<Slot> slots = consultorioService.obtenerSlotsDeMedico(medicoId);
-
+        // Obtenemos los slots directamente del médico
+        Set<Slot> slots = medico.getSlots();
 
         model.addAttribute("medico", medico);
         model.addAttribute("usuario", usuario);
         model.addAttribute("slots", slots);
-
 
         return "presentation/profile/profileMedico";
     }
@@ -72,9 +75,6 @@ public class ProfileController {
             @RequestParam("hospital") String hospital,
             @RequestParam("email") String email,
             @RequestParam("telefono") String telefono,
-            @RequestParam("dia") String dia,
-            @RequestParam("hora_inicio") String hora_inicio,
-            @RequestParam("hora_fin") String hora_fin,
             @RequestParam(value = "profilePhoto", required = false) MultipartFile profilePhoto,
             HttpSession session) {
 
@@ -103,12 +103,16 @@ public class ProfileController {
 
         if (profilePhoto != null && !profilePhoto.isEmpty()) {
             try {
-                // Generate unique filename
-                String fileName = userId + "_" + System.currentTimeMillis() + "_" +
-                        Objects.requireNonNull(profilePhoto.getOriginalFilename()).replaceAll("\\s+", "_");
+                String originalFilename = profilePhoto.getOriginalFilename();
+                String fileExtension = "";
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                }
 
-                // Define the path where the file will be saved
-                String uploadDir = "C:\\Users\\Saul Francis\\Desktop\\images_consultorio";
+                String fileName = userId + fileExtension;
+
+
+                String uploadDir = picturesPath;  // This will be C:/AAA/images/
                 Path uploadPath = Paths.get(uploadDir);
 
                 // Create directory if it doesn't exist
@@ -121,30 +125,102 @@ public class ProfileController {
                 Files.copy(profilePhoto.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
                 // Store the relative path in the database
-                medico.getUsuario().setFoto("/images_consultorio/" + fileName);
+                medico.getUsuario().setFoto("/image/" + fileName);
 
             } catch (IOException e) {
                 e.printStackTrace();
                 // Handle error
             }
         }
-        Slot slot = new Slot();
-
-        slot.setDia(Integer.parseInt(dia));
-        slot.setHoraInicio(LocalTime.parse(hora_inicio));
-        slot.setHoraFin(LocalTime.parse(hora_fin));
-        slot.setMedico(medico);
-        // Save updated medico
-        slotsRepository.save(slot);
-        medicoRepository.save(medico);
+        // Save updated paciente
+        consultorioService.actualizarMedico(medico);
 
         // Use the same redirect as in your original commented-out method
-        return "redirect:/profile/medico?success";
+        return "redirect:/presentation/profile/medico?success";
     }
 
+    @PostMapping("/medico/slot")
+    public String addMedicoSlot(
+            @RequestParam("dia") Integer dia,
+            @RequestParam("hora_inicio") String horaInicio,
+            @RequestParam("hora_fin") String horaFin,
+            HttpSession session) {
 
+        // Obtener el ID del médico de la sesión
+        String medicoId = (String) session.getAttribute("usuarioId");
+        if (medicoId == null) {
+            return "redirect:/presentation/login/show";
+        }
 
+        // Buscar el médico por ID
+        Medico medico = medicoRepository.findById(medicoId).orElse(null);
+        if (medico == null) {
+            return "redirect:/presentation/login/show";
+        }
 
+        // Verificar si ya existe un slot para el día seleccionado
+        Slot slotExistente = null;
+        for (Slot s : medico.getSlots()) {
+            if (s.getDia().equals(dia)) {
+                slotExistente = s;
+                break;
+            }
+        }
+
+        if (slotExistente != null) {
+            // Actualizar el slot existente
+            slotExistente.setHoraInicio(LocalTime.parse(horaInicio));
+            slotExistente.setHoraFin(LocalTime.parse(horaFin));
+            slotsRepository.save(slotExistente);
+        } else {
+            // Crear un nuevo slot si no existe uno para ese día
+            Slot nuevoSlot = new Slot();
+            nuevoSlot.setMedico(medico);
+            nuevoSlot.setDia(dia);
+            nuevoSlot.setHoraInicio(LocalTime.parse(horaInicio));
+            nuevoSlot.setHoraFin(LocalTime.parse(horaFin));
+            slotsRepository.save(nuevoSlot);
+        }
+
+        // Redirigir a la página de perfil con mensaje de éxito
+        return "redirect:/presentation/profile/medico?slotSuccess";
+    }
+
+    @PostMapping("/medico/slot/delete")
+    public String deleteMedicoSlot(
+            @RequestParam("dia") Integer dia,
+            HttpSession session) {
+
+        // Get the médico ID from the session
+        String medicoId = (String) session.getAttribute("usuarioId");
+        if (medicoId == null) {
+            return "redirect:/presentation/login/show";
+        }
+
+        // Find the médico
+        Medico medico = medicoRepository.findById(medicoId).orElse(null);
+        if (medico == null) {
+            return "redirect:/presentation/login/show";
+        }
+
+        // Find the slot by médico ID and día
+        Slot slot = slotsRepository.findByMedicoIdAndDia(medicoId, dia);
+        if (slot == null) {
+            return "redirect:/presentation/profile/medico?error=SlotNotFound";
+        }
+
+        // Remove the slot from the médico's collection
+        medico.getSlots().remove(slot);
+
+        // Update the médico
+        medicoRepository.save(medico);
+
+        // Delete the slot
+        slotsRepository.delete(slot);
+
+        // Redirect back to the profile page with success message
+        return "redirect:/presentation/profile/medico?slotDeleted";
+    }
     // ======================== PACIENTE ========================
 
     @GetMapping("/paciente")
@@ -192,12 +268,16 @@ public class ProfileController {
 
         if (profilePhoto != null && !profilePhoto.isEmpty()) {
             try {
-                // Generate unique filename
-                String fileName = userId + "_" + System.currentTimeMillis() + "_" +
-                        Objects.requireNonNull(profilePhoto.getOriginalFilename()).replaceAll("\\s+", "_");
+                String originalFilename = profilePhoto.getOriginalFilename();
+                String fileExtension = "";
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                }
 
-                // Define the path where the file will be saved
-                String uploadDir = "C:\\Users\\Saul Francis\\Desktop\\images_consultorio";
+                String fileName = userId + fileExtension;
+
+
+                String uploadDir = picturesPath;  // This will be C:/AAA/images/
                 Path uploadPath = Paths.get(uploadDir);
 
                 // Create directory if it doesn't exist
@@ -210,7 +290,7 @@ public class ProfileController {
                 Files.copy(profilePhoto.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
                 // Store the relative path in the database
-                paciente.getUsuario().setFoto("/images_consultorio/" + fileName);
+                paciente.getUsuario().setFoto("/image/" + fileName);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -222,6 +302,6 @@ public class ProfileController {
         consultorioService.actualizarPaciente(paciente);
 
         // Redirect to profile page with success message
-        return "redirect:/profile/paciente?success";
+        return "redirect:/presentation/profile/paciente?success";
     }
 }

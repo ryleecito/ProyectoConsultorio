@@ -30,7 +30,7 @@
     </div>
 
     <!-- Formulario para actualizar datos del médico -->
-    <form th:action="@{/profile/medico/update}" method="post" class="profile-form" enctype="multipart/form-data">
+    <form th:action="@{/presentation/profile/medico/update}" method="post" class="profile-form" enctype="multipart/form-data">
       <div class="form-grid">
         <div class="form-group">
           <label for="email">Email:</label>
@@ -38,11 +38,32 @@
         </div>
         <div class="form-group">
           <label for="especialidad">Especialidad:</label>
-          <input type="text" id="especialidad" name="especialidad" th:value="${medico.especialidad}" required>
+          <select id="especialidad" name="especialidad" required>
+            <option value="">Seleccione</option>
+            <option value="Cardiología" th:selected="${medico.especialidad == 'Cardiología'}">Cardiología</option>
+            <option value="Pediatría" th:selected="${medico.especialidad == 'Pediatría'}">Pediatría</option>
+            <option value="Traumatología" th:selected="${medico.especialidad == 'Traumatología'}">Traumatología</option>
+            <option value="Ginecología" th:selected="${medico.especialidad == 'Ginecología'}">Ginecología</option>
+            <option value="Dermatología" th:selected="${medico.especialidad == 'Dermatología'}">Dermatología</option>
+            <option value="Oftalmología" th:selected="${medico.especialidad == 'Oftalmología'}">Oftalmología</option>
+            <option value="Neurología" th:selected="${medico.especialidad == 'Neurología'}">Neurología</option>
+            <option value="Endocrinología" th:selected="${medico.especialidad == 'Endocrinología'}">Endocrinología</option>
+            <option value="Psiquiatría" th:selected="${medico.especialidad == 'Psiquiatría'}">Psiquiatría</option>
+            <option value="Medicina Interna" th:selected="${medico.especialidad == 'Medicina Interna'}">Medicina Interna</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="ciudad">Ciudad:</label>
-          <input type="text" id="ciudad" name="ciudad" th:value="${medico.ciudad}" required>
+          <select id="ciudad" name="ciudad" required>
+            <option value="">Seleccione</option>
+            <option value="San José" th:selected="${medico.ciudad == 'San José'}">San José</option>
+            <option value="Alajuela" th:selected="${medico.ciudad == 'Alajuela'}">Alajuela</option>
+            <option value="Cartago" th:selected="${medico.ciudad == 'Cartago'}">Cartago</option>
+            <option value="Heredia" th:selected="${medico.ciudad == 'Heredia'}">Heredia</option>
+            <option value="Guanacaste" th:selected="${medico.ciudad == 'Guanacaste'}">Guanacaste</option>
+            <option value="Puntarenas" th:selected="${medico.ciudad == 'Puntarenas'}">Puntarenas</option>
+            <option value="Limón" th:selected="${medico.ciudad == 'Limón'}">Limón</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="costo_consulta">Costo Consulta:</label>
@@ -56,7 +77,17 @@
           <label for="hospital">Hospital:</label>
           <input type="text" id="hospital" name="hospital" th:value="${medico.hospital}" required>
         </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono:</label>
+          <input type="text" id="telefono" name="telefono" th:value="${medico.telefono}" required>
+        </div>
+        <div class="form-group">
+          <label for="profilePhoto">Foto de Perfil:</label>
+          <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*">
+        </div>
       </div>
+
+
       <div class="form-group form-submit">
         <button type="submit" class="btn-save">Guardar Cambios</button>
       </div>
@@ -65,7 +96,7 @@
     <!-- Sección para agregar disponibilidad (slot) -->
     <div class="slot-section">
       <h2>Agregar Disponibilidad</h2>
-      <form th:action="@{/profile/medico/slot}" method="post" class="slot-form">
+      <form th:action="@{/presentation/profile/medico/slot}" method="post" class="slot-form">
         <div class="form-group">
           <label for="dia">Día de la Semana:</label>
           <select id="dia" name="dia" required>
@@ -88,45 +119,137 @@
           <input type="time" id="hora_fin" name="hora_fin" required>
         </div>
         <div class="form-group form-submit">
-          <button type="submit" class="btn-save">Agregar Slot</button>
+          <button type="submit" class="btn-save">Agregar Horario</button>
         </div>
       </form>
     </div>
 
-    <!-- Sección para listar los slots ya existentes -->
     <div class="slot-list">
-      <h2>Slots Disponibles</h2>
+      <h2>Horarios Disponibles</h2>
+      <!-- Si hay slots -->
+      <div th:if="${slots != null and #lists.size(slots) > 0}">
+        <table>
+          <thead>
+          <tr>
+            <th>Día</th>
+            <th>Hora Inicio</th>
+            <th>Hora Fin</th>
+            <th>Acciones</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- Mostrar primero los slots del lunes (dia=1) -->
+          <tr th:each="slot : ${slots}" th:if="${slot.dia == 1}">
+            <td>Lunes</td>
+            <td th:text="${slot.horaInicio}">Hora Inicio</td>
+            <td th:text="${slot.horaFin}">Hora Fin</td>
+            <td>
+              <form th:action="@{/presentation/profile/medico/slot/delete}" method="post" class="delete-form">
+                <input type="hidden" name="dia" th:value="${slot.dia}">
+                <button type="submit" class="btn-delete">
+                  <i class="fas fa-trash-alt"></i> Eliminar
+                </button>
+              </form>
+            </td>
+          </tr>
 
-      <!-- Lista de slots existentes -->
-      <div class="slot-list">
-        <h2>Slots existentes</h2>
+          <!-- Mostrar slots del martes (dia=2) -->
+          <tr th:each="slot : ${slots}" th:if="${slot.dia == 2}">
+            <td>Martes</td>
+            <td th:text="${slot.horaInicio}">Hora Inicio</td>
+            <td th:text="${slot.horaFin}">Hora Fin</td>
+            <td>
+              <form th:action="@{/presentation/profile/medico/slot/delete}" method="post" class="delete-form">
+                <input type="hidden" name="dia" th:value="${slot.dia}">
+                <button type="submit" class="btn-delete">
+                  <i class="fas fa-trash-alt"></i> Eliminar
+                </button>
+              </form>
+            </td>
+          </tr>
 
-        <!-- Si hay slots -->
-        <div th:if="${slots != null and #lists.size(slots) > 0}">
-          <table>
-            <thead>
-            <tr>
-              <th>Día</th>
-              <th>Hora Inicio</th>
-              <th>Hora Fin</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Iterar sobre la lista de slots -->
-            <tr th:each="slot : ${slots}">
-              <td th:text="${slot.dia}">Día</td>
-              <td th:text="${slot.horaInicio}">Hora Inicio</td>
-              <td th:text="${slot.horaFin}">Hora Fin</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
+          <!-- Mostrar slots del miércoles (dia=3) -->
+          <tr th:each="slot : ${slots}" th:if="${slot.dia == 3}">
+            <td>Miércoles</td>
+            <td th:text="${slot.horaInicio}">Hora Inicio</td>
+            <td th:text="${slot.horaFin}">Hora Fin</td>
+            <td>
+              <form th:action="@{/presentation/profile/medico/slot/delete}" method="post" class="delete-form">
+                <input type="hidden" name="dia" th:value="${slot.dia}">
+                <button type="submit" class="btn-delete">
+                  <i class="fas fa-trash-alt"></i> Eliminar
+                </button>
+              </form>
+            </td>
+          </tr>
 
-        <!-- Si la lista está vacía -->
-        <div th:unless="${slots != null and #lists.size(slots) > 0}">
-          <p>No hay slots agregados.</p>
-        </div>
+          <!-- Mostrar slots del jueves (dia=4) -->
+          <tr th:each="slot : ${slots}" th:if="${slot.dia == 4}">
+            <td>Jueves</td>
+            <td th:text="${slot.horaInicio}">Hora Inicio</td>
+            <td th:text="${slot.horaFin}">Hora Fin</td>
+            <td>
+              <form th:action="@{/presentation/profile/medico/slot/delete}" method="post" class="delete-form">
+                <input type="hidden" name="dia" th:value="${slot.dia}">
+                <button type="submit" class="btn-delete">
+                  <i class="fas fa-trash-alt"></i> Eliminar
+                </button>
+              </form>
+            </td>
+          </tr>
+
+          <!-- Mostrar slots del viernes (dia=5) -->
+          <tr th:each="slot : ${slots}" th:if="${slot.dia == 5}">
+            <td>Viernes</td>
+            <td th:text="${slot.horaInicio}">Hora Inicio</td>
+            <td th:text="${slot.horaFin}">Hora Fin</td>
+            <td>
+              <form th:action="@{/presentation/profile/medico/slot/delete}" method="post" class="delete-form">
+                <input type="hidden" name="dia" th:value="${slot.dia}">
+                <button type="submit" class="btn-delete">
+                  <i class="fas fa-trash-alt"></i> Eliminar
+                </button>
+              </form>
+            </td>
+          </tr>
+
+          <!-- Mostrar slots del sábado (dia=6) -->
+          <tr th:each="slot : ${slots}" th:if="${slot.dia == 6}">
+            <td>Sábado</td>
+            <td th:text="${slot.horaInicio}">Hora Inicio</td>
+            <td th:text="${slot.horaFin}">Hora Fin</td>
+            <td>
+              <form th:action="@{/presentation/profile/medico/slot/delete}" method="post" class="delete-form">
+                <input type="hidden" name="dia" th:value="${slot.dia}">
+                <button type="submit" class="btn-delete">
+                  <i class="fas fa-trash-alt"></i> Eliminar
+                </button>
+              </form>
+            </td>
+          </tr>
+
+          <!-- Mostrar slots del domingo (dia=7) -->
+          <tr th:each="slot : ${slots}" th:if="${slot.dia == 7}">
+            <td>Domingo</td>
+            <td th:text="${slot.horaInicio}">Hora Inicio</td>
+            <td th:text="${slot.horaFin}">Hora Fin</td>
+            <td>
+              <form th:action="@{/presentation/profile/medico/slot/delete}" method="post" class="delete-form">
+                <input type="hidden" name="dia" th:value="${slot.dia}">
+                <button type="submit" class="btn-delete">
+                  <i class="fas fa-trash-alt"></i> Eliminar
+                </button>
+              </form>
+            </td>
+          </tr>
+          </tbody>
+        </table>
       </div>
+      <!-- Si la lista está vacía -->
+      <div th:unless="${slots != null and #lists.size(slots) > 0}">
+        <p>No hay horarios agregados.</p>
+      </div>
+    </div>
 
 
 
