@@ -136,7 +136,7 @@ public class ProfileController {
         consultorioService.actualizarMedico(medico);
 
         // Use the same redirect as in your original commented-out method
-        return "redirect:/profile/medico?success";
+        return "redirect:/presentation/profile/medico?success";
     }
 
     @PostMapping("/medico/slot")
@@ -183,7 +183,7 @@ public class ProfileController {
         }
 
         // Redirigir a la página de perfil con mensaje de éxito
-        return "redirect:/profile/medico?slotSuccess";
+        return "redirect:/presentation/profile/medico?slotSuccess";
     }
 
     @PostMapping("/medico/slot/delete")
@@ -206,7 +206,7 @@ public class ProfileController {
         // Find the slot by médico ID and día
         Slot slot = slotsRepository.findByMedicoIdAndDia(medicoId, dia);
         if (slot == null) {
-            return "redirect:/profile/medico?error=SlotNotFound";
+            return "redirect:/presentation/profile/medico?error=SlotNotFound";
         }
 
         // Remove the slot from the médico's collection
@@ -219,7 +219,7 @@ public class ProfileController {
         slotsRepository.delete(slot);
 
         // Redirect back to the profile page with success message
-        return "redirect:/profile/medico?slotDeleted";
+        return "redirect:/presentation/profile/medico?slotDeleted";
     }
     // ======================== PACIENTE ========================
 
@@ -302,6 +302,6 @@ public class ProfileController {
         consultorioService.actualizarPaciente(paciente);
 
         // Redirect to profile page with success message
-        return "redirect:/profile/paciente?success";
+        return "redirect:/presentation/profile/paciente?success";
     }
 }

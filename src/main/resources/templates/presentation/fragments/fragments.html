@@ -29,16 +29,16 @@
         </th:block>
 
         <!-- Opciones para paciente logueado -->
-        <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'paciente'}">
+        <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'PACIENTE'}">
             <a href="/presentation/history/list" class="nav-link">History</a>
             <a href="/presentation/medicos/list" class="nav-link">Search</a>
 
-            <!-- Menú desplegable usando las clases existentes -->
+            <!-- Menú desplegable mejorado -->
             <div class="user-menu">
-                <div class="user-name">
+                <button class="dropdown-toggle">
                     <span>SLee</span> <i class="fa-solid fa-angle-down"></i>
-                </div>
-                <div class="dropdown-menu">
+                </button>
+                <div class="dropdown-content">
                     <a href="/profile/paciente">Profile</a>
                     <a href="/presentation/logout">Logout</a>
                 </div>
@@ -46,16 +46,16 @@
         </th:block>
 
         <!-- Opciones para médico logueado -->
-        <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'medico'}">
+        <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'MEDICO'}">
             <a href="/presentation/appointments/list" class="nav-link">Appointments</a>
             <a href="/profile/medico" class="nav-link">Profile</a>
 
-            <!-- Menú desplegable usando las clases existentes -->
+            <!-- Menú desplegable mejorado -->
             <div class="user-menu">
-                <div class="user-name">
+                <button class="dropdown-toggle">
                     <span th:text="${session.usuarioId}">BBanner</span> <i class="fa-solid fa-angle-down"></i>
-                </div>
-                <div class="dropdown-menu">
+                </button>
+                <div class="dropdown-content">
                     <a href="/presentation/logout">Logout</a>
                 </div>
             </div>
