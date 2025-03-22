@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/profile")
+@RequestMapping("/presentation/profile")
 public class ProfileController {
 
     @Autowired

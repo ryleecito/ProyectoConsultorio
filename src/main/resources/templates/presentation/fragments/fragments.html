@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/autentificacion.css">
+    <!-- No necesitamos agregar estilos adicionales ya que usaremos los existentes -->
 </head>
 
 <header th:fragment="header">
@@ -18,9 +19,47 @@
         <i class="fa-solid fa-phone"></i>+506 5467 0937
     </div>
     <div class="nav-menu">
-        <a href="/profile/paciente" class="nav-link">About</a>
-        <a href="/presentation/medicos/list" class="nav-link">Search</a>
-        <a href="/presentation/login/show" class="nav-link">Login</a>
+        <!-- Siempre mostrar About -->
+        <a href="/presentation/about/show" class="nav-link">About...</a>
+
+        <!-- Opciones para usuario no logueado -->
+        <th:block th:if="${session.usuarioId == null}">
+            <a href="/presentation/medicos/list" class="nav-link">Search</a>
+            <a href="/presentation/login/show" class="nav-link">Login</a>
+        </th:block>
+
+        <!-- Opciones para paciente logueado -->
+        <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'paciente'}">
+            <a href="/presentation/history/list" class="nav-link">History</a>
+            <a href="/presentation/medicos/list" class="nav-link">Search</a>
+
+            <!-- Menú desplegable usando las clases existentes -->
+            <div class="user-menu">
+                <div class="user-name">
+                    <span>SLee</span> <i class="fa-solid fa-angle-down"></i>
+                </div>
+                <div class="dropdown-menu">
+                    <a href="/profile/paciente">Profile</a>
+                    <a href="/presentation/logout">Logout</a>
+                </div>
+            </div>
+        </th:block>
+
+        <!-- Opciones para médico logueado -->
+        <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'medico'}">
+            <a href="/presentation/appointments/list" class="nav-link">Appointments</a>
+            <a href="/profile/medico" class="nav-link">Profile</a>
+
+            <!-- Menú desplegable usando las clases existentes -->
+            <div class="user-menu">
+                <div class="user-name">
+                    <span th:text="${session.usuarioId}">BBanner</span> <i class="fa-solid fa-angle-down"></i>
+                </div>
+                <div class="dropdown-menu">
+                    <a href="/presentation/logout">Logout</a>
+                </div>
+            </div>
+        </th:block>
     </div>
 </header>
 

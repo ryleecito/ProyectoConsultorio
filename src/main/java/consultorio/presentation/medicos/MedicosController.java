@@ -32,6 +32,12 @@ public class MedicosController {
         return medicoSearch;
     }
 
+    @GetMapping("/show")
+    public String show() {
+        // Redireccionar a la ruta list para que cargue la información actualizada
+        return "redirect:/presentation/medicos/list";
+    }
+
     @ModelAttribute("citas")
     public List<Cita> citas() {
         return new ArrayList<>(); // Lista vacía para citas por defecto

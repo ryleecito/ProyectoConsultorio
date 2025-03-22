@@ -25,15 +25,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show", "/presentation/register/process").permitAll() // ✅ Páginas públicas
+                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show", "/presentation/register/process", "/presentation/medicos/View","/presentation/medicos/list", "/presentation/about/**").permitAll()
                         .requestMatchers("/css/**", "/images/**", "/js/**").permitAll() // ✅ Archivos estáticos
                         .requestMatchers("/admin/**").hasAuthority("ADMIN") // 🔒 Solo Admins pueden acceder
-                        .requestMatchers("/medicos/**").hasAnyAuthority("ADMIN", "MEDICO") // 🔒 Médicos y Admins pueden acceder
-                        .requestMatchers("/profile/medico/**").hasAuthority("MEDICO")
                         .requestMatchers("/profile/paciente/**").hasAuthority("PACIENTE")
-                        .requestMatchers("/presentation/medicos/appointments").hasAuthority("MEDICO")
                         .requestMatchers("/admin/medicos-pendientes").hasAuthority("ADMIN")
-                        .requestMatchers("/presentation/medicos/list").hasAuthority("PACIENTE")
+                        .requestMatchers("/presentation/profile/medico", "presentation/profile/profileMedico").hasAuthority("MEDICO")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -57,7 +54,7 @@ public class SecurityConfig {
                             switch (usuarioRol) {
                                 case "MEDICO":
                                     if (Objects.equals(usuarioEstado, "ACTIVO")) {
-                                        redirectUrl = "/presentation/medicos/show";
+                                        redirectUrl = "/presentation/profile/medico";
                                     } else {
                                         redirectUrl = "/presentation/login/show?error=true&errorMessage=El medico debe ser aprobado para acceder";
                                     }
