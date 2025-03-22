@@ -16,11 +16,6 @@ public class CitasController {
     @Autowired
     private ConsultorioService service;
 
-    @GetMapping("/presentation/medicos/show")
-    public String mostrarCitas(Model model) {
-        return "/presentation/medicos/appointments";
-    }
-
     @GetMapping("/presentation/citas/show")
     public String mostrarCitas(Model model, HttpSession session) {
         String medicoId = (String) session.getAttribute("usuarioActual"); // Obtener el usuario actual desde la sesión
@@ -28,6 +23,6 @@ public class CitasController {
             List<Cita> citas = service.obtenerCitasPorMedico(medicoId);
             model.addAttribute("citas", citas);
         }
-        return "/presentation/medicos/appointments";
+        return "/presentation/citas/View";
     }
 }

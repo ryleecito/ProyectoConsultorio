@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/about")
+@RequestMapping("/presentation/about")
 public class AboutController {
 
-    @GetMapping
+    @GetMapping("/show")
     public String about() {
         return "presentation/about/about"; // Indicamos la ruta completa dentro de templates/
     }
