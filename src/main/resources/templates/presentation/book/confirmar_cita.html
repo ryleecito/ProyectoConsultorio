@@ -14,27 +14,39 @@
             <div class="doctor-profile">
                 <div class="profile-header">
                     <!-- Imagen del doctor -->
-                    <img src="/api/placeholder/100/100" alt="Doctor" class="doctor-avatar">
+                    <img th:src="@{${medico.usuario.getFoto()}}" alt="Doctor" class="doctor-avatar">
                     <!-- Datos del doctor -->
                     <div class="doctor-details">
                         <div class="profile-info">
                             <i class="fa-solid fa-user"></i>
-                            <span class="doctor-name">Juan José Pérez</span>
+                            <span class="doctor-name" th:text="${medico.usuario.getNombre()}">Nombre del Doctor</span>
+                        </div>
+                        <div class="profile-info">
+                            <i class="fa-solid fa-stethoscope"></i>
+                            <span class="doctor-specialty" th:text="${medico.especialidad}">Especialidad</span>
                         </div>
                         <div class="profile-info">
                             <i class="fa-solid fa-calendar"></i>
-                            <span class="appointment-date">19 Feb 2025 - 16:00</span>
+                            <span class="appointment-date" th:text="${#temporals.format(cita.fecha, 'dd MMM yyyy - HH:mm')}">Fecha y hora</span>
                         </div>
                         <div class="profile-info">
                             <i class="fa-solid fa-location-dot"></i>
-                            <span class="medical-center">Alajuela Medical Center</span>
+                            <span class="medical-center" th:text="${medico.hospital + ' @ ' + medico.ciudad}">Centro médico</span>
+                        </div>
+                        <div class="profile-info">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                            <span class="appointment-cost" th:text="${medico.costoConsulta}">Costo de consulta</span>
                         </div>
                     </div>
                 </div>
                 <!-- Botones de acción -->
                 <div class="action-buttons">
-                    <a href="/presentation/patient/book/confirm" class="btn-confirm">Confirm</a>
-                    <a href="/presentation/patient/book/cancel" class="btn-cancel">Cancel</a>
+                    <form th:action="@{/presentation/citas/confirm}" method="post">
+                        <input type="hidden" name="fechaCita" th:value="${cita.fecha}">
+                        <input type="hidden" name="medicoId" th:value="${medico.id}">
+                        <button type="submit" class="btn-confirm">Confirm</button>
+                    </form>
+                    <a th:href="@{/presentation/medicos/list}" class="btn-cancel">Cancel</a>
                 </div>
             </div>
         </div>
