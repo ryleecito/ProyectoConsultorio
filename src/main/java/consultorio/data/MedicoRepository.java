@@ -2,6 +2,7 @@ package consultorio.data;
 
 import consultorio.logic.Medico;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +19,7 @@ public interface MedicoRepository extends JpaRepository<Medico, String>{
 
     // Si tu ID es String, puedes usar esto para buscar por ID
     Optional<Medico> findById(String id);
+
+    @Query("SELECT m FROM Medico m LEFT JOIN FETCH m.slots WHERE m.id = :id")
+    Medico findByIdWithSlots(@Param("id") String id);
 }

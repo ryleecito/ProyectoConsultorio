@@ -52,7 +52,7 @@ public class Medico {
     @OneToMany(mappedBy = "medico")
     private Set<Cita> citas = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "medico")
+    @OneToMany(mappedBy = "medico", fetch = FetchType.EAGER)
     private Set<Slot> slots = new LinkedHashSet<>();
 
     @MapsId

@@ -25,6 +25,7 @@ public class LoginController {
     public String showLogin(@RequestParam(value = "success", required = false) String successMessage,
                             @RequestParam(value = "errorMessage", required = false) String errorMessage,
                             HttpSession session, Model model) {
+
         // Agregar mensaje de éxito si viene en la URL
         if (successMessage != null) {
             model.addAttribute("successMessage", successMessage);
