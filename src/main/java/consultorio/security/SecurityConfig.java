@@ -25,7 +25,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show", "/presentation/register/process", "/presentation/medicos/View","/presentation/medicos/list", "/presentation/about/**").permitAll()
+                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show", "/presentation/register/process", "/presentation/medicos/**","/presentation/medicos/list", "/presentation/about/**").permitAll()
                         .requestMatchers("/css/**", "/images/**", "/js/**","/image/**").permitAll() // ✅ Archivos estáticos
                         .requestMatchers("/admin/**").hasAuthority("ADMIN") // 🔒 Solo Admins pueden acceder
                         .requestMatchers("/profile/paciente/**").hasAuthority("PACIENTE")

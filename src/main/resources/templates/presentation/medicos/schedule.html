@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="presentation/fragments/fragments :: head">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/autentificacion.css">
+</head>
+<body>
+<header th:replace="presentation/fragments/fragments :: header"></header>
+
+<!-- ✅ Mensaje de éxito al iniciar sesión -->
+<div th:if="${successMessage}" class="success-message">
+  <p th:text="${successMessage}"></p>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+  <!-- Navigation Controls -->
+  <div class="navigation-controls">
+    <a th:href="@{'/presentation/medicos/show'}" class="btn-back">← Go Back</a>
+    <div class="week-navigation">
+      <a th:href="@{'/presentation/medicos/schedule/' + ${medico.id} + '?weekOffset=' + ${weekOffset - 1}}" class="btn-week">← Previous Week</a>
+      <span class="current-week" th:text="${#temporals.format(fechaInicio, 'dd/MM/yyyy')} + ' - ' + ${#temporals.format(fechaInicio.plusDays(6), 'dd/MM/yyyy')}">Current Week</span>
+      <a th:href="@{'/presentation/medicos/schedule/' + ${medico.id} + '?weekOffset=' + ${weekOffset + 1}}" class="btn-week">Next Week →</a>
+    </div>
+  </div>
+
+  <!-- Doctor Details Section -->
+  <section class="results-section">
+    <div class="doctor-card">
+      <div class="doctor-info">
+        <div class="doctor-details">
+          <div class="doctor-header">
+            <img th:src="@{${medico.usuario.getFoto()}}" alt="Doctor" class="doctor-avatar">
+            <div class="doctor-info">
+              <div class="doctor-name-row">
+                <span class="doctor-name" th:text="${medico.usuario.getNombre()}">Doctor Name</span>
+                <span class="doctor-cost" th:text="${medico.costoConsulta}">Cost</span>
+              </div>
+              <p class="doctor-specialty" th:text="${medico.especialidad}">Specialty</p>
+            </div>
+          </div>
+        </div>
+        <div class="location-container">
+          <p class="doctor-location">
+            <span th:text="${medico.hospital}">Hospital</span>
+            <span class="at-symbol">@</span>
+            <span th:text="${medico.ciudad}">City</span>
+          </p>
+        </div>
+      </div>
+      <div class="appointments-section">
+        <th:block th:each="dia, iterStat : ${citasPorMedico[medico.id]}">
+          <div th:if="${!#lists.isEmpty(dia) && (#aggregates.sum(dia.![estado == 'Disponible' ? 1 : 0]) > 0 || #aggregates.sum(dia.![estado == 'Pendiente' ? 1 : 0]) > 0)}">
+            <div class="date-column">
+              <div class="date-header">
+                <div th:text="${#temporals.format(fechaInicio.plusDays(iterStat.index), 'EEEE')}">Day</div>
+                <div th:text="${#temporals.format(fechaInicio.plusDays(iterStat.index), 'dd/MM/yyyy')}">Date</div>
+              </div>
+              <div class="time-slots">
+                <th:block th:each="cita : ${dia}">
+                  <!-- Citas disponibles con enlace -->
+                  <a th:if="${cita.estado == 'Disponible'}"
+                     th:href="@{/presentation/medicos/appointment-details(
+                           medicoId=${medico.id},
+                           fecha=${#temporals.format(cita.fecha, 'yyyy-MM-dd''T''HH:mm:ss')})}"
+                     class="time-slot"
+                     th:text="${#temporals.format(cita.fecha, 'HH:mm')}"
+                     th:data-cita-id="${cita.id}"
+                     th:data-medico-id="${medico.id}">
+                    Hora
+                  </a>
+                  <!-- Citas pendientes en gris sin enlace -->
+                  <span th:if="${cita.estado == 'Pendiente'}"
+                        class="time-slot pendiente"
+                        th:text="${#temporals.format(cita.fecha, 'HH:mm')}"
+                        th:data-cita-id="${cita.id}"
+                        th:data-medico-id="${medico.id}"
+                        style="background-color: gray; color: white; cursor: default;">
+                            Hora
+                        </span>
+                </th:block>
+              </div>
+            </div>
+          </div>
+        </th:block>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer th:replace="presentation/fragments/fragments :: footer"></footer>
+</body>
+</html>

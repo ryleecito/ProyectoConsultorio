@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -128,6 +129,8 @@ public class ConsultorioService {
         return medicoRepository.findById(id).orElse(null);
     }
 
+
+
     public void actualizarMedico(Medico medico) {
         medicoRepository.save(medico);
     }
@@ -154,5 +157,17 @@ public class ConsultorioService {
 
     public Optional<Slot> obtenerSlotsDeMedico(String medicoId) {
         return slotsRepository.findById(Integer.valueOf(medicoId));
+    }
+
+    public Cita buscarCitaPorId(String citaId) {
+        return citasRepository.findById(Integer.valueOf(citaId)).orElse(null);
+    }
+
+    public Cita findCitaByFechaAndMedicoId(LocalDateTime fechaCita, String medicoId) {
+        return citasRepository.findByFechaAndMedicoId(fechaCita,medicoId);
+    }
+
+    public void guardarCita(Cita cita) {
+        citasRepository.save(cita);
     }
 }
