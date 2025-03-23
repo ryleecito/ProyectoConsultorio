@@ -1,28 +1,84 @@
 package consultorio.presentation.citas;
 
-import consultorio.logic.Cita;
-import consultorio.logic.ConsultorioService;
+import consultorio.logic.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
+@RequestMapping("/presentation/citas")
 public class CitasController {
 
     @Autowired
     private ConsultorioService service;
 
-    @GetMapping("/presentation/citas/show")
-    public String mostrarCitas(Model model, HttpSession session) {
-        String medicoId = (String) session.getAttribute("usuarioActual"); // Obtener el usuario actual desde la sesión
-        if (medicoId != null) {
-            List<Cita> citas = service.obtenerCitasPorMedico(medicoId);
-            model.addAttribute("citas", citas);
+
+    @PostMapping("/confirm")
+    public String confirmAppointment(
+            @RequestParam("fechaCita") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime fechaCita,
+            @RequestParam("medicoId") String medicoId,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+
+
+        try {
+            // Obtener el médico
+            Medico medico = service.buscarMedicoPorId(medicoId);
+            if (medico == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "No se encontró el médico seleccionado.");
+                return "redirect:/presentation/medicos/list";
+            }
+
+            // Obtener el paciente (usuario actual)
+            String usuarioId = (String) session.getAttribute("usuarioId");
+            if (usuarioId == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Debe iniciar sesión para agendar una cita.");
+                return "redirect:/presentation/login";
+            }
+
+            Paciente paciente = service.buscarPacientePorId(usuarioId);
+
+            // Buscar si ya existe la cita por fecha y médico
+            Cita cita = service.findCitaByFechaAndMedicoId(fechaCita, medicoId);
+
+            // Si no existe, crear una nueva
+            if (cita == null) {
+                cita = new Cita();
+                cita.setMedico(medico);
+                cita.setFecha(fechaCita);
+                cita.setHoraInicio(fechaCita.toLocalTime());
+                cita.setHoraFin(fechaCita.toLocalTime().plusMinutes(medico.getDuracionCita()));
+                cita.setFechaCreacion(java.time.Instant.now());
+            }
+
+            // Actualizar los datos de la cita
+            cita.setPaciente(paciente);
+            cita.setEstado("Pendiente"); // Cambiar estado a confirmada
+
+            // Guardar la cita en la base de datos
+            service.guardarCita(cita);
+
+            // Mensaje de éxito
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "Cita agendada con éxito para el " +
+                            fechaCita.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+                            " a las " + fechaCita.format(DateTimeFormatter.ofPattern("HH:mm")) +
+                            " con el Dr. " + medico.getUsuario().getNombre());
+
+            return "redirect:/presentation/medicos/list";
+        } catch (Exception e) {
+            // Log del error
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al agendar la cita: " + e.getMessage());
+            return "redirect:/presentation/medicos/list";
         }
-        return "/presentation/citas/View";
     }
 }

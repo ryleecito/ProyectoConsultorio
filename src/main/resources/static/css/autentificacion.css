@@ -12,6 +12,11 @@
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.register-container{
+    margin-bottom: 40px;
+}
+
 .login-header {
     background-color: #f2f2f2;
     padding: 15px;
@@ -368,4 +373,39 @@ input[type="file"].input-box {
 }
 .slot-form .form-submit {
     text-align: center;
+}
+
+.navigation-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-back {
+    padding: 8px 15px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.week-navigation {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-week {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.current-week {
+    font-weight: bold;
 }

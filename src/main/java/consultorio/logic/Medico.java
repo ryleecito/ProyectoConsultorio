@@ -177,9 +177,11 @@ public class Medico {
         }
         return resultados; // Retornamos todos los días, con o sin citas
     }
+
     public List<Cita> citasDeFecha(LocalDate fecha) {
         List<Cita> citasDisponibles = new ArrayList<>();
         int diaSemana = fecha.getDayOfWeek().getValue(); // 1-Lunes, 7-Domingo
+        LocalDateTime ahora = LocalDateTime.now(); // Obtener fecha y hora actual para comparar
 
         for (Slot slot : this.slots) {
             if (slot.getDia() == diaSemana) {
@@ -191,11 +193,26 @@ public class Medico {
                     Cita cita = new Cita();
                     cita.setMedico(this);
                     cita.setPaciente(null); // Sin paciente asignado aún
-                    // Convertir LocalDate a LocalDateTime y agregar la hora de inicio
-                    cita.setFecha(fecha.atTime(horaActual));  // Aquí combinamos la fecha con la hora
+
+                    // Establecer hora de inicio
+                    cita.setHoraInicio(horaActual);
+
+                    // Establecer hora de fin
+                    LocalTime horaFin = horaActual.plusMinutes(this.duracionCita);
+                    cita.setHoraFin(horaFin);
+
+                    // Establecer la fecha completa (fecha + hora inicio)
+                    LocalDateTime fechaHoraInicio = fecha.atTime(horaActual);
+                    cita.setFecha(fechaHoraInicio);
 
                     cita.setFechaCreacion(java.time.Instant.now());
-                    cita.setEstado("Disponible");
+
+                    // Verificar si la cita ya pasó
+                    if (fechaHoraInicio.isBefore(ahora)) {
+                        cita.setEstado("Pendiente");
+                    } else {
+                        cita.setEstado("Disponible");
+                    }
 
                     // Agregar la cita a la lista
                     citasDisponibles.add(cita);

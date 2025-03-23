@@ -83,7 +83,7 @@ header {
 /* Contenedor global */
 .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
     flex: 1;
@@ -171,7 +171,7 @@ main {
     padding: 15px;
     margin: 15px auto;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1400px;
     gap: 1rem;
 }
 
@@ -179,7 +179,7 @@ main {
     display: flex;
     flex-direction: column;
     flex: 2;                   /* Ocupará más espacio que la sección de citas */
-    min-width: 250px;
+    min-width: 100px;
 }
 
 .doctor-header {
@@ -224,7 +224,7 @@ main {
 
 /* Ubicación (hospital @ ciudad) */
 .location-container {
-    margin-top: 8px;
+    margin-top: 50px;
 }
 
 .doctor-location {
@@ -246,7 +246,7 @@ main {
     gap: 10px;
     align-items: flex-start;
     flex: 1;                /* Ocupa menos espacio que la parte izquierda */
-    min-width: 200px;
+    min-width: 800px;
     padding-top: 8px;
     overflow-x: hidden;
     min-height: 120px;
