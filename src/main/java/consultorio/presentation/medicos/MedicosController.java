@@ -118,6 +118,8 @@ public class MedicosController {
 
         // Para cada médico, obtener sus citas
         for (Medico medico : medicos) {
+            service.buscarMedicoPorId(medico.getId());
+
             List<List<Cita>> citasDeLaSemana = medico.obtenerCitasDeLaSemana(inicioSemana);
 
             // Verificar y actualizar atributos básicos de citas existentes

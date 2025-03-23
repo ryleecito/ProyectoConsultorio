@@ -125,8 +125,14 @@ public class ConsultorioService {
         return medicoRepository.findByEspecialidadAndCiudad(especialidad, ciudad);
     }
 
+    @Transactional(readOnly = true)
     public Medico buscarMedicoPorId(String id) {
-        return medicoRepository.findById(id).orElse(null);
+        Medico medico = medicoRepository.findById(id).orElse(null);
+        if (medico != null) {
+            // This will force initialization of the slots collection
+            medico.getSlots().size();
+        }
+        return medico;
     }
 
 
@@ -170,4 +176,7 @@ public class ConsultorioService {
     public void guardarCita(Cita cita) {
         citasRepository.save(cita);
     }
+
+
+
 }
