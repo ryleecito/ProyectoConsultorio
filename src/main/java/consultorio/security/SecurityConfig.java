@@ -1,6 +1,9 @@
 package consultorio.security;
 
+import consultorio.data.MedicoRepository;
+import consultorio.data.PacientesRepository;
 import consultorio.data.UsuariosRepository;
+import consultorio.logic.ConsultorioService;
 import consultorio.logic.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,12 +17,19 @@ import org.springframework.security.web.SecurityFilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Objects;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    public MedicoRepository medicoRepository;
+
+    @Autowired
+    public PacientesRepository pacientesRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -41,6 +51,7 @@ public class SecurityConfig {
                             // Obtener el rol y estado del usuario desde la sesión
                             String usuarioRol = (String) request.getSession().getAttribute("usuarioRol");
                             String usuarioEstado = (String) request.getSession().getAttribute("usuarioEstado");
+                            String usuarioId = (String) request.getSession().getAttribute("usuarioId");
 
                             // Verificar si el rol es válido
                             if (usuarioRol == null) {
@@ -53,8 +64,16 @@ public class SecurityConfig {
                             String redirectUrl;
                             switch (usuarioRol) {
                                 case "MEDICO":
+
                                     if (Objects.equals(usuarioEstado, "ACTIVO")) {
-                                        redirectUrl = "/presentation/profile/medico";
+                                        if(medicoRepository.findByIdWithSlots(usuarioId).getEmail().isEmpty()) {
+                                            redirectUrl = "/presentation/profile/medico";
+                                        }
+                                        else
+                                        {
+                                            redirectUrl = "/presentation/pacientes/show";
+                                        }
+
                                     } else {
                                         redirectUrl = "/presentation/login/show?error=true&errorMessage=El medico debe ser aprobado para acceder";
                                     }
@@ -63,7 +82,15 @@ public class SecurityConfig {
                                     redirectUrl = "/admin/medicos-pendientes";
                                     break;
                                 case "PACIENTE":
-                                    redirectUrl = "/presentation/medicos/list";
+
+                                    if(pacientesRepository.findById(usuarioId).get().getEmail().isEmpty()) {
+                                        redirectUrl = "/presentation/profile/paciente";
+                                    }
+                                    else
+                                    {
+                                        redirectUrl = "/presentation/medicos/list";
+                                    }
+
                                     break;
                                 default:
                                     redirectUrl = "/";
@@ -75,7 +102,8 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/presentation/logout")  // Change to match your link URL
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/presentation/logout", "GET"))  // Allow GET
                         .logoutSuccessUrl("/presentation/login/show?logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
