@@ -183,12 +183,21 @@ public class Medico {
         int diaSemana = fecha.getDayOfWeek().getValue(); // 1-Lunes, 7-Domingo
         LocalDateTime ahora = LocalDateTime.now(); // Obtener fecha y hora actual para comparar
 
+        // Crear un único timestamp para todas las citas
+        java.time.Instant now = java.time.Instant.now();
+
+        // Definir un límite máximo razonable de citas por slot
+        final int MAX_CITAS_POR_SLOT = 50;
+
         for (Slot slot : this.slots) {
             if (slot.getDia() == diaSemana) {
                 LocalTime horaActual = slot.getHoraInicio();
+                int contadorCitas = 0;
 
-                // Continuar generando citas mientras no excedamos la hora de fin del slot
-                while (!horaActual.plus(java.time.Duration.ofMinutes(this.duracionCita)).isAfter(slot.getHoraFin())) {
+                // Agregar límite al bucle para evitar crear demasiadas citas
+                while (!horaActual.plus(java.time.Duration.ofMinutes(this.duracionCita)).isAfter(slot.getHoraFin())
+                        && contadorCitas < MAX_CITAS_POR_SLOT) {
+
                     // Crear una nueva cita vacía
                     Cita cita = new Cita();
                     cita.setMedico(this);
@@ -205,7 +214,8 @@ public class Medico {
                     LocalDateTime fechaHoraInicio = fecha.atTime(horaActual);
                     cita.setFecha(fechaHoraInicio);
 
-                    cita.setFechaCreacion(java.time.Instant.now());
+                    // Usar el timestamp pre-creado para todas las citas
+                    cita.setFechaCreacion(now);
 
                     // Verificar si la cita ya pasó
                     if (fechaHoraInicio.isBefore(ahora)) {
@@ -219,6 +229,9 @@ public class Medico {
 
                     // Avanzar a la siguiente hora de cita basada en la duración configurada
                     horaActual = horaActual.plusMinutes(this.duracionCita);
+
+                    // Incrementar el contador de citas
+                    contadorCitas++;
                 }
             }
         }
