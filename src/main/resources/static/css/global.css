@@ -666,3 +666,44 @@ select#dia {
     background-color: white;
     border: 1px solid #ced4da;
 }
+
+/* Sección de anotaciones: usa flex para alinear los elementos horizontalmente */
+.doctor-notes-section {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Ajusta el label para que no se vea muy pegado */
+.doctor-notes-section label {
+    margin-right: 8px;
+    font-weight: 600;
+}
+
+/* Estilos para el input de anotaciones */
+.doctor-notes-section input[type="text"],
+.doctor-notes-section textarea {
+    flex: 1;
+    margin-right: 8px;
+    padding: 6px 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Botón de Guardar */
+.btn-save-notes {
+    background-color: #007bff; /* Color principal (azul) */
+    border: none;
+    color: #fff; /* Texto en blanco */
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Efecto hover */
+.btn-save-notes:hover {
+    background-color: #0056b3;
+}

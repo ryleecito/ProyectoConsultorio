@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="presentation/fragments/fragments :: head">
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/autentificacion.css">
-
+  <title>Patient - Bruce Banner - appointments</title>
 </head>
 <body>
 <header th:replace="presentation/fragments/fragments :: header"></header>
 
 <!-- Main Content -->
 <div class="container">
-  <h1 class="doctor-header">
-    Doctor - <span class="doctor-name">Bruce Banner</span> - appointments
+  <!-- Encabezado con el nombre y rol -->
+  <h1 class="patient-header">
+    Patient - <span class="patient-name">Bruce Banner</span> - appointments
   </h1>
 
   <!-- Filter Section -->
@@ -26,50 +27,84 @@
         </select>
       </div>
       <div class="search-field">
-        <input type="text" class="form-control" placeholder="Patient">
+        <select class="form-control">
+          <option value="">All</option>
+          <option value="Fecha ascendente">Mas reciente</option>
+          <option value="Fecha descendente">Menos reciente</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <input type="text" class="form-control" placeholder="Paciente">
       </div>
       <button type="submit" class="btn-search">Search</button>
     </form>
   </div>
 
-  <!-- Appointment List -->
+  <!-- Listado de citas -->
   <div class="appointment-list">
-    <!-- Cita 1 -->
+    <!-- Cita 1 (Ejemplo) -->
     <div class="appointment-card">
-      <div class="patient-column">
-        <img src="/images/patient1.jpg" alt="Patient" class="patient-avatar">
-        <div class="patient-details">
-          <b class="patient-name">George Lucas</b>
+      <div class="doctor-column">
+        <!-- Avatar del médico -->
+        <img src="/images/doctor1.jpg" alt="Doctor" class="doctor-avatar">
+        <div class="doctor-details">
+          <div class="doctor-name">
+            <b>George Lucas</b>
+            <span class="doctor-cost">₡70,000</span>
+          </div>
+          <div class="doctor-specialty">Neurology</div>
+          <div class="doctor-location">
+            Brain Center <span class="at-symbol">@</span> Cartago
+          </div>
         </div>
       </div>
+
+      <!-- Fecha de la cita -->
       <div class="appointment-date-column">
         <span class="appointment-date">19/02/2025 - 15:00</span>
       </div>
+
+      <!-- Estado de la cita -->
       <div class="appointment-status-column">
         <div class="appointment-status pending">Pending</div>
       </div>
-      <div class="appointment-actions-column">
-        <span class="attend-action"><i class="fa-solid fa-check"></i> Attend</span>
-        <span class="cancel-action"><i class="fa-solid fa-xmark"></i> Cancel</span>
+
+      <!-- Botón de acción (Cancelar o Ver, según tu lógica) -->
+      <div class="view-button-column">
+        <a href="#" class="btn-view">
+          <i class="fa-solid fa-ban"></i> Cancel
+        </a>
       </div>
     </div>
 
-    <!-- Cita 2 -->
+    <!-- Cita 2 (Ejemplo) -->
     <div class="appointment-card">
-      <div class="patient-column">
-        <img src="/images/patient2.jpg" alt="Patient" class="patient-avatar">
-        <div class="patient-details">
-          <b class="patient-name">Stan Lee</b>
+      <div class="doctor-column">
+        <img src="/images/doctor2.jpg" alt="Doctor" class="doctor-avatar">
+        <div class="doctor-details">
+          <div class="doctor-name">
+            <b>Stan Lee</b>
+            <span class="doctor-cost">₡50,000</span>
+          </div>
+          <div class="doctor-specialty">Dermatology</div>
+          <div class="doctor-location">
+            Derma Clinic <span class="at-symbol">@</span> San José
+          </div>
         </div>
       </div>
+
       <div class="appointment-date-column">
         <span class="appointment-date">12/02/2025 - 15:30</span>
       </div>
+
       <div class="appointment-status-column">
         <div class="appointment-status attended">Attended</div>
       </div>
+
       <div class="view-button-column">
-        <a href="#" class="btn-view"><i class="fa-solid fa-eye"></i> View</a>
+        <a href="#" class="btn-view">
+          <i class="fa-solid fa-ban"></i> Cancel
+        </a>
       </div>
     </div>
   </div>

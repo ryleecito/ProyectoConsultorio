@@ -10,7 +10,7 @@
 <!-- Main Content -->
 <div class="container">
     <h1 class="patient-header">
-        Patient - <span class="patient-name">Stan Lee</span> - appointment history
+        Doctor - <span class="patient-name">Stan Lee</span> - appointment history
     </h1>
 
     <!-- Filter Section -->
@@ -25,7 +25,14 @@
                 </select>
             </div>
             <div class="search-field">
-                <input type="text" class="form-control" placeholder="Doctor">
+                <select class="form-control">
+                    <option value="">All</option>
+                    <option value="Fecha ascendente">Mas reciente</option>
+                    <option value="Fecha descendente">Menos reciente</option>
+                </select>
+            </div>
+            <div class="search-field">
+                <input type="text" class="form-control" placeholder="Paciente">
             </div>
             <button type="submit" class="btn-search">Search</button>
         </form>
@@ -58,6 +65,13 @@
             </div>
 
             <div class="view-button-column"></div>
+
+            <!-- Sección para anotaciones del doctor -->
+            <div class="doctor-notes-section">
+                <label for="notes-1">Anotaciones:</label>
+                <textarea id="notes-1" name="notes"></textarea>
+                <button type="button" class="btn-save-notes">Guardar</button>
+            </div>
         </div>
 
         <!-- Cita 2 -->
@@ -86,6 +100,13 @@
 
             <div class="view-button-column">
                 <a href="#" class="btn-view"><i class="fa-solid fa-eye"></i> View</a>
+            </div>
+
+            <!-- Sección para anotaciones del doctor -->
+            <div class="doctor-notes-section">
+                <label for="notes-2">Anotaciones:</label>
+                <textarea id="notes-2" name="notes" ></textarea>
+                <button type="button" class="btn-save-notes">Guardar</button>
             </div>
         </div>
     </div>
