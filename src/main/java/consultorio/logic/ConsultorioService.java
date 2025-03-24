@@ -178,5 +178,11 @@ public class ConsultorioService {
     }
 
 
+    public List<Cita> buscarCitasIdMedico(String usuarioId) {
+        return citasRepository.findByMedicoId(usuarioId);
+    }
 
+    public Object buscarCitasIdPaciente(String usuarioId) {
+        return citasRepository.findByPacienteId(usuarioId);
+    }
 }

@@ -40,8 +40,8 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasAuthority("ADMIN") // 🔒 Solo Admins pueden acceder
                         .requestMatchers("/profile/paciente/**").hasAuthority("PACIENTE")
                         .requestMatchers("/admin/medicos-pendientes").hasAuthority("ADMIN")
-                        .requestMatchers("/presentation/profile/medico", "presentation/profile/profileMedico").hasAuthority("MEDICO")
-                        .requestMatchers("/presentation/citas/**").hasAuthority("PACIENTE")
+                        .requestMatchers("/presentation/profile/medico", "presentation/profile/profileMedico", "presentation/citas/list").hasAuthority("MEDICO")
+                        .requestMatchers("/presentation/citas/list").hasAuthority("PACIENTE")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
