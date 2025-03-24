@@ -11,7 +11,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Controller
 @RequestMapping("/presentation/citas")
@@ -20,6 +19,10 @@ public class CitasController {
     @Autowired
     private ConsultorioService service;
 
+    @GetMapping("/show")
+    public String showAppointments(Model model) {
+        return "/presentation/citas/View";
+    }
 
     @PostMapping("/confirm")
     public String confirmAppointment(
@@ -28,16 +31,13 @@ public class CitasController {
             HttpSession session,
             RedirectAttributes redirectAttributes) {
 
-
         try {
-            // Obtener el médico
             Medico medico = service.buscarMedicoPorId(medicoId);
             if (medico == null) {
                 redirectAttributes.addFlashAttribute("errorMessage", "No se encontró el médico seleccionado.");
                 return "redirect:/presentation/medicos/list";
             }
 
-            // Obtener el paciente (usuario actual)
             String usuarioId = (String) session.getAttribute("usuarioId");
             if (usuarioId == null) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Debe iniciar sesión para agendar una cita.");
@@ -46,10 +46,7 @@ public class CitasController {
 
             Paciente paciente = service.buscarPacientePorId(usuarioId);
 
-            // Buscar si ya existe la cita por fecha y médico
             Cita cita = service.findCitaByFechaAndMedicoId(fechaCita, medicoId);
-
-            // Si no existe, crear una nueva
             if (cita == null) {
                 cita = new Cita();
                 cita.setMedico(medico);
@@ -59,14 +56,11 @@ public class CitasController {
                 cita.setFechaCreacion(java.time.Instant.now());
             }
 
-            // Actualizar los datos de la cita
             cita.setPaciente(paciente);
-            cita.setEstado("Pendiente"); // Cambiar estado a confirmada
+            cita.setEstado("Pendiente");
 
-            // Guardar la cita en la base de datos
             service.guardarCita(cita);
 
-            // Mensaje de éxito
             redirectAttributes.addFlashAttribute("successMessage",
                     "Cita agendada con éxito para el " +
                             fechaCita.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
@@ -74,8 +68,8 @@ public class CitasController {
                             " con el Dr. " + medico.getUsuario().getNombre());
 
             return "redirect:/presentation/medicos/list";
+
         } catch (Exception e) {
-            // Log del error
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("errorMessage", "Error al agendar la cita: " + e.getMessage());
             return "redirect:/presentation/medicos/list";
