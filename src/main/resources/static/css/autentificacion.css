@@ -409,3 +409,38 @@ input[type="file"].input-box {
 .current-week {
     font-weight: bold;
 }
+
+.btn-confirm,
+.btn-cancel {
+    display: inline-block;
+    width: 150px;           /* Mismo ancho para ambos */
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;  /* Quita subrayado en <a> */
+    margin: 0 10px;         /* Espacio horizontal */
+    white-space: nowrap;    /* Evita que el texto salte de línea */
+    border: none;
+    outline: none;
+}
+
+/* Estilo para confirmar */
+.btn-confirm {
+    background-color: #007bff;
+    color: #fff;
+}
+.btn-confirm:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para cancelar */
+.btn-cancel {
+    background-color: #dc3545;
+    color: #fff;
+}
+.btn-cancel:hover {
+    background-color: #c82333;
+}

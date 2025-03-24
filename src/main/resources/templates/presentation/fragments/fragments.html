@@ -30,7 +30,7 @@
 
         <!-- Opciones para paciente logueado -->
         <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'PACIENTE'}">
-            <a href="/presentation/history/list" class="nav-link">History</a>
+            <a href="/presentation/citas/show" class="nav-link">History</a>
             <a href="/presentation/medicos/list" class="nav-link">Search</a>
 
             <!-- Menú desplegable mejorado -->
@@ -47,7 +47,7 @@
 
         <!-- Opciones para médico logueado -->
         <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'MEDICO'}">
-            <a href="/presentation/appointments/list" class="nav-link">Appointments</a>
+            <a href="/presentation/pacientes/show" class="nav-link">Appointments</a>
 
             <!-- Menú desplegable mejorado -->
             <div class="user-menu">
