@@ -134,7 +134,6 @@ public class MedicosController {
 
         // Para cada médico, obtener sus citas
         for (Medico medico : medicosFiltrados) {
-            service.buscarMedicoPorId(medico.getId());
 
             List<List<Cita>> citasDeLaSemana = medico.obtenerCitasDeLaSemana(inicioSemana);
 
