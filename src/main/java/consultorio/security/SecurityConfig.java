@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/profile/paciente/**").hasAuthority("PACIENTE")
                         .requestMatchers("/admin/medicos-pendientes").hasAuthority("ADMIN")
                         .requestMatchers("/presentation/profile/medico", "presentation/profile/profileMedico").hasAuthority("MEDICO")
+                        .requestMatchers("/presentation/citas/**").hasAuthority("PACIENTE")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

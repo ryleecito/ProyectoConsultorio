@@ -1,56 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="presentation/fragments/fragments :: head">
-    <link rel="stylesheet" href="/css/global.css">
-    <link rel="stylesheet" href="/css/autentificacion.css">
+    <link rel="stylesheet" href="../../../static/css/autentificacion.css">
+    <link rel="stylesheet" href="../../../static/css/global.css">
+    <title>Confirmar Cita</title>
 </head>
 <body>
 <header th:replace="presentation/fragments/fragments :: header"></header>
 
-<!-- Main Content -->
+<!-- Contenedor principal -->
 <div class="container">
-    <section class="confirm-section">
-        <div class="confirm-card">
-            <div class="doctor-profile">
-                <div class="profile-header">
-                    <!-- Imagen del doctor -->
-                    <img th:src="@{${medico.usuario.getFoto()}}" alt="Doctor" class="doctor-avatar">
-                    <!-- Datos del doctor -->
-                    <div class="doctor-details">
-                        <div class="profile-info">
-                            <i class="fa-solid fa-user"></i>
-                            <span class="doctor-name" th:text="${medico.usuario.getNombre()}">Nombre del Doctor</span>
-                        </div>
-                        <div class="profile-info">
-                            <i class="fa-solid fa-stethoscope"></i>
-                            <span class="doctor-specialty" th:text="${medico.especialidad}">Especialidad</span>
-                        </div>
-                        <div class="profile-info">
-                            <i class="fa-solid fa-calendar"></i>
-                            <span class="appointment-date" th:text="${#temporals.format(cita.fecha, 'dd MMM yyyy - HH:mm')}">Fecha y hora</span>
-                        </div>
-                        <div class="profile-info">
-                            <i class="fa-solid fa-location-dot"></i>
-                            <span class="medical-center" th:text="${medico.hospital + ' @ ' + medico.ciudad}">Centro médico</span>
-                        </div>
-                        <div class="profile-info">
-                            <i class="fa-solid fa-dollar-sign"></i>
-                            <span class="appointment-cost" th:text="${medico.costoConsulta}">Costo de consulta</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Botones de acción -->
-                <div class="action-buttons">
-                    <form th:action="@{/presentation/citas/confirm}" method="post">
-                        <input type="hidden" name="fechaCita" th:value="${cita.fecha}">
-                        <input type="hidden" name="medicoId" th:value="${medico.id}">
-                        <button type="submit" class="btn-confirm">Confirm</button>
-                    </form>
-                    <a th:href="@{/presentation/medicos/list}" class="btn-cancel">Cancel</a>
-                </div>
+    <!-- Sección de perfil (tarjeta de confirmación) -->
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="profile-image-container">
+                <!-- Imagen del doctor -->
+                <img th:src="@{${medico.usuario.getFoto()}}" alt="Doctor" class="doctor-avatar">
             </div>
+            <!-- Datos del doctor -->
+            <h2 class="title" th:text="${medico.usuario.getNombre()}">Nombre del Doctor</h2>
+            <p class="doctor-specialty" th:text="${medico.especialidad}">Especialidad</p>
+            <p class="appointment-date" th:text="${#temporals.format(cita.fecha, 'dd MMM yyyy - HH:mm')}">Fecha y hora</p>
+            <p class="medical-center" th:text="${medico.hospital + ' @ ' + medico.ciudad}">Centro médico</p>
+            <p class="appointment-cost" th:text="${medico.costoConsulta}">Costo de consulta</p>
+
+            <div class="action-buttons" style="display: flex; justify-content: space-around; margin-top: 20px;">
+                <form th:action="@{/presentation/citas/confirm}" method="post">
+                    <input type="hidden" name="fechaCita" th:value="${cita.fecha}">
+                    <input type="hidden" name="medicoId" th:value="${medico.id}">
+                    <button type="submit" class="btn-confirm">Confirmar Cita</button>
+                </form>
+                <a th:href="@{/presentation/medicos/list}" class="btn-cancel">Cancelar</a>
+            </div>
+
         </div>
-    </section>
+    </div>
 </div>
 
 <footer th:replace="presentation/fragments/fragments :: footer"></footer>
