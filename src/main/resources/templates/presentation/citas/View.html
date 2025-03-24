@@ -15,10 +15,9 @@
     Patient - <span class="patient-name">Bruce Banner</span> - appointments
   </h1>
 
-  <!-- Sección de filtro / búsqueda -->
+  <!-- Filter Section -->
   <div class="search-section">
     <form action="#" method="post" class="search-form">
-      <!-- Filtro por estado -->
       <div class="search-field">
         <select class="form-control">
           <option value="">All</option>
@@ -27,9 +26,15 @@
           <option value="Cancelled">Cancelled</option>
         </select>
       </div>
-      <!-- Búsqueda por nombre de Doctor -->
       <div class="search-field">
-        <input type="text" class="form-control" placeholder="Doctor">
+        <select class="form-control">
+          <option value="">All</option>
+          <option value="Fecha ascendente">Mas reciente</option>
+          <option value="Fecha descendente">Menos reciente</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <input type="text" class="form-control" placeholder="Paciente">
       </div>
       <button type="submit" class="btn-search">Search</button>
     </form>
