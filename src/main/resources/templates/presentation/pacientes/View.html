@@ -14,29 +14,29 @@
     </h1>
 
     <!-- Filter Section -->
-    <div class="search-section">
-        <form th:action="@{/list}" method="post" class="search-form">
-            <div class="search-field">
-                <select name="estado" class="form-control">
-                    <option value="">All</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Attended">Attended</option>
-                    <option value="Cancelled">Cancelled</option>
-                </select>
-            </div>
-            <div class="search-field">
-                <select name="orden" class="form-control">
-                    <option value="">All</option>
-                    <option value="asc">Mas reciente</option>
-                    <option value="desc">Menos reciente</option>
-                </select>
-            </div>
-            <div class="search-field">
-                <input type="text" name="paciente" class="form-control" placeholder="Paciente">
-            </div>
-            <button type="submit" class="btn-search">Search</button>
-        </form>
-    </div>
+<div class="search-section">
+    <form th:action="@{/presentation/pacientes/search}" method="post" class="search-form" th:object="${citasSearch}">
+        <div class="search-field">
+            <select name="estado" class="form-control">
+                <option value="">All</option>
+                <option value="Pendiente" th:selected="${citasSearch.estado == 'Pendiente'}">Pending</option>
+                <option value="Atendida" th:selected="${citasSearch.estado == 'Atendida'}">Attended</option>
+                <option value="Cancelada" th:selected="${citasSearch.estado == 'Cancelada'}">Cancelled</option>
+            </select>
+        </div>
+        <div class="search-field">
+            <select name="orden" class="form-control">
+                <option value="">All</option>
+                <option value="asc" th:selected="${orden == 'asc'}">Mas reciente</option>
+                <option value="desc" th:selected="${orden == 'desc'}">Menos reciente</option>
+            </select>
+        </div>
+        <div class="search-field">
+            <input type="text" name="paciente" class="form-control" placeholder="Paciente" th:value="${paciente}">
+        </div>
+        <button type="submit" class="btn-search">Search</button>
+    </form>
+</div>
 
     <!-- Appointment List -->
     <div th:if="${not #lists.isEmpty(citasList)}" th:each="cita : ${citasList}" class="appointment-card">
