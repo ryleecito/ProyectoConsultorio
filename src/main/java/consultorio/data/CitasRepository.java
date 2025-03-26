@@ -17,4 +17,24 @@ public interface CitasRepository extends JpaRepository<Cita, Integer> {
     List<Cita> findByFecha(@NotNull LocalDateTime fecha);
 
     Cita findByFechaAndMedicoId(LocalDateTime fechaCita, String medicoId);
+
+    List<Cita> findByEstadoOrderByFechaDesc(String estado);
+
+    List<Cita> findAllByOrderByFechaDesc();
+
+    List<Cita> findAllByOrderByFechaAsc();
+
+    List<Cita> findByEstado(String estado);
+
+    List<Cita> findByEstadoOrderByFechaAsc(String estado);
+
+    List<Cita> findByPacienteUsuarioNombreOrderByFechaDesc(String paciente);
+
+    List<Cita> findByPacienteUsuarioNombreOrderByFechaAsc(String paciente);
+
+    List<Cita> findByEstadoAndPacienteUsuarioNombre(String estado, String paciente);
+
+    List<Cita> findByEstadoAndPacienteUsuarioNombreOrderByFechaDesc(String estado, String paciente);
+
+    List<Cita> findByEstadoAndPacienteUsuarioNombreOrderByFechaAsc(String estado, String paciente);
 }
