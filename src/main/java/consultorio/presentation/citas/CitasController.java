@@ -11,9 +11,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
+@SessionAttributes ({"citasSearch"})
 @RequestMapping("/presentation/citas")
+
 public class CitasController {
 
     @Autowired
@@ -75,4 +78,21 @@ public class CitasController {
             return "redirect:/presentation/medicos/list";
         }
     }
+    @GetMapping("/list")
+    public String listPacientes(Model model, HttpSession session) {
+        String usuarioId = (String) session.getAttribute("usuarioId");
+        String usuarioRol = (String) session.getAttribute("usuarioRol");
+
+        if (usuarioRol.equals("MEDICO")) {
+            List<Cita> citas = service.buscarCitasIdMedico(usuarioId);
+            model.addAttribute("citasList", citas);
+            // Retornar directamente la vista sin "redirect:"
+            return "presentation/pacientes/View";
+        } else {
+            model.addAttribute("citasList", service.buscarCitasIdPaciente(usuarioId));
+            // Retornar directamente la vista sin "redirect:"
+            return "presentation/citas/show";
+        }
+    }
+
 }

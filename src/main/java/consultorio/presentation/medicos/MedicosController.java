@@ -79,6 +79,22 @@ public class MedicosController {
      * @param semanaParam Parámetro opcional para especificar la semana
      */
     private void prepararDatosMedicos(List<Medico> medicos, Model model, String semanaParam) {
+
+        List<Medico> medicosFiltrados = new ArrayList<>();
+
+        for (Medico medico : medicos) {
+            // Verificar que el médico tenga email y slots configurados
+            if (medico != null &&
+                    medico.getEmail() != null &&
+                    !medico.getEmail().isEmpty() &&
+                    medico.getSlots() != null &&
+                    !medico.getSlots().isEmpty()) {
+
+                medicosFiltrados.add(medico);
+            }
+        }
+
+
         LocalDate fechaInicio;
 
         // Obtener weekOffset del modelo o usar 0 por defecto
@@ -117,8 +133,7 @@ public class MedicosController {
         Map<String, List<List<Cita>>> citasPorMedico = new HashMap<>();
 
         // Para cada médico, obtener sus citas
-        for (Medico medico : medicos) {
-            service.buscarMedicoPorId(medico.getId());
+        for (Medico medico : medicosFiltrados) {
 
             List<List<Cita>> citasDeLaSemana = medico.obtenerCitasDeLaSemana(inicioSemana);
 
@@ -140,7 +155,7 @@ public class MedicosController {
         }
 
         // Agregar datos al modelo
-        model.addAttribute("medicoSearch", medicos);
+        model.addAttribute("medicoSearch", medicosFiltrados);
         model.addAttribute("citasPorMedico", citasPorMedico);
         model.addAttribute("fechaInicio", fechaInicioTime);
         model.addAttribute("fechaInicioFormateada", fechaInicioFormateada);

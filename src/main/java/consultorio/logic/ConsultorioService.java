@@ -9,13 +9,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -136,7 +136,6 @@ public class ConsultorioService {
     }
 
 
-
     public void actualizarMedico(Medico medico) {
         medicoRepository.save(medico);
     }
@@ -178,5 +177,45 @@ public class ConsultorioService {
     }
 
 
+    public List<Cita> buscarCitasIdMedico(String usuarioId) {
+        return citasRepository.findByMedicoId(usuarioId);
+    }
 
+    public Object buscarCitasIdPaciente(String usuarioId) {
+        return citasRepository.findByPacienteId(usuarioId);
+    }
+
+    public List<Cita> citasSearch(String estado, String orden, String paciente) {
+        if ((estado == null || estado.isEmpty()) && (orden == null || orden.isEmpty()) && (paciente == null || paciente.isEmpty())) {
+            return citasRepository.findAll();
+        }
+
+        if (estado == null || estado.isEmpty()) {
+            if ("desc".equalsIgnoreCase(orden)) {
+                return paciente == null || paciente.isEmpty() ?
+                    citasRepository.findAllByOrderByFechaDesc() :
+                    citasRepository.findByPacienteUsuarioNombreOrderByFechaDesc(paciente);
+            } else {
+                return paciente == null || paciente.isEmpty() ?
+                    citasRepository.findAllByOrderByFechaAsc() :
+                    citasRepository.findByPacienteUsuarioNombreOrderByFechaAsc(paciente);
+            }
+        }
+
+        if (orden == null || orden.isEmpty()) {
+            return paciente == null || paciente.isEmpty() ?
+                citasRepository.findByEstado(estado) :
+                citasRepository.findByEstadoAndPacienteUsuarioNombre(estado, paciente);
+        }
+
+        if ("desc".equalsIgnoreCase(orden)) {
+            return paciente == null || paciente.isEmpty() ?
+                citasRepository.findByEstadoOrderByFechaDesc(estado) :
+                citasRepository.findByEstadoAndPacienteUsuarioNombreOrderByFechaDesc(estado, paciente);
+        } else {
+            return paciente == null || paciente.isEmpty() ?
+                citasRepository.findByEstadoOrderByFechaAsc(estado) :
+                citasRepository.findByEstadoAndPacienteUsuarioNombreOrderByFechaAsc(estado, paciente);
+        }
+    }
 }
