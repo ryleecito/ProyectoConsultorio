@@ -7,14 +7,14 @@
 <body>
 <header th:replace="presentation/fragments/fragments :: header"></header>
 
-<!-- ✅ Mensaje de éxito al iniciar sesión -->
+
 <div th:if="${successMessage}" class="success-message">
   <p th:text="${successMessage}"></p>
 </div>
 
-<!-- Main Content -->
+
 <div class="container">
-  <!-- Navigation Controls -->
+
   <div class="navigation-controls">
     <a th:href="@{'/presentation/medicos/show'}" class="btn-back">← Go Back</a>
     <div class="week-navigation">
@@ -24,7 +24,6 @@
     </div>
   </div>
 
-  <!-- Doctor Details Section -->
   <section class="results-section">
     <div class="doctor-card">
       <div class="doctor-info">
@@ -58,7 +57,7 @@
               </div>
               <div class="time-slots">
                 <th:block th:each="cita : ${dia}">
-                  <!-- Citas disponibles con enlace -->
+
                   <a th:if="${cita.estado == 'Disponible'}"
                      th:href="@{/presentation/medicos/appointment-details(
                            medicoId=${medico.id},
@@ -69,7 +68,7 @@
                      th:data-medico-id="${medico.id}">
                     Hora
                   </a>
-                  <!-- Citas pendientes en gris sin enlace -->
+
                   <span th:if="${cita.estado == 'Pendiente'}"
                         class="time-slot pendiente"
                         th:text="${#temporals.format(cita.fecha, 'HH:mm')}"

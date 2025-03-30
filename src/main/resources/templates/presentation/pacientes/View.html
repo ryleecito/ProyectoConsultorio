@@ -7,13 +7,13 @@
 <body>
 <header th:replace="presentation/fragments/fragments :: header"></header>
 
-<!-- Main Content -->
+
 <div class="container">
     <h1 class="patient-header">
         Doctor - <span class="patient-name" th:text="${session.usuarioId}">Stan Lee</span> - appointment history
     </h1>
 
-    <!-- Filter Section -->
+
 <div class="search-section">
     <form th:action="@{/presentation/pacientes/search}" method="post" class="search-form" th:object="${citasSearch}">
         <div class="search-field">
@@ -38,7 +38,7 @@
     </form>
 </div>
 
-    <!-- Appointment List -->
+
     <div th:if="${not #lists.isEmpty(citasList)}" th:each="cita : ${citasList}" class="appointment-card">
         <div class="patient-column">
             <img th:src="@{${cita.paciente.usuario.getFoto()}}" alt="Doctor" class="doctor-avatar">
@@ -75,7 +75,7 @@
             </div>
         </div>
 
-        <!-- Notes section -->
+
         <div class="doctor-notes-section">
             <form th:action="@{/citas/guardarNotasMedico}" method="post">
                 <label for="notasMedico">Anotaciones:</label>
@@ -86,7 +86,7 @@
         </div>
     </div>
 
-    <!-- Empty message if no appointments -->
+
     <div th:if="${#lists.isEmpty(citasList)}" class="empty-message" style="text-align: center; padding: 30px; background-color: #f8f9fa; border-radius: 8px; margin: 20px 0;">
         <i class="fa-solid fa-calendar-xmark" style="font-size: 48px; color: #6c757d; margin-bottom: 15px;"></i>
         <h3>No hay citas disponibles</h3>

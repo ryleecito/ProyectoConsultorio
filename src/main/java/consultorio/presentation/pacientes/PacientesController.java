@@ -47,12 +47,12 @@ public class PacientesController {
     ) {
         List<Cita> resultados = service.citasSearch(citasSearch.getEstado(), orden, paciente);
 
-        // Si no hay resultados, asignar lista vacía
+
         if (resultados == null) {
             resultados = new ArrayList<>();
         }
 
-        // Agregar los parámetros de búsqueda al modelo para mantenerlos
+
         model.addAttribute("citasList", resultados);
         model.addAttribute("citasSearch", citasSearch);
         model.addAttribute("orden", orden);

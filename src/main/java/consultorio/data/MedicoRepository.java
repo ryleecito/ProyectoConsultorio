@@ -17,7 +17,6 @@ public interface MedicoRepository extends JpaRepository<Medico, String>{
 
     List<Medico> findByEspecialidadAndCiudad(String especialidad, String ciudad);
 
-    // Si tu ID es String, puedes usar esto para buscar por ID
     Optional<Medico> findById(String id);
 
     @Query("SELECT m FROM Medico m LEFT JOIN FETCH m.slots WHERE m.id = :id")
