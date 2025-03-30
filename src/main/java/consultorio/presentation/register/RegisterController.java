@@ -44,7 +44,7 @@ public class RegisterController {
     private String picturesPath;
 
     @PersistenceContext
-    private EntityManager entityManager; // Inyección de EntityManager// ✅ Inyectamos PasswordEncoder para encriptar contraseñas
+    private EntityManager entityManager;
 
     @GetMapping("/show")
     public String showRegister() {
@@ -69,17 +69,14 @@ public class RegisterController {
         System.out.println(password);
         System.out.println(nombre);
 
-
-        //Crear un nuevo usuario
         Usuario usuario = new Usuario();
         usuario.setId(id);
         usuario.setPassword(password);
         usuario.setNombre(nombre);
         usuario.setRol(rol.equalsIgnoreCase("Medico") ? "MEDICO" : "PACIENTE");
 
-        // 🔹 Establecer estado en PENDIENTE si es médico, ACTIVO si es paciente
-        usuario.setEstado(rol.equalsIgnoreCase("Medico") ? "PENDIENTE" : "ACTIVO");
 
+        usuario.setEstado(rol.equalsIgnoreCase("Medico") ? "PENDIENTE" : "ACTIVO");
         usuario.setFechaRegistro(java.time.Instant.now());
 
         String userId = (String) session.getAttribute("usuarioId");
@@ -95,24 +92,20 @@ public class RegisterController {
                 String fileName = id + fileExtension;
 
 
-                String uploadDir = picturesPath;  // This will be C:/AAA/images/
+                String uploadDir = picturesPath;
                 Path uploadPath = Paths.get(uploadDir);
 
-                // Create directory if it doesn't exist
+
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
 
-                // Save the file
                 Path filePath = uploadPath.resolve(fileName);
                 Files.copy(profilePhoto.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-                // Store the relative path in the database
                 usuario.setFoto("/image/"+fileName);
-
             } catch (IOException e) {
                 e.printStackTrace();
-                // Handle error
+
             }
         }
 
@@ -131,9 +124,9 @@ public class RegisterController {
             if (pacienteOptional.isEmpty()) {
                 Paciente paciente = new Paciente();
                 paciente.setId(usuarioPaciente.getId());
-                paciente.setDireccion("");
-                paciente.setTelefono("");
-                paciente.setEmail(""); // Set the email correctly
+                paciente.setDireccion("PREDET");
+                paciente.setTelefono("PREDET");
+                paciente.setEmail("PREDET");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 LocalDate fechaNacimiento = LocalDate.parse("01-01-2000", formatter);
                 paciente.setFechaNacimiento(fechaNacimiento);
@@ -141,7 +134,7 @@ public class RegisterController {
                 pacientesRepository.save(paciente);
             }
 
-            // Ahora sincronizamos la base de datos
+
             entityManager.flush();
             entityManager.refresh(usuarioPaciente);
         }

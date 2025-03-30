@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show", "/presentation/register/process", "/presentation/medicos/**","/presentation/medicos/list", "/presentation/about/**").permitAll()
                         .requestMatchers("/css/**", "/images/**", "/js/**","/image/**").permitAll() // ✅ Archivos estáticos
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN") // 🔒 Solo Admins pueden acceder
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN") //  
                         .requestMatchers("/profile/paciente/**").hasAuthority("PACIENTE")
                         .requestMatchers("/admin/medicos-pendientes").hasAuthority("ADMIN")
                         .requestMatchers("/presentation/profile/medico", "presentation/profile/profileMedico", "presentation/citas/list").hasAuthority("MEDICO")
@@ -49,25 +49,24 @@ public class SecurityConfig {
                         .loginProcessingUrl("/login")
                         .failureUrl("/presentation/login/show?error=true&errorMessage=Perfil no existente")
                         .successHandler((HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
-                            // Obtener el rol y estado del usuario desde la sesión
+
                             String usuarioRol = (String) request.getSession().getAttribute("usuarioRol");
                             String usuarioEstado = (String) request.getSession().getAttribute("usuarioEstado");
                             String usuarioId = (String) request.getSession().getAttribute("usuarioId");
 
-                            // Verificar si el rol es válido
+
                             if (usuarioRol == null) {
                                 System.out.println("No se encontró el rol en la sesión. Redirigiendo a la página de inicio.");
                                 response.sendRedirect("/");
                                 return;
                             }
 
-                            // Construir la URL de redirección según el rol
                             String redirectUrl;
                             switch (usuarioRol) {
                                 case "MEDICO":
 
                                     if (Objects.equals(usuarioEstado, "ACTIVO")) {
-                                        if(medicoRepository.findByIdWithSlots(usuarioId).getEmail().isEmpty()) {
+                                        if(Objects.equals(medicoRepository.findByIdWithSlots(usuarioId).getEmail(), "PREDET")) {
                                             redirectUrl = "/presentation/profile/medico";
                                         }
                                         else
@@ -83,8 +82,7 @@ public class SecurityConfig {
                                     redirectUrl = "/admin/medicos-pendientes";
                                     break;
                                 case "PACIENTE":
-
-                                    if(pacientesRepository.findById(usuarioId).get().getEmail().isEmpty()) {
+                                    if(Objects.equals(pacientesRepository.findById(usuarioId).get().getEmail(), "PREDET")) {
                                         redirectUrl = "/presentation/profile/paciente";
                                     }
                                     else
@@ -103,8 +101,8 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/presentation/logout")  // Change to match your link URL
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/presentation/logout", "GET"))  // Allow GET
+                        .logoutUrl("/presentation/logout")
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/presentation/logout", "GET"))
                         .logoutSuccessUrl("/presentation/login/show?logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
