@@ -8,16 +8,15 @@
 <body>
 <header th:replace="presentation/fragments/fragments :: header"></header>
 
-<!-- Contenedor principal -->
 <div class="container">
-    <!-- Sección de perfil (tarjeta de confirmación) -->
+
     <div class="profile-container">
         <div class="profile-card">
             <div class="profile-image-container">
-                <!-- Imagen del doctor -->
+
                 <img th:src="@{${medico.usuario.getFoto()}}" alt="Doctor" class="doctor-avatar">
             </div>
-            <!-- Datos del doctor -->
+
             <h2 class="title" th:text="${medico.usuario.getNombre()}">Nombre del Doctor</h2>
             <p class="doctor-specialty" th:text="${medico.especialidad}">Especialidad</p>
             <p class="appointment-date" th:text="${#temporals.format(cita.fecha, 'dd MMM yyyy - HH:mm')}">Fecha y hora</p>

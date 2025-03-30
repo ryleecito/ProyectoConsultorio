@@ -24,17 +24,17 @@
 
     <h1 class="title">Gestión del Perfil del Médico</h1>
 
-    <!-- Mensaje de éxito -->
+
     <div th:if="${param.success}" class="success-message">
       <p>Perfil actualizado correctamente.</p>
     </div>
 
-    <!-- Formulario para actualizar datos del médico -->
+
     <form th:action="@{/presentation/profile/medico/update}" method="post" class="profile-form" enctype="multipart/form-data">
       <div class="form-grid">
         <div class="form-group">
           <label for="email">Email:</label>
-          <input type="email" id="email" name="email" th:value="${medico.email}" required>
+          <input type="email" id="email" name="email" th:value="${medico.email == 'PREDET' ? '' : medico.email}">
         </div>
         <div class="form-group">
           <label for="especialidad">Especialidad:</label>
@@ -67,19 +67,19 @@
         </div>
         <div class="form-group">
           <label for="costo_consulta">Costo Consulta:</label>
-          <input type="number" id="costo_consulta" name="costo_consulta" th:value="${medico.costoConsulta}" required>
+          <input type="number" id="costo_consulta" name="costo_consulta" th:value="${medico.costoConsulta != null && medico.costoConsulta.intValue() == -1 ? '' : medico.costoConsulta}">
         </div>
         <div class="form-group">
           <label for="duracion_cita">Duración Cita (minutos):</label>
-          <input type="number" id="duracion_cita" name="duracion_cita" th:value="${medico.duracionCita}" required>
+          <input type="number" id="duracion_cita" name="duracion_cita" th:value="${medico.duracionCita != null && medico.duracionCita == -1 ? '' : medico.duracionCita}">
         </div>
         <div class="form-group">
           <label for="hospital">Hospital:</label>
-          <input type="text" id="hospital" name="hospital" th:value="${medico.hospital}" required>
+          <input type="text" id="hospital" name="hospital" th:value="${medico.hospital == 'PREDET' ? '' : medico.hospital}">
         </div>
         <div class="form-group">
           <label for="telefono">Teléfono:</label>
-          <input type="text" id="telefono" name="telefono" th:value="${medico.telefono}" required>
+          <input type="text" id="telefono" name="telefono" th:value="${medico.telefono == 'PREDET' ? '' : medico.telefono}">
         </div>
         <div class="form-group">
           <label for="profilePhoto">Foto de Perfil:</label>
@@ -87,13 +87,11 @@
         </div>
       </div>
 
-
       <div class="form-group form-submit">
         <button type="submit" class="btn-save">Guardar Cambios</button>
       </div>
     </form>
 
-    <!-- Sección para agregar disponibilidad (slot) -->
     <div class="slot-section">
       <h2>Agregar Disponibilidad</h2>
       <form th:action="@{/presentation/profile/medico/slot}" method="post" class="slot-form">
@@ -126,7 +124,7 @@
 
     <div class="slot-list">
       <h2>Horarios Disponibles</h2>
-      <!-- Si hay slots -->
+
       <div th:if="${slots != null and #lists.size(slots) > 0}">
         <table>
           <thead>
@@ -249,10 +247,6 @@
       <div th:unless="${slots != null and #lists.size(slots) > 0}">
         <p>No hay horarios agregados.</p>
       </div>
-    </div>
-
-
-
     </div>
   </div>
 </main>

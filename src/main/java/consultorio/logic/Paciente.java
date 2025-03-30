@@ -1,6 +1,7 @@
 package consultorio.logic;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.OnDelete;
@@ -14,18 +15,20 @@ import java.util.Set;
 @Table(name = "pacientes")
 public class Paciente {
     @Id
-    @Size(max = 20)
+    @NotBlank(message = "El ID no puede estar vacío")
+    @Size(max = 20, message = "El ID no puede tener más de 20 caracteres")
     @Column(name = "id", nullable = false, length = 20)
     private String id;
 
-    @Size(max = 20)
+    @Size(max = 20, message = "El teléfono no puede tener más de 20 caracteres")
+    @NotNull(message = "El teléfono no puede estar vacio")
     @Column(name = "telefono", length = 20)
     private String telefono;
 
-    @Size(max = 200)
+    @Size(max = 200, message = "La dirección no puede tener más de 200 caracteres")
+    @NotNull(message = "La direccion no puede estar vacia")
     @Column(name = "direccion", length = 200)
     private String direccion;
-
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Cita> citas = new LinkedHashSet<>();
@@ -36,8 +39,9 @@ public class Paciente {
     @JoinColumn(name = "id", referencedColumnName = "id")
     private Usuario usuario;
 
-    @Size(max = 100)
-    @NotNull
+    @NotBlank(message = "El email no puede estar vacío")
+    @Size(max = 100, message = "El email no puede tener más de 100 caracteres")
+    @NotNull(message = "El email es obligatorio")
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 

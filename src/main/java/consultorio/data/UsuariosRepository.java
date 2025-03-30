@@ -24,7 +24,6 @@ public interface UsuariosRepository extends JpaRepository<Usuario, String> {
     @Query("UPDATE Usuario u SET u.estado = :estado WHERE u.id = :id")
     void updateEstado(@Size(max = 20) String id, @NotNull String estado);
 
-    // ✅ Corrección: Declaración correcta del método para buscar usuario por nombre de usuario
     Optional<Usuario> findById(String id);
 
 

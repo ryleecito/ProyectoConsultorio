@@ -10,6 +10,6 @@ public class AboutController {
 
     @GetMapping("/show")
     public String about() {
-        return "presentation/about/about"; // Indicamos la ruta completa dentro de templates/
+        return "presentation/about/about";
     }
 }

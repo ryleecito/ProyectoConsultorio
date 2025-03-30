@@ -3,23 +3,23 @@
 <head th:replace="presentation/fragments/fragments :: head">
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/autentificacion.css">
-  <title>Patient - Bruce Banner - appointments</title>
+  <title>Patient - appointments</title>
 </head>
 <body>
 <header th:replace="presentation/fragments/fragments :: header"></header>
 
-<!-- Main Content -->
+
 <div class="container">
-  <!-- Encabezado con el nombre y rol -->
+
   <h1 class="patient-header">
-    Patient - <span class="patient-name">Bruce Banner</span> - appointments
+    Patient - <span class="patient-name" th:text="${nombrePaciente}">Bruce Banner</span> - appointments
   </h1>
 
-  <!-- Filter Section -->
+
   <div class="search-section">
-    <form action="#" method="post" class="search-form">
+    <form th:action="@{/presentation/citas/search}" method="post" class="search-form">
       <div class="search-field">
-        <select class="form-control">
+        <select class="form-control" name="estado">
           <option value="">All</option>
           <option value="Pending">Pending</option>
           <option value="Attended">Attended</option>
@@ -27,85 +27,72 @@
         </select>
       </div>
       <div class="search-field">
-        <select class="form-control">
+        <select class="form-control" name="orden">
           <option value="">All</option>
-          <option value="Fecha ascendente">Mas reciente</option>
-          <option value="Fecha descendente">Menos reciente</option>
+          <option value="asc">Más reciente</option>
+          <option value="desc">Menos reciente</option>
         </select>
       </div>
       <div class="search-field">
-        <input type="text" class="form-control" placeholder="Paciente">
+        <input type="text" class="form-control" name="filtroPaciente" placeholder="Paciente">
       </div>
       <button type="submit" class="btn-search">Search</button>
     </form>
   </div>
 
-  <!-- Listado de citas -->
+
   <div class="appointment-list">
-    <!-- Cita 1 (Ejemplo) -->
-    <div class="appointment-card">
+
+    <div th:each="cita : ${citasList}" class="appointment-card">
+
       <div class="doctor-column">
-        <!-- Avatar del médico -->
-        <img src="/images/doctor1.jpg" alt="Doctor" class="doctor-avatar">
+
+        <img th:src="@{${cita.medico.foto}}" alt="Doctor" class="doctor-avatar">
         <div class="doctor-details">
           <div class="doctor-name">
-            <b>George Lucas</b>
-            <span class="doctor-cost">₡70,000</span>
+
+            <b th:text="${cita.medico.nombre}">George Lucas</b>
+
+            <span class="doctor-cost" th:text="${cita.medico.costoConsulta}">₡70,000</span>
           </div>
-          <div class="doctor-specialty">Neurology</div>
+          <div class="doctor-specialty" th:text="${cita.medico.especialidad}">Neurology</div>
           <div class="doctor-location">
-            Brain Center <span class="at-symbol">@</span> Cartago
+            <span th:text="${cita.medico.hospital}">Brain Center</span>
+            <span class="at-symbol">@</span>
+            <span th:text="${cita.medico.ciudad}">Cartago</span>
           </div>
         </div>
       </div>
 
-      <!-- Fecha de la cita -->
+
       <div class="appointment-date-column">
-        <span class="appointment-date">19/02/2025 - 15:00</span>
+        <span class="appointment-date"
+              th:text="${#temporals.format(cita.fecha, 'dd/MM/yyyy - HH:mm')}">
+          19/02/2025 - 15:00
+        </span>
       </div>
 
-      <!-- Estado de la cita -->
+
       <div class="appointment-status-column">
-        <div class="appointment-status pending">Pending</div>
+        <div class="appointment-status"
+             th:classappend="${cita.estado == 'Pending'} ? ' pending'
+                             : (cita.estado == 'Attended' ? ' attended' : ' cancelled')"
+             th:text="${cita.estado}">
+          Pending
+        </div>
       </div>
 
-      <!-- Botón de acción (Cancelar o Ver, según tu lógica) -->
+
       <div class="view-button-column">
-        <a href="#" class="btn-view">
+
+        <a th:href="@{/presentation/citas/cancel/{id}(id=${cita.id})}" class="btn-view">
           <i class="fa-solid fa-ban"></i> Cancel
         </a>
       </div>
     </div>
 
-    <!-- Cita 2 (Ejemplo) -->
-    <div class="appointment-card">
-      <div class="doctor-column">
-        <img src="/images/doctor2.jpg" alt="Doctor" class="doctor-avatar">
-        <div class="doctor-details">
-          <div class="doctor-name">
-            <b>Stan Lee</b>
-            <span class="doctor-cost">₡50,000</span>
-          </div>
-          <div class="doctor-specialty">Dermatology</div>
-          <div class="doctor-location">
-            Derma Clinic <span class="at-symbol">@</span> San José
-          </div>
-        </div>
-      </div>
-
-      <div class="appointment-date-column">
-        <span class="appointment-date">12/02/2025 - 15:30</span>
-      </div>
-
-      <div class="appointment-status-column">
-        <div class="appointment-status attended">Attended</div>
-      </div>
-
-      <div class="view-button-column">
-        <a href="#" class="btn-view">
-          <i class="fa-solid fa-ban"></i> Cancel
-        </a>
-      </div>
+    <div th:if="${#lists.isEmpty(citasList)}">
+      <p>No se encontraron citas.</p>
     </div>
   </div>
 </div>
