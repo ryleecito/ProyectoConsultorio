@@ -27,26 +27,28 @@
       <p>Perfil actualizado correctamente.</p>
     </div>
 
-    <form th:action="@{/presentation/profile/paciente/update}" method="post" class="profile-form" enctype="multipart/form-data">
+    <form th:action="@{/presentation/profile/paciente/update}" method="post" th:object="${paciente}" class="profile-form" enctype="multipart/form-data">
+      <input type="hidden" th:field="*{id}" />
+
       <div class="form-grid">
 
         <div class="form-group">
           <label for="email">Email:</label>
-          <input type="email" id="email" name="email" th:value="${paciente.email == 'PREDET' ? '' : paciente.email}" required>
+          <input type="email" id="email" th:field="*{email}" />
+          <span class="validation-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
         </div>
-
 
         <div class="form-group">
           <label for="telefono">Teléfono:</label>
-          <input type="text" id="telefono" name="telefono" th:value="${paciente.telefono == 'PREDET' ? '' : paciente.telefono}" required>
+          <input type="text" id="telefono" th:field="*{telefono}" />
+          <span class="validation-message" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></span>
         </div>
-
 
         <div class="form-group">
           <label for="direccion">Dirección:</label>
-          <input type="text" id="direccion" name="direccion" th:value="${paciente.direccion == 'PREDET' ? '' : paciente.direccion}" required>
+          <input type="text" id="direccion" th:field="*{direccion}" />
+          <span class="validation-message" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></span>
         </div>
-
 
         <div class="form-group">
           <label for="profilePhoto">Foto de Perfil:</label>

@@ -444,3 +444,12 @@ input[type="file"].input-box {
 .btn-cancel:hover {
     background-color: #c82333;
 }
+
+.validation-message {
+    color: #dc3545;
+    font-size: 13px;
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: -10px;
+    padding-left: 5px;
+}
