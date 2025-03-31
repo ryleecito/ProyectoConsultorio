@@ -80,17 +80,20 @@ public class ConsultorioService {
         }
         usuarioMedico.setEstado("ACTIVO");
 
+
         Optional<Medico> medicoOptional = medicoRepository.findById(id);
         if (medicoOptional.isEmpty()) {
             Medico medico = new Medico();
             medico.setId(id);
             medico.setCiudad("PREDET");
             medico.setEspecialidad("PREDET");
-            medico.setCostoConsulta(BigDecimal.valueOf(0));
+            medico.setCostoConsulta(BigDecimal.valueOf(1));
             medico.setDuracionCita(30);
             medico.setHospital("PREDET");
             medico.setEmail("PREDET");
             medico.setUsuario(usuarioMedico);
+            medico.setTelefono("PREDET");
+
 
             medicoRepository.save(medico);
         }
@@ -178,40 +181,40 @@ public class ConsultorioService {
             if ("desc".equalsIgnoreCase(orden)) {
                 return paciente == null || paciente.isEmpty() ?
                         citasRepository.findAllByOrderByFechaDesc() :
-                        citasRepository.findByPacienteUsuarioNombreOrderByFechaDesc(paciente);
+                        citasRepository.findByPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaDesc(paciente);
             } else {
                 return paciente == null || paciente.isEmpty() ?
                         citasRepository.findAllByOrderByFechaAsc() :
-                        citasRepository.findByPacienteUsuarioNombreOrderByFechaAsc(paciente);
+                        citasRepository.findByPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaAsc(paciente);
             }
         }
         if (orden == null || orden.isEmpty()) {
             return paciente == null || paciente.isEmpty() ?
                     citasRepository.findByEstado(estado) :
-                    citasRepository.findByEstadoAndPacienteUsuarioNombre(estado, paciente);
+                    citasRepository.findByEstadoAndPacienteUsuarioNombreContainingIgnoreCase(estado, paciente);
         }
         if ("desc".equalsIgnoreCase(orden)) {
             return paciente == null || paciente.isEmpty() ?
                     citasRepository.findByEstadoOrderByFechaDesc(estado) :
-                    citasRepository.findByEstadoAndPacienteUsuarioNombreOrderByFechaDesc(estado, paciente);
+                    citasRepository.findByEstadoAndPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaDesc(estado, paciente);
         } else {
             return paciente == null || paciente.isEmpty() ?
                     citasRepository.findByEstadoOrderByFechaAsc(estado) :
-                    citasRepository.findByEstadoAndPacienteUsuarioNombreOrderByFechaAsc(estado, paciente);
+                    citasRepository.findByEstadoAndPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaAsc(estado, paciente);
         }
     }
 
-    public List<Cita> citasSearchMedico(String estado,String medico) {
-        if ((estado == null || estado.isEmpty()) &&  (medico == null || medico.isEmpty())) {
+    public List<Cita> citasSearchMedico(String estado, String medico) {
+        if ((estado == null || estado.isEmpty()) && (medico == null || medico.isEmpty())) {
             return citasRepository.findAllByOrderByFechaAsc();
         }
-        if(estado == null || estado.isEmpty()){
-            return citasRepository.findByMedicoUsuarioNombre(medico);
+        if (estado == null || estado.isEmpty()) {
+            return citasRepository.findByMedicoUsuarioNombreContainingIgnoreCase(medico);
         }
-        if(medico == null || medico.isEmpty()){
+        if (medico == null || medico.isEmpty()) {
             return citasRepository.findByEstado(estado);
         }
-        return citasRepository.findByEstadoAndMedicoId(estado,medico);
+        return citasRepository.findByEstadoAndMedicoUsuarioNombreContainingIgnoreCase(estado, medico);
     }
     
     

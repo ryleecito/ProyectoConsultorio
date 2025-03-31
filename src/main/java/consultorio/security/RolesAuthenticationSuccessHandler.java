@@ -1,4 +1,6 @@
 package consultorio.security;
+
+
 import consultorio.data.MedicoRepository;
 import consultorio.data.PacientesRepository;
 import consultorio.logic.ConsultorioService;
@@ -14,6 +16,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -23,12 +26,16 @@ import java.util.Set;
 public class RolesAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler
 implements AuthenticationSuccessHandler {
 
-   @Autowired
-   public ConsultorioService service;
 
-    public RolesAuthenticationSuccessHandler() {
+    public MedicoRepository medicoRepository;
+
+    public PacientesRepository pacientesRepository;
+
+    public RolesAuthenticationSuccessHandler(MedicoRepository medicoRep, PacientesRepository pacientesRep) {
         super();
         this.setAlwaysUseDefaultTargetUrl(false);
+        medicoRepository = medicoRep;
+        pacientesRepository = pacientesRep;
     }
 
     @Override
@@ -52,7 +59,7 @@ implements AuthenticationSuccessHandler {
 
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
         if (roles.contains("PACIENTE")){
-            if(Objects.equals(service.buscarPacientePorId(usuarioId).getEmail(), "PREDET")) {
+            if(Objects.equals(pacientesRepository.findById(usuarioId).get().getEmail(), "PREDET")) {
                 response.sendRedirect("/presentation/profile/paciente");
                 }
             else
@@ -62,7 +69,7 @@ implements AuthenticationSuccessHandler {
         }
         else if (roles.contains("MEDICO")){
             if (Objects.equals(usuarioEstado, "ACTIVO")) {
-                if(Objects.equals(service.medicoEncontrarIdSlots(usuarioId).getEmail(), "PREDET")) {
+                if(Objects.equals(medicoRepository.findByIdWithSlots(usuarioId).getEmail(), "PREDET")) {
                     response.sendRedirect("/presentation/profile/medico");
                 }
                 else
