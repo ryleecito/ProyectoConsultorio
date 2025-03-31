@@ -142,6 +142,9 @@ public class ConsultorioService {
         return pacientesRepository.findById(id).orElse(null);
     }
 
+
+
+
     public void actualizarPaciente(Paciente paciente) {
         if (paciente == null) {
             throw new IllegalArgumentException("El paciente no puede ser nulo");
@@ -261,4 +264,10 @@ public class ConsultorioService {
     public Object citasFindAll() {
         return citasRepository.findAllByOrderByFechaAsc();
     }
+
+    public Medico medicoEncontrarIdSlots(String usuarioId) {
+        return medicoRepository.findByIdWithSlots(usuarioId);
+    }
+
+
 }

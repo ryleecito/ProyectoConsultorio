@@ -35,7 +35,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show", "/presentation/register/process", "/presentation/medicos/**","/presentation/medicos/list", "/presentation/about/**").permitAll()
+                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show","/login", "/presentation/register/process", "/presentation/medicos/**","/presentation/medicos/list", "/presentation/about/**").permitAll()
                         .requestMatchers("/css/**", "/images/**", "/js/**","/image/**").permitAll() // ✅ Archivos estáticos
                         .requestMatchers("/admin/**").hasAuthority("ADMIN") //  
                         .requestMatchers("/profile/paciente/**").hasAuthority("PACIENTE")
@@ -44,61 +44,11 @@ public class SecurityConfig {
                         .requestMatchers("/presentation/citas/list").hasAuthority("PACIENTE")
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        .loginPage("/presentation/login/show")
-                        .loginProcessingUrl("/login")
-                        .failureUrl("/presentation/login/show?error=true&errorMessage=Perfil no existente")
-                        .successHandler((HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
-
-                            String usuarioRol = (String) request.getSession().getAttribute("usuarioRol");
-                            String usuarioEstado = (String) request.getSession().getAttribute("usuarioEstado");
-                            String usuarioId = (String) request.getSession().getAttribute("usuarioId");
-
-
-                            if (usuarioRol == null) {
-                                System.out.println("No se encontró el rol en la sesión. Redirigiendo a la página de inicio.");
-                                response.sendRedirect("/");
-                                return;
-                            }
-
-                            String redirectUrl;
-                            switch (usuarioRol) {
-                                case "MEDICO":
-
-                                    if (Objects.equals(usuarioEstado, "ACTIVO")) {
-                                        if(Objects.equals(medicoRepository.findByIdWithSlots(usuarioId).getEmail(), "PREDET")) {
-                                            redirectUrl = "/presentation/profile/medico";
-                                        }
-                                        else
-                                        {
-                                            redirectUrl = "/presentation/pacientes/show";
-                                        }
-
-                                    } else {
-                                        redirectUrl = "/presentation/login/show?error=true&errorMessage=El medico debe ser aprobado para acceder";
-                                    }
-                                    break;
-                                case "ADMIN":
-                                    redirectUrl = "/admin/medicos-pendientes";
-                                    break;
-                                case "PACIENTE":
-                                    if(Objects.equals(pacientesRepository.findById(usuarioId).get().getEmail(), "PREDET")) {
-                                        redirectUrl = "/presentation/profile/paciente";
-                                    }
-                                    else
-                                    {
-                                        redirectUrl = "/presentation/medicos/list";
-                                    }
-
-                                    break;
-                                default:
-                                    redirectUrl = "/";
-                                    break;
-                            }
-
-                            response.sendRedirect(response.encodeRedirectURL(redirectUrl));
-                        })
-                        .permitAll()
+                 .formLogin(customizer -> customizer
+                                 .loginPage("/presentation/login/show")
+                                 .loginProcessingUrl("/login")
+                                 .permitAll()
+                                 .successHandler(new RolesAuthenticationSuccessHandler())
                 )
                 .logout(logout -> logout
                         .logoutUrl("/presentation/logout")
