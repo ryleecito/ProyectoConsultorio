@@ -142,7 +142,7 @@ main {
 
 .doctor-card {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
     background-color: #fff;
@@ -152,15 +152,14 @@ main {
     padding: 15px;
     margin: 15px auto;
     width: 100%;
-    max-width: 1400px;
-    gap: 1rem;
+    max-width: 1800px;
+    gap: 50px;
 }
 
 .doctor-info {
     display: flex;
     flex-direction: column;
-    flex: 2;
-    min-width: 100px;
+    gap: 0;
 }
 
 .doctor-header {
@@ -182,13 +181,16 @@ main {
 }
 
 .doctor-name-row {
-    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
 }
 
 .doctor-name {
     font-size: 1.1rem;
     font-weight: bold;
     color: #333;
+    margin-right: 20px;
 }
 
 .doctor-cost {
@@ -348,14 +350,56 @@ main {
     align-items: center;
     gap: 15px;
 }
-.appointment-date-column,
-.appointment-status-column,
-.view-button-column {
+
+
+.appointment-date-column {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    min-width: 140px;
+    flex: 1.5;
+    text-align: left;
+    padding-left: 20px;
+    gap: 40px;
 }
+
+
+.appointment-status-column {
+    flex: 1;
+    text-align: left;
+}
+
+
+.appointment-status{
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.appointment-status.pendiente {
+    background-color: yellow;
+}
+
+.appointment-status.atendida {
+    background-color: #4caf50;
+}
+
+.appointment-status.cancelada {
+    background-color: #e53935;
+}
+
+
+.appointment-date{
+    font-size: 14px;
+    color: orange;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
 
 .pending {
     background-color: yellow;
@@ -377,12 +421,35 @@ main {
 }
 
 .btn-view {
-    background-color: #e3eeff;
-    color: #0d6efd;
-    padding: 5px 15px;
-    border-radius: 15px;
+    display: inline-block;
+    padding: 6px 12px;
+    color: #2196f3;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-attend {
+    padding: 6px 12px;
+    color: #4caf50;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.btn-cancel {
+    padding: 6px 12px;
+    color: #e53935;
+    font-size: 14px;
+}
+
+.btn-cancel-medico-cita {
+    padding: 6px 12px;
+    color: #e53935;
+    font-size: 14px;
     text-decoration: none;
 }
+
+
 .btn-view i {
     margin-right: 5px;
 }
@@ -467,6 +534,23 @@ footer {
 .contact strong {
     color: #ffeb3b;
 }
+
+/*@media (max-width: 768px) {*/
+/*    .doctor-card {*/
+/*        flex-direction: column;*/
+/*        align-items: flex-start;*/
+/*        gap: 15px;*/
+/*    }*/
+
+/*    .appointment-date-column,*/
+/*    .appointment-status-column,*/
+/*    .view-button-column {*/
+/*        width: 100%;*/
+/*        text-align: left;*/
+/*        padding-left: 0;*/
+/*    }*/
+/*}*/
+
 
 @media (min-width: 768px) {
     .appointments-section {

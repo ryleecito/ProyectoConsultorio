@@ -198,11 +198,67 @@ public class ConsultorioService {
         }
     }
 
+    public List<Cita> citasSearchMedico(String estado,String medico) {
+        if ((estado == null || estado.isEmpty()) &&  (medico == null || medico.isEmpty())) {
+            return citasRepository.findAllByOrderByFechaAsc();
+        }
+        if(estado == null || estado.isEmpty()){
+            return citasRepository.findByMedicoId(medico);
+        }
+        if(medico == null || medico.isEmpty()){
+            return citasRepository.findByEstado(estado);
+        }
+        return citasRepository.findByEstadoAndMedicoId(estado,medico);
+    }
+    
+    
+
+
+
+
+
+
+
     public List<Cita> buscarCitasIdMedico(String usuarioId) {
-        return citasRepository.findByMedicoId(usuarioId);
+        return citasRepository.findByMedicoIdOrderByFechaAsc(usuarioId);
     }
 
     public Object buscarCitasIdPaciente(String usuarioId) {
         return citasRepository.findByPacienteId(usuarioId);
+    }
+
+    public void citaAttend(String citaId) {
+        Cita cita = citasRepository.findById(Integer.parseInt(citaId)).orElse(null);
+        if (cita == null) {
+            throw new IllegalArgumentException("Cita no encontrada");
+        }
+        cita.setEstado("Atendida");
+        citasRepository.save(cita);
+    }
+
+    public void citaCancel(String citaId) {
+        Cita cita = citasRepository.findById(Integer.parseInt(citaId)).orElse(null);
+        if (cita == null) {
+            throw new IllegalArgumentException("Cita no encontrada");
+        }
+        cita.setEstado("Cancelada");
+        citasRepository.save(cita);
+    }
+
+    public Cita buscarCitaPorId(String citaId) {
+        return citasRepository.findById(Integer.parseInt(citaId)).orElse(null);
+    }
+
+    public void guardarObservacionesCita(String citaId, String observaciones) {
+        Cita cita = citasRepository.findById(Integer.parseInt(citaId)).orElse(null);
+        if (cita == null) {
+            throw new IllegalArgumentException("Cita no encontrada");
+        }
+        cita.setNotasMedico(observaciones);
+        citasRepository.save(cita);
+    }
+
+    public Object citasFindAll() {
+        return citasRepository.findAllByOrderByFechaAsc();
     }
 }

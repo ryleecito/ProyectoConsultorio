@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="presentation/fragments/fragments :: head">
+
+    <link rel="stylesheet" href="/css/observaciones.css">
+
+</head>
+<body>
+<header th:replace="presentation/fragments/fragments :: header"></header>
+
+<main class="profile-container">
+    <div class="profile-card">
+
+        <h1 class="title">Observaciones Médicas</h1>
+
+        <div class="patient-info">
+            <p><strong>Paciente:</strong> <span th:text="${cita.paciente.usuario.nombre}">Nombre del paciente</span></p>
+            <p><strong>Fecha de la cita:</strong> <span th:text="${#temporals.format(cita.fecha, 'dd/MM/yyyy')}">20/02/2025</span></p>
+            <p><strong>Hora:</strong> <span th:text="${#temporals.format(cita.horaInicio, 'HH:mm')}">14:00</span></p>
+        </div>
+
+        <!-- Editable para el médico -->
+        <div th:if="${session.usuarioRol == 'MEDICO'}" class="observation-form-container">
+            <form th:action="@{/presentation/pacientes/guardarObservaciones}" method="post" class="profile-form">
+                <div class="form-group">
+                    <label for="observaciones">Anotaciones médicas:</label>
+                    <textarea id="observaciones" name="observaciones" rows="6" th:text="${cita != null ? cita.notasMedico : ''}"></textarea>
+                    <input type="hidden" name="citaId" th:value="${cita != null ? cita.id : ''}">
+                </div>
+
+                <div class="form-group form-submit">
+                    <button type="submit" class="btn-save">Guardar observaciones</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Vista de solo lectura para el paciente -->
+        <div th:if="${session.usuarioRol == 'PACIENTE'}" class="observation-view-container">
+            <div class="observation-box">
+                <h3>Observaciones del médico:</h3>
+                <div class="observation-content">
+                    <p th:if="${cita != null && !#strings.isEmpty(cita.notasMedico)}" th:text="${cita.notasMedico}">Texto de observación...</p>
+                    <p th:if="${cita == null || #strings.isEmpty(cita.notasMedico)}">No hay observaciones registradas por el médico.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+
+<footer th:replace="presentation/fragments/fragments :: footer"></footer>
+</body>
+</html>
