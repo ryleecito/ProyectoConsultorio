@@ -47,11 +47,9 @@ public class PacientesController {
     ) {
         List<Cita> resultados = service.citasSearch(citasSearch.getEstado(), orden, paciente);
 
-
         if (resultados == null) {
             resultados = new ArrayList<>();
         }
-
 
         model.addAttribute("citasList", resultados);
         model.addAttribute("citasSearch", citasSearch);
@@ -61,5 +59,35 @@ public class PacientesController {
         return "presentation/pacientes/View";
     }
 
+
+    @GetMapping("/atender")
+    public String attend(
+        @RequestParam("citaId") String citaId
+    ) {
+        service.citaAttend(citaId);
+        return "redirect:/presentation/pacientes/show";
+    }
+
+    @GetMapping("/cancelar")
+    public String cancel(
+            @RequestParam("citaId") String citaId
+    ) {
+        service.citaCancel(citaId);
+        return "redirect:/presentation/pacientes/show";
+    }
+
+    @GetMapping("/observaciones")
+    public String observaciones(@RequestParam("citaId") String citaId, Model model) {
+        Cita cita = service.buscarCitaPorId(citaId);
+        model.addAttribute("cita", cita);
+        return "presentation/observaciones/View";
+    }
+
+    @PostMapping("/guardarObservaciones")
+    public String guardarObservaciones(@RequestParam("citaId") String citaId,
+                                       @RequestParam("observaciones") String observaciones) {
+        service.guardarObservacionesCita(citaId, observaciones);
+        return "redirect:/presentation/pacientes/show";
+    }
 
 }
