@@ -1,14 +1,15 @@
 package consultorio.logic;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+
 import java.time.LocalTime;
-import java.util.LinkedHashSet;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "slots")
@@ -18,22 +19,22 @@ public class Slot {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotNull(message = "El médico no puede ser nulo")
+    @NotNull(message = "Debe seleccionar un medico")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "medico_id", nullable = false)
     private Medico medico;
 
-    @NotNull(message = "El día no puede ser nulo")
+    @NotNull(message = "Debe seleccionar un día")
     @Min(value = 1, message = "El día debe estar entre 1 (Lunes) y 7 (Domingo)")
     @Column(name = "dia", nullable = false)
     private Integer dia;
 
-    @NotNull(message = "La hora de inicio no puede ser nula")
+    @NotNull(message = "Debe seleccionar una hora de inicio")
     @Column(name = "hora_inicio", nullable = false)
     private LocalTime horaInicio;
 
-    @NotNull(message = "La hora de fin no puede ser nula")
+    @NotNull(message = "Debe seleccionar una hora de fin")
     @Column(name = "hora_fin", nullable = false)
     private LocalTime horaFin;
 
@@ -75,6 +76,12 @@ public class Slot {
 
     public void setHoraFin(LocalTime horaFin) {
         this.horaFin = horaFin;
+    }
+
+    @AssertTrue(message = "La hora de inicio debe ser anterior a la hora de fin")
+    public boolean isHoraInicioAntesQueHoraFin() {
+        if (horaInicio == null || horaFin == null) return true;
+        return horaInicio.isBefore(horaFin);
     }
 
 }

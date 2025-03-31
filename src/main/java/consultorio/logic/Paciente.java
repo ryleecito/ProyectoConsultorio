@@ -3,6 +3,7 @@ package consultorio.logic;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -20,13 +21,13 @@ public class Paciente {
     @Column(name = "id", nullable = false, length = 20)
     private String id;
 
+    @NotBlank(message = "El teléfono no puede estar vacío")
     @Size(max = 20, message = "El teléfono no puede tener más de 20 caracteres")
-    @NotNull(message = "El teléfono no puede estar vacio")
     @Column(name = "telefono", length = 20)
     private String telefono;
 
+    @NotBlank(message = "La dirección no puede estar vacía")
     @Size(max = 200, message = "La dirección no puede tener más de 200 caracteres")
-    @NotNull(message = "La direccion no puede estar vacia")
     @Column(name = "direccion", length = 200)
     private String direccion;
 

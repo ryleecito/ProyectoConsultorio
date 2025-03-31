@@ -1,9 +1,7 @@
 package consultorio.logic;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -39,11 +37,13 @@ public class Medico {
     @Column(name = "ciudad", nullable = false, length = 100)
     private String ciudad;
 
+    @DecimalMin(value = "0.01", message = "El costo de consulta debe ser mayor a 0")
     @NotNull(message = "El costo de consulta es obligatorio")
     @Column(name = "costo_consulta", nullable = false, precision = 10, scale = 2)
     private BigDecimal costoConsulta;
 
     @NotNull(message = "La duración de la cita es obligatoria")
+    @Min(value = 1, message = "La duración de la cita debe ser mayor a 0")
     @ColumnDefault("30")
     @Column(name = "duracion_cita", nullable = false)
     private Integer duracionCita;
@@ -72,6 +72,7 @@ public class Medico {
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
+    @NotBlank(message = "El teléfono no puede estar vacío")
     @Size(max = 20, message = "El teléfono no puede tener más de 20 caracteres")
     @Column(name = "telefono", length = 20)
     private String telefono;
