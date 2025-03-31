@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS citas (
 
 -- Insertar usuario admin
 INSERT INTO usuarios (id, password,nombre, rol, estado,foto) VALUES
-    ('admin', '$2a$10$czpVQTEQFFQu09k/TdKaeOi5.x1x8lJNCgrkKwSM8ya/i61sjpLsi','Administrador del Sistema', 'ADMIN', 'ACTIVO',null);
+    ('admin', '$2a$10$czpVQTEQFFQu09k/TdKaeOi5.x1x8lJNCgrkKwSM8ya/i61sjpLsi','Administrador del Sistema', 'ADMIN', 'ACTIVO','foto.png');
 
 -- Insertar detalles del admin
 INSERT INTO administradores (id, email, telefono, departamento) VALUES

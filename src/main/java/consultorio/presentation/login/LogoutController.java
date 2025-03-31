@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LogoutController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // Invalida la sesión actual
-        return "redirect:/presentation/login/show"; // Redirige a la página de login
+        session.invalidate();
+        return "redirect:/presentation/login/show";
     }
 }

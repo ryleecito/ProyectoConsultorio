@@ -1,6 +1,8 @@
 package consultorio.logic;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
@@ -11,26 +13,27 @@ import java.time.Instant;
 @Table(name = "usuarios")
 public class Usuario {
     @Id
-    @Size(max = 20)
+    @NotBlank(message = "El ID no puede estar vacío")
+    @Size(max = 20, message = "El ID no puede tener más de 20 caracteres")
     @Column(name = "id", nullable = false, length = 20)
     private String id;
 
-    @Size(max = 100)
-    @NotNull
+    @NotBlank(message = "La contraseña no puede estar vacía")
+    @Size(min = 6, max = 100, message = "La contraseña debe tener entre 6 y 100 caracteres")
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    @Size(max = 100)
-    @NotNull
+    @NotBlank(message = "El nombre no puede estar vacío")
+    @Size(max = 100, message = "El nombre no puede tener más de 100 caracteres")
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @NotNull
+    @NotBlank(message = "El rol no puede estar vacío")
     @Lob
     @Column(name = "rol", nullable = false)
     private String rol;
 
-    @NotNull
+    @NotBlank(message = "El estado no puede estar vacío")
     @Lob
     @Column(name = "estado", nullable = false)
     private String estado;
@@ -39,17 +42,17 @@ public class Usuario {
     @Column(name = "fecha_registro")
     private Instant fechaRegistro;
 
-    @Size(max = 255)
+    @NotNull(message = "La foto no puede ser nula")
     @Column(name = "foto", nullable = false, length = 100)
     private String foto;
 
     @OneToOne
     private consultorio.logic.Administrador administrador;
 
-    @OneToOne( mappedBy = "usuario")
+    @OneToOne(mappedBy = "usuario")
     private Medico medico;
 
-    @OneToOne( mappedBy = "usuario")
+    @OneToOne(mappedBy = "usuario")
     private Paciente paciente;
 
 

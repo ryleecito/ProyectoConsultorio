@@ -1,10 +1,3 @@
-/* ==================================================
-   Global CSS Consolidado
-   (Incluye reset, estilos base, cabecera, footer,
-   secciones de citas, doctor, historial, etc.)
-   ================================================== */
-
-/* Reset y tipografía global */
 * {
     margin: 0;
     padding: 0;
@@ -19,7 +12,6 @@ body {
     margin: 0;
 }
 
-/* -------- CABECERA -------- */
 header {
     display: flex;
     justify-content: space-between;
@@ -31,7 +23,6 @@ header {
     position: relative;
 }
 
-/* Logo */
 .logo {
     display: flex;
     align-items: center;
@@ -51,7 +42,6 @@ header {
     font-style: italic;
 }
 
-/* Teléfono (centrado según BASE) */
 .phone {
     position: absolute;
     left: 50%;
@@ -67,7 +57,6 @@ header {
     margin-right: 5px;
 }
 
-/* Menú de navegación */
 .nav-menu {
     display: flex;
     gap: 20px;
@@ -80,7 +69,6 @@ header {
     text-decoration: none;
 }
 
-/* Contenedor global */
 .container {
     width: 100%;
     max-width: 1400px;
@@ -99,9 +87,6 @@ main {
     padding-right: 20px;
 }
 
-/* -------- SECCIONES DE CITAS Y DETALLES -------- */
-
-/* Mensaje de éxito */
 .success-message {
     background-color: #d4edda;
     color: #155724;
@@ -111,7 +96,6 @@ main {
     text-align: center;
 }
 
-/* Sección de búsqueda */
 .search-section {
     background-color: #fff;
     border: 1px solid #ddd;
@@ -156,12 +140,9 @@ main {
     cursor: pointer;
 }
 
-/* --------------------------------------------
-   Tarjetas de doctor (Citas)
-   -------------------------------------------- */
 .doctor-card {
     display: flex;
-    flex-wrap: wrap;           /* Para que en pantallas pequeñas se apile la sección de citas */
+    flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
     background-color: #fff;
@@ -171,15 +152,14 @@ main {
     padding: 15px;
     margin: 15px auto;
     width: 100%;
-    max-width: 1400px;
-    gap: 1rem;
+    max-width: 1800px;
+    gap: 50px;
 }
 
 .doctor-info {
     display: flex;
     flex-direction: column;
-    flex: 2;                   /* Ocupará más espacio que la sección de citas */
-    min-width: 100px;
+    gap: 0;
 }
 
 .doctor-header {
@@ -201,13 +181,16 @@ main {
 }
 
 .doctor-name-row {
-    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
 }
 
 .doctor-name {
     font-size: 1.1rem;
     font-weight: bold;
     color: #333;
+    margin-right: 20px;
 }
 
 .doctor-cost {
@@ -222,7 +205,6 @@ main {
     margin-top: 2px;
 }
 
-/* Ubicación (hospital @ ciudad) */
 .location-container {
     margin-top: 50px;
 }
@@ -237,15 +219,12 @@ main {
     color: #b58c43;
 }
 
-/* --------------------------------------------
-   Sección de citas (appointments) a la derecha
-   -------------------------------------------- */
 .appointments-section {
     display: flex;
-    flex-wrap: wrap;        /* Para que si hay más columnas, bajen a otra línea */
+    flex-wrap: wrap;
     gap: 10px;
     align-items: flex-start;
-    flex: 1;                /* Ocupa menos espacio que la parte izquierda */
+    flex: 1;
     min-width: 800px;
     padding-top: 8px;
     overflow-x: hidden;
@@ -254,7 +233,6 @@ main {
     width: 100%;
 }
 
-/* Columnas de fechas */
 .date-column {
     min-width: 60px;
     flex-shrink: 0;
@@ -267,7 +245,6 @@ main {
     overflow-x: hidden;
 }
 
-/* Encabezado de fecha */
 .date-header {
     font-size: 14px;
     font-weight: bold;
@@ -277,7 +254,6 @@ main {
     padding: 3px 0;
 }
 
-/* Contenedor de horas */
 .time-slots {
     display: flex;
     flex-direction: column;
@@ -286,7 +262,6 @@ main {
     max-height: 120px;
 }
 
-/* Cada hora/cita */
 .time-slot {
     background-color: #e3eeff;
     color: #0d6efd;
@@ -303,7 +278,6 @@ main {
     background-color: #cce5ff;
 }
 
-/* Scrollbars personalizados (opcional) */
 .time-slots::-webkit-scrollbar {
     width: 2px;
 }
@@ -332,7 +306,6 @@ main {
     background: #a1a1a1;
 }
 
-/* Botón de agendar (Schedule) */
 .btn-schedule {
     margin-top: auto;
     align-self: flex-end;
@@ -351,7 +324,6 @@ main {
     background-color: #0b5ed7;
 }
 
-/* -------- ESTILOS PARA HISTORIAL Y CITAS DE PACIENTES -------- */
 .patient-header {
     text-align: center;
     font-size: 24px;
@@ -378,16 +350,57 @@ main {
     align-items: center;
     gap: 15px;
 }
-.appointment-date-column,
-.appointment-status-column,
-.view-button-column {
+
+
+.appointment-date-column {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    min-width: 140px;
+    flex: 1.5;
+    text-align: left;
+    padding-left: 20px;
+    gap: 40px;
 }
 
-/* Badges de estado */
+
+.appointment-status-column {
+    flex: 1;
+    text-align: left;
+}
+
+
+.appointment-status{
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.appointment-status.pendiente {
+    background-color: yellow;
+}
+
+.appointment-status.atendida {
+    background-color: #4caf50;
+}
+
+.appointment-status.cancelada {
+    background-color: #e53935;
+}
+
+
+.appointment-date{
+    font-size: 14px;
+    color: orange;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+
 .pending {
     background-color: yellow;
     color: black;
@@ -407,19 +420,40 @@ main {
     border-radius: 15px;
 }
 
-/* Botón de ver detalles */
 .btn-view {
-    background-color: #e3eeff;
-    color: #0d6efd;
-    padding: 5px 15px;
-    border-radius: 15px;
+    display: inline-block;
+    padding: 6px 12px;
+    color: #2196f3;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-attend {
+    padding: 6px 12px;
+    color: #4caf50;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.btn-cancel {
+    padding: 6px 12px;
+    color: #e53935;
+    font-size: 14px;
+}
+
+.btn-cancel-medico-cita {
+    padding: 6px 12px;
+    color: #e53935;
+    font-size: 14px;
     text-decoration: none;
 }
+
+
 .btn-view i {
     margin-right: 5px;
 }
 
-/* -------- FOOTER -------- */
 footer {
     background-color: #2c3e50;
     color: #fff;
@@ -440,7 +474,6 @@ footer {
     cursor: pointer;
 }
 
-/* -------- ESTILOS ADICIONALES (About, Contact, etc.) -------- */
 .about-container {
     max-width: 900px;
     margin: 50px auto;
@@ -502,7 +535,23 @@ footer {
     color: #ffeb3b;
 }
 
-/* -------- MEDIA QUERIES -------- */
+/*@media (max-width: 768px) {*/
+/*    .doctor-card {*/
+/*        flex-direction: column;*/
+/*        align-items: flex-start;*/
+/*        gap: 15px;*/
+/*    }*/
+
+/*    .appointment-date-column,*/
+/*    .appointment-status-column,*/
+/*    .view-button-column {*/
+/*        width: 100%;*/
+/*        text-align: left;*/
+/*        padding-left: 0;*/
+/*    }*/
+/*}*/
+
+
 @media (min-width: 768px) {
     .appointments-section {
         min-height: 120px;
@@ -519,7 +568,6 @@ footer {
     }
 }
 
-/* Estilos únicos para la tarjeta de médicos pendientes de aprobación */
 .approval-doctor-card {
     display: flex;
     justify-content: space-between;
@@ -531,7 +579,6 @@ footer {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos exclusivos para los botones de aprobar y rechazar en la tarjeta de aprobación */
 .approval-doctor-card .btn-approve,
 .approval-doctor-card .btn-reject {
     padding: 10px 20px;
@@ -544,7 +591,6 @@ footer {
     transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
 }
 
-/* Botón de Aprobar */
 .approval-doctor-card .btn-approve {
     background-color: #4caf50;
     color: #fff;
@@ -555,7 +601,6 @@ footer {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Botón de Rechazar */
 .approval-doctor-card .btn-reject {
     background-color: #f44336;
     color: #fff;
@@ -610,12 +655,10 @@ footer {
     transition: background-color 0.3s ease;
 }
 
-/* Para mostrar nombres de día en vez de números */
 .slot-list td:first-child {
     font-weight: bold;
 }
 
-/* Mensaje cuando no hay slots */
 .slot-list p {
     text-align: center;
     color: #666;
@@ -643,12 +686,10 @@ footer {
     margin: 0;
 }
 
-/* Ajuste para alineación en la tabla */
 .slot-list table td {
     vertical-align: middle;
 }
 
-/* Estilo unificado para todos los selectores */
 select {
     width: 100%;
     padding: 5px;
@@ -659,28 +700,23 @@ select {
     appearance: auto;
 }
 
-/* Eliminar cualquier estilo específico para el selector de día */
 select#dia {
-    /* Sobrescribir cualquier estilo específico con los valores predeterminados */
     appearance: auto;
     background-color: white;
     border: 1px solid #ced4da;
 }
 
-/* Sección de anotaciones: usa flex para alinear los elementos horizontalmente */
 .doctor-notes-section {
     display: flex;
     align-items: center;
     margin-top: 10px;
 }
 
-/* Ajusta el label para que no se vea muy pegado */
 .doctor-notes-section label {
     margin-right: 8px;
     font-weight: 600;
 }
 
-/* Estilos para el input de anotaciones */
 .doctor-notes-section input[type="text"],
 .doctor-notes-section textarea {
     flex: 1;
@@ -691,11 +727,10 @@ select#dia {
     border-radius: 4px;
 }
 
-/* Botón de Guardar */
 .btn-save-notes {
-    background-color: #007bff; /* Color principal (azul) */
+    background-color: #007bff;
     border: none;
-    color: #fff; /* Texto en blanco */
+    color: #fff;
     padding: 6px 12px;
     font-size: 14px;
     border-radius: 4px;
@@ -703,7 +738,6 @@ select#dia {
     transition: background-color 0.2s ease-in-out;
 }
 
-/* Efecto hover */
 .btn-save-notes:hover {
     background-color: #0056b3;
 }

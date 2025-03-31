@@ -7,38 +7,39 @@
 <body>
 <header th:replace="presentation/fragments/fragments :: header"></header>
 
-<!-- Main Content -->
+
 <div class="container">
     <h1 class="patient-header">
         Doctor - <span class="patient-name" th:text="${session.usuarioId}">Stan Lee</span> - appointment history
     </h1>
 
-    <!-- Filter Section -->
-    <div class="search-section">
-        <form th:action="@{/list}" method="post" class="search-form">
-            <div class="search-field">
-                <select name="estado" class="form-control">
-                    <option value="">All</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Attended">Attended</option>
-                    <option value="Cancelled">Cancelled</option>
-                </select>
-            </div>
-            <div class="search-field">
-                <select name="orden" class="form-control">
-                    <option value="">All</option>
-                    <option value="asc">Mas reciente</option>
-                    <option value="desc">Menos reciente</option>
-                </select>
-            </div>
-            <div class="search-field">
-                <input type="text" name="paciente" class="form-control" placeholder="Paciente">
-            </div>
-            <button type="submit" class="btn-search">Search</button>
-        </form>
-    </div>
 
-    <!-- Appointment List -->
+<div class="search-section">
+    <form th:action="@{/presentation/pacientes/search}" method="post" class="search-form" th:object="${citasSearch}">
+
+        <div class="search-field">
+            <select name="estado" class="form-control">
+                <option value="">All</option>
+                <option value="Pendiente" th:selected="${citasSearch.estado == 'Pendiente'}">Pending</option>
+                <option value="Atendida" th:selected="${citasSearch.estado == 'Atendida'}">Attended</option>
+                <option value="Cancelada" th:selected="${citasSearch.estado == 'Cancelada'}">Cancelled</option>
+            </select>
+        </div>
+        <div class="search-field">
+            <select name="orden" class="form-control">
+                <option value="">All</option>
+                <option value="asc" th:selected="${orden == 'asc'}">Mas reciente</option>
+                <option value="desc" th:selected="${orden == 'desc'}">Menos reciente</option>
+            </select>
+        </div>
+        <div class="search-field">
+            <input type="text" name="paciente" class="form-control" placeholder="Paciente" th:value="${paciente}">
+        </div>
+        <button type="submit" class="btn-search">Search</button>
+    </form>
+</div>
+
+
     <div th:if="${not #lists.isEmpty(citasList)}" th:each="cita : ${citasList}" class="appointment-card">
         <div class="patient-column">
             <img th:src="@{${cita.paciente.usuario.getFoto()}}" alt="Doctor" class="doctor-avatar">
@@ -55,42 +56,37 @@
 
         <div class="appointment-date-column">
             <span class="appointment-date" th:text="${#temporals.format(cita.fecha, 'dd/MM/yyyy') + ' - ' + #temporals.format(cita.horaInicio, 'HH:mm')}">20/02/2025 - 14:00</span>
-        </div>
 
-        <div class="appointment-status-column">
             <div th:class="${'appointment-status ' + #strings.toLowerCase(cita.estado)}" th:text="${cita.estado}">Pending</div>
-        </div>
 
-        <div class="view-button-column">
-            <a th:href="@{'/citas/detalle/' + ${cita.id}}" class="btn-view">
-                <i class="fa-solid fa-eye"></i> View
+            <a th:if="${cita.estado == 'Atendida'}" class="btn-view">
+                    <a th:href="@{/presentation/pacientes/observaciones(citaId=${cita.id})}" class="btn-view">
+                       <i class="fa-solid fa-eye"></i>View
+                    </a>
             </a>
-            <div th:if="${cita.estado == 'Pending'}" class="action-buttons">
-                <a th:href="@{'/citas/atender/' + ${cita.id}}" class="btn-attend">
-                    <i class="fa-solid fa-check"></i> Attend
-                </a>
-                <a th:href="@{'/citas/cancelar/' + ${cita.id}}" class="btn-cancel">
-                    <i class="fa-solid fa-times"></i> Cancel
-                </a>
+
+            <div class="view-button-column">
+                <!-- Only show action buttons if status is Pendiente -->
+                <div th:if="${cita.estado == 'Pendiente'}" class="action-buttons">
+                    <a th:href="@{/presentation/pacientes/atender(citaId=${cita.id})}" class="btn-attend" th:method="get">
+                        <i class="fa-solid fa-check"></i> Atender
+                    </a>
+                    <a th:href="@{/presentation/pacientes/cancelar(citaId=${cita.id})}" class="btn-cancel-medico-cita" th:method="get">
+                        <i class="fa-solid fa-times"></i> Cancelar
+                    </a>
+                </div>
             </div>
-        </div>
 
-        <!-- Notes section -->
-        <div class="doctor-notes-section">
-            <form th:action="@{/citas/guardarNotasMedico}" method="post">
-                <label for="notasMedico">Anotaciones:</label>
-                <textarea id="notasMedico" name="notasMedico" th:text="${cita.notasMedico}"></textarea>
-                <input type="hidden" name="citaId" th:value="${cita.id}">
-                <button type="submit" class="btn-save-notes">Guardar</button>
-            </form>
-        </div>
-    </div>
+<!--            <div class="doctor-notes-section">-->
+<!--                <form th:action="@{/citas/guardarNotasMedico}" method="post">-->
+<!--                    <label for="notasMedico">Anotaciones:</label>-->
+<!--                    <textarea id="notasMedico" name="notasMedico" th:text="${cita.notasMedico}"></textarea>-->
+<!--                    <input type="hidden" name="citaId" th:value="${cita.id}">-->
+<!--                    <button type="submit" class="btn-save-notes">Guardar</button>-->
+<!--                </form>-->
+<!--            </div>-->
 
-    <!-- Empty message if no appointments -->
-    <div th:if="${#lists.isEmpty(citasList)}" class="empty-message" style="text-align: center; padding: 30px; background-color: #f8f9fa; border-radius: 8px; margin: 20px 0;">
-        <i class="fa-solid fa-calendar-xmark" style="font-size: 48px; color: #6c757d; margin-bottom: 15px;"></i>
-        <h3>No hay citas disponibles</h3>
-        <p>Actualmente no hay citas registradas en el sistema.</p>
+        </div>
     </div>
 </div>
 

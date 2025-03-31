@@ -7,11 +7,11 @@
 <body>
 <header th:replace="~{/presentation/fragments/fragments.html :: header}"></header>
 <main>
-    <!-- Main Content -->
+
     <div class="container">
         <h1>Médicos Pendientes de Aprobación</h1>
 
-        <!-- Results Section -->
+
         <section class="results-section">
             <div th:each="medico : ${medicos}" class="approval-doctor-card">
                 <div class="doctor-info">

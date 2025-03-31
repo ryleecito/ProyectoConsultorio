@@ -82,15 +82,13 @@ public class CitasController {
     public String listPacientes(Model model, HttpSession session) {
         String usuarioId = (String) session.getAttribute("usuarioId");
         String usuarioRol = (String) session.getAttribute("usuarioRol");
-
         if (usuarioRol.equals("MEDICO")) {
             List<Cita> citas = service.buscarCitasIdMedico(usuarioId);
             model.addAttribute("citasList", citas);
-            // Retornar directamente la vista sin "redirect:"
             return "presentation/pacientes/View";
         } else {
             model.addAttribute("citasList", service.buscarCitasIdPaciente(usuarioId));
-            // Retornar directamente la vista sin "redirect:"
+
             return "presentation/citas/show";
         }
     }

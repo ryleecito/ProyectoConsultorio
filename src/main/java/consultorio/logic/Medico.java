@@ -1,8 +1,7 @@
 package consultorio.logic;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -19,33 +18,39 @@ import java.util.Set;
 @Entity
 @Table(name = "medicos")
 public class Medico {
+
     @Id
-    @Size(max = 20)
+    @NotBlank(message = "El ID no puede estar vacío")
+    @Size(max = 20, message = "El ID no puede tener más de 20 caracteres")
     @Column(name = "id", nullable = false, length = 20)
     private String id;
 
-
-    @Size(max = 100)
-    @NotNull
+    @NotBlank(message = "La especialidad no puede estar vacía")
+    @Size(max = 100, message = "La especialidad no puede tener más de 100 caracteres")
+    @NotNull(message = "La especialidad es obligatoria")
     @Column(name = "especialidad", nullable = false, length = 100)
     private String especialidad;
 
-    @Size(max = 100)
-    @NotNull
+    @NotBlank(message = "La ciudad no puede estar vacía")
+    @Size(max = 100, message = "La ciudad no puede tener más de 100 caracteres")
+    @NotNull(message = "La ciudad es obligatoria")
     @Column(name = "ciudad", nullable = false, length = 100)
     private String ciudad;
 
-    @NotNull
+    @DecimalMin(value = "0.01", message = "El costo de consulta debe ser mayor a 0")
+    @NotNull(message = "El costo de consulta es obligatorio")
     @Column(name = "costo_consulta", nullable = false, precision = 10, scale = 2)
     private BigDecimal costoConsulta;
 
-    @NotNull
+    @NotNull(message = "La duración de la cita es obligatoria")
+    @Min(value = 1, message = "La duración de la cita debe ser mayor a 0")
     @ColumnDefault("30")
     @Column(name = "duracion_cita", nullable = false)
     private Integer duracionCita;
 
-    @Size(max = 100)
-    @NotNull
+    @NotBlank(message = "El hospital no puede estar vacío")
+    @Size(max = 100, message = "El hospital no puede tener más de 100 caracteres")
+    @NotNull(message = "El hospital es obligatorio")
     @Column(name = "hospital", nullable = false, length = 100)
     private String hospital;
 
@@ -61,17 +66,20 @@ public class Medico {
     @JoinColumn(name = "id", referencedColumnName = "id")
     private Usuario usuario;
 
-    @Size(max = 100)
-    @NotNull
+    @NotBlank(message = "El email no puede estar vacío")
+    @Size(max = 100, message = "El email no puede tener más de 100 caracteres")
+    @NotNull(message = "El email es obligatorio")
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-    @Size(max = 20)
+    @NotBlank(message = "El teléfono no puede estar vacío")
+    @Size(max = 20, message = "El teléfono no puede tener más de 20 caracteres")
     @Column(name = "telefono", length = 20)
     private String telefono;
 
     @Version
     private Long version;
+
 
     public String getTelefono() {
         return telefono;
@@ -163,30 +171,27 @@ public class Medico {
     }
 
     public List<List<Cita>> obtenerCitasDeLaSemana(LocalDate start) {
-        List<List<Cita>> resultados = new ArrayList<>(); // Lista que contendrá las citas de cada día
+        List<List<Cita>> resultados = new ArrayList<>();
 
-        // Ajustar al lunes de la semana actual
         LocalDate inicioSemana = start.with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
 
         for (int i = 0; i < 7; i++) {
-            LocalDate fecha = inicioSemana.plusDays(i); // Avanzamos día por día
-            List<Cita> citasDelDia = citasDeFecha(fecha); // Llamamos al método para obtener las citas de ese día
+            LocalDate fecha = inicioSemana.plusDays(i);
+            List<Cita> citasDelDia = citasDeFecha(fecha);
 
-            // Siempre agregamos la lista, incluso si está vacía
             resultados.add(citasDelDia);
         }
-        return resultados; // Retornamos todos los días, con o sin citas
+        return resultados;
     }
 
     public List<Cita> citasDeFecha(LocalDate fecha) {
         List<Cita> citasDisponibles = new ArrayList<>();
-        int diaSemana = fecha.getDayOfWeek().getValue(); // 1-Lunes, 7-Domingo
-        LocalDateTime ahora = LocalDateTime.now(); // Obtener fecha y hora actual para comparar
+        int diaSemana = fecha.getDayOfWeek().getValue();
+        LocalDateTime ahora = LocalDateTime.now();
 
-        // Crear un único timestamp para todas las citas
+
         java.time.Instant now = java.time.Instant.now();
 
-        // Definir un límite máximo razonable de citas por slot
         final int MAX_CITAS_POR_SLOT = 50;
 
         for (Slot slot : this.slots) {
@@ -194,43 +199,39 @@ public class Medico {
                 LocalTime horaActual = slot.getHoraInicio();
                 int contadorCitas = 0;
 
-                // Agregar límite al bucle para evitar crear demasiadas citas
+
                 while (!horaActual.plus(java.time.Duration.ofMinutes(this.duracionCita)).isAfter(slot.getHoraFin())
                         && contadorCitas < MAX_CITAS_POR_SLOT) {
 
-                    // Crear una nueva cita vacía
                     Cita cita = new Cita();
                     cita.setMedico(this);
-                    cita.setPaciente(null); // Sin paciente asignado aún
+                    cita.setPaciente(null);
 
-                    // Establecer hora de inicio
                     cita.setHoraInicio(horaActual);
 
-                    // Establecer hora de fin
+
                     LocalTime horaFin = horaActual.plusMinutes(this.duracionCita);
                     cita.setHoraFin(horaFin);
 
-                    // Establecer la fecha completa (fecha + hora inicio)
+
                     LocalDateTime fechaHoraInicio = fecha.atTime(horaActual);
                     cita.setFecha(fechaHoraInicio);
 
-                    // Usar el timestamp pre-creado para todas las citas
+
                     cita.setFechaCreacion(now);
 
-                    // Verificar si la cita ya pasó
+
                     if (fechaHoraInicio.isBefore(ahora)) {
                         cita.setEstado("Pendiente");
                     } else {
                         cita.setEstado("Disponible");
                     }
 
-                    // Agregar la cita a la lista
                     citasDisponibles.add(cita);
 
-                    // Avanzar a la siguiente hora de cita basada en la duración configurada
+
                     horaActual = horaActual.plusMinutes(this.duracionCita);
 
-                    // Incrementar el contador de citas
                     contadorCitas++;
                 }
             }

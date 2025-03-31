@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="presentation/fragments/fragments :: head">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/global.css">
+
+</head>
+<body>
+<header th:replace="presentation/fragments/fragments :: header"></header>
+
+<div class="container">
+    <h1 class="patient-header">
+        Patient - <span class="patient-name" th:text="${session.usuarioId}">Stan Lee</span> - appointment history
+    </h1>
+
+    <div class="search-section">
+        <form th:action="@{/presentation/historial/search}" method="post" class="search-form" th:object="${citasSearch}">
+            <label for="estado" class="form-label">Status</label>
+            <div class="search-field">
+                <select id="estado" name="estado" class="form-control">
+                    <option value="">All</option>
+                    <option value="Pendiente" th:selected="${citasSearch.estado == 'Pendiente'}">Pending</option>
+                    <option value="Atendida" th:selected="${citasSearch.estado == 'Atendida'}">Attended</option>
+                    <option value="Cancelada" th:selected="${citasSearch.estado == 'Cancelada'}">Cancelled</option>
+                </select>
+            </div>
+
+            <label for="medico" class="form-label">Doctor</label>
+            <div class="search-field search-field-doctor">
+                <input id="medico" type="text" name="medico" class="form-control" placeholder="Doctor" th:value="${medico}">
+            </div>
+
+            <button type="submit" class="btn-search">Search</button>
+        </form>
+    </div>
+    <div th:if="${not #lists.isEmpty(citasList)}" th:each="cita : ${citasList}" class="doctor-card">
+        <div class="doctor-info">
+            <div class="doctor-header">
+                <img th:src="@{${cita.medico.usuario.getFoto()}}" alt="Doctor" class="doctor-avatar">
+                <div>
+                    <div class="doctor-name-row">
+                        <span class="doctor-name" th:text="${cita.medico.usuario.getNombre()}">Luis Alonso Kapps</span>
+                        <span class="doctor-cost" th:text="${cita.medico.costoConsulta}">78000</span>
+                    </div>
+                    <p class="doctor-specialty" th:text="${cita.medico.especialidad}">Cardiology</p>
+                </div>
+            </div>
+            <div class="location-container">
+                <p class="doctor-location">
+                    <span th:text="${cita.medico.hospital}">Heart Care Center</span>
+                    <span class="at-symbol">@</span>
+                    <span th:text="${cita.medico.ciudad}">Alajuela</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="appointment-date-column">
+            <span class="appointment-date" th:text="${#temporals.format(cita.fecha, 'dd/MM/yyyy') + ' - ' + #temporals.format(cita.horaInicio, 'HH:mm')}">25/01/2025 - 14:00</span>
+
+            <div th:class="${'appointment-status ' + #strings.toLowerCase(cita.estado)}" th:text="${cita.estado}">Pending</div>
+
+            <a th:if="${cita.estado == 'Atendida'}" class="btn-view">
+                <a th:href="@{/presentation/pacientes/observaciones(citaId=${cita.id})}" class="btn-view">
+                    <i class="fa-solid fa-eye"></i>View
+                </a>
+            </a>
+
+        </div>
+
+
+    </div>
+</div>
+
+<footer th:replace="presentation/fragments/fragments :: footer"></footer>
+</body>
+</html>

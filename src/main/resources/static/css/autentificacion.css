@@ -3,7 +3,7 @@
    (Estilos específicos para las páginas de Login y Perfil)
    ================================================== */
 
-/* --- Estilos para la página de Login --- */
+
 .login-container {
     width: 100%;
     max-width: 400px;
@@ -62,7 +62,7 @@
     color: #777;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
-    flex-shrink: 0; /* Esta es la propiedad clave para evitar que se encoja */
+    flex-shrink: 0;
 }
 .input-box {
     flex: 1;
@@ -81,12 +81,12 @@
     height: auto;
 }
 
-/* Para el input de tipo file */
+
 input[type="file"].input-box {
     flex: 1;
     min-height: 40px;
-    max-width: calc(100% - 40px); /* Limita el ancho para que no se salga */
-    width: calc(100% - 40px); /* Asegura que ocupe el espacio disponible menos el del icono */
+    max-width: calc(100% - 40px);
+    width: calc(100% - 40px);
     box-sizing: border-box;
 }
 
@@ -142,15 +142,15 @@ input[type="file"].input-box {
     width: 50%;
 }
 
-/* --- Estilos para la página de Perfil --- */
+
 .profile-container {
     display: flex;
-    flex-direction: column; /* Para que el contenido se apile verticalmente */
-    justify-content: flex-start; /* Alineado hacia arriba (opcional) */
-    align-items: center; /* Centrado horizontal */
-    margin: 40px auto; /* Menos margen, y 'auto' para centrar horizontalmente */
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 40px auto;
     width: 100%;
-    max-width: 600px; /* Ajusta según tus necesidades */
+    max-width: 600px;
 }
 .profile-card {
     background: #ffffff;
@@ -232,7 +232,7 @@ input[type="file"].input-box {
     background-color: #0056b3;
 }
 
-/* --- Menú de usuario (compartido en Login y Perfil) --- */
+
 .user-menu {
     position: relative;
     display: inline-block;
@@ -312,7 +312,7 @@ input[type="file"].input-box {
     display: flex;
     align-items: center;
     padding: 8px 12px;
-    margin-top: -9px; /* Ajusta este valor según lo que necesites */
+    margin-top: -9px;
 }
 .dropdown-toggle i {
     margin-left: 5px;
@@ -344,7 +344,10 @@ input[type="file"].input-box {
     display: block;
 }
 
-/* Sección para la disponibilidad (slot) */
+
+
+
+
 .slot-section {
     margin-top: 30px;
     padding-top: 20px;
@@ -413,21 +416,21 @@ input[type="file"].input-box {
 .btn-confirm,
 .btn-cancel {
     display: inline-block;
-    width: 150px;           /* Mismo ancho para ambos */
+    width: 150px;
     text-align: center;
     padding: 10px;
     border-radius: 5px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    text-decoration: none;  /* Quita subrayado en <a> */
-    margin: 0 10px;         /* Espacio horizontal */
-    white-space: nowrap;    /* Evita que el texto salte de línea */
+    text-decoration: none;
+    margin: 0 10px;
+    white-space: nowrap;
     border: none;
     outline: none;
 }
 
-/* Estilo para confirmar */
+
 .btn-confirm {
     background-color: #007bff;
     color: #fff;
@@ -436,11 +439,20 @@ input[type="file"].input-box {
     background-color: #0056b3;
 }
 
-/* Estilo para cancelar */
+
 .btn-cancel {
     background-color: #dc3545;
     color: #fff;
 }
 .btn-cancel:hover {
     background-color: #c82333;
+}
+
+.validation-message {
+    color: #dc3545;
+    font-size: 13px;
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: -10px;
+    padding-left: 5px;
 }

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/autentificacion.css">
-    <!-- No necesitamos agregar estilos adicionales ya que usaremos los existentes -->
+
 </head>
 
 <header th:fragment="header">
@@ -19,21 +19,20 @@
         <i class="fa-solid fa-phone"></i>+506 5467 0937
     </div>
     <div class="nav-menu">
-        <!-- Siempre mostrar About -->
+
         <a href="/presentation/about/show" class="nav-link">About</a>
 
-        <!-- Opciones para usuario no logueado -->
+
         <th:block th:if="${session.usuarioId == null}">
             <a href="/presentation/medicos/list" class="nav-link">Search</a>
             <a href="/presentation/login/show" class="nav-link">Login</a>
         </th:block>
 
-        <!-- Opciones para paciente logueado -->
+
         <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'PACIENTE'}">
-            <a href="/presentation/citas/list" class="nav-link">History</a>
+            <a href="/presentation/historial/show" class="nav-link">History</a>
             <a href="/presentation/medicos/list" class="nav-link">Search</a>
 
-            <!-- Menú desplegable mejorado -->
             <div class="user-menu">
                 <button class="dropdown-toggle">
                     <span th:text="${session.usuarioId}">BBanner</span> <i class="fa-solid fa-angle-down"></i>
@@ -45,11 +44,10 @@
             </div>
         </th:block>
 
-        <!-- Opciones para médico logueado -->
+
         <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'MEDICO'}">
             <a th:href="@{/presentation/citas/list}" class="nav-link">Appointments</a>
 
-            <!-- Menú desplegable mejorado -->
             <div class="user-menu">
                 <button class="dropdown-toggle">
                     <span th:text="${session.usuarioId}">BBanner</span> <i class="fa-solid fa-angle-down"></i>
@@ -61,7 +59,7 @@
             </div>
         </th:block>
         <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'ADMIN'}">
-            <!-- Menú desplegable mejorado -->
+
             <div class="user-menu">
                 <button class="dropdown-toggle">
                     <span th:text="${session.usuarioId}">BBanner</span> <i class="fa-solid fa-angle-down"></i>

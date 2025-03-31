@@ -7,14 +7,14 @@
 <body>
 <header th:replace="presentation/fragments/fragments :: header"></header>
 
-<!-- ✅ Mensaje de éxito al iniciar sesión -->
+
 <div th:if="${successMessage}" class="success-message">
     <p th:text="${successMessage}"></p>
 </div>
 
-<!-- Main Content -->
+
 <div class="container">
-    <!-- Search Section -->
+
     <section class="search-section">
         <form th:action="@{/presentation/medicos/search}" method="post" th:object="${medicosSearch}" class="search-form">
             <div class="search-field">
@@ -50,9 +50,9 @@
         </form>
     </section>
 
-    <!-- Results Section -->
-    <section class="results-section">
-        <!-- Solo mostrar médicos si hay resultados -->
+
+    <div class="results-section">
+
         <div th:if="${not #lists.isEmpty(medicoSearch)}" th:each="medico : ${medicoSearch}" class="doctor-card">
             <div class="doctor-info">
                 <div class="doctor-details">
@@ -85,7 +85,7 @@
                             </div>
                             <div class="time-slots">
                                 <th:block th:each="cita : ${dia}">
-                                    <!-- Citas disponibles con enlace -->
+
                                     <a th:if="${cita.estado == 'Disponible'}"
                                        th:href="@{/presentation/medicos/appointment-details(
                            medicoId=${medico.id},
@@ -96,7 +96,7 @@
                                        th:data-medico-id="${medico.id}">
                                         Hora
                                     </a>
-                                    <!-- Citas pendientes en gris sin enlace -->
+
                                     <span th:if="${cita.estado == 'Pendiente'}"
                                           class="time-slot pendiente"
                                           th:text="${#temporals.format(cita.fecha, 'HH:mm')}"
@@ -113,7 +113,7 @@
             </div>
             <a th:href="@{'/presentation/medicos/schedule/' + ${medico.id}}" class="btn-schedule">Schedule</a>
         </div>
-    </section>
+    </div>
 </div>
 
 <footer th:replace="presentation/fragments/fragments :: footer"></footer>

@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/autentificacion.css">
 
-    <!-- Añade estas reglas dentro de un <style> o en tu global.css/autentificacion.css -->
     <style>
         body {
             display: flex;
@@ -34,7 +33,6 @@
             <h2>Login</h2>
         </div>
 
-        <!-- ✅ Mensaje de Éxito (Cuando se registra un usuario correctamente) -->
         <div th:if="${successMessage}" class="success-message">
             <p th:text="${successMessage}"></p>
         </div>
@@ -45,7 +43,7 @@
             <div class="avatar">
                 <img src="/images/user_login.png" alt="User Avatar">
             </div>
-            <form th:action="@{/login}" method="post">
+            <form action="/login" method="post">
                 <div class="input-group">
                     <div class="input-field">
                         <div class="input-icon">

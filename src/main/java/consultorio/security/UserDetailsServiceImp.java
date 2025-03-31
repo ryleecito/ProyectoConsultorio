@@ -24,13 +24,13 @@ public class UserDetailsServiceImp implements UserDetailsService {
         Usuario usuario = usuariosRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + id));
 
-        // Guardar ID y rol en la sesión después de autenticar
+
         session.setAttribute("usuarioId", usuario.getId());
         session.setAttribute("usuarioRol", usuario.getRol());
         session.setAttribute("usuarioEstado", usuario.getEstado());
-        System.out.println("Rol del usuario autenticado: " + usuario.getRol()); // Debug
-        System.out.println("ID: " + usuario.getId()); // Debug
-        System.out.println("Estado: " + usuario.getEstado()); // Debug
+        System.out.println("Rol del usuario autenticado: " + usuario.getRol());
+        System.out.println("ID: " + usuario.getId());
+        System.out.println("Estado: " + usuario.getEstado());
         return new UsersDetailsImp(usuario);
     }
 }
