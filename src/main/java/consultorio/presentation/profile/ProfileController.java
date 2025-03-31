@@ -40,6 +40,11 @@ public class ProfileController {
     @Value("${picturesPath}")
     private String picturesPath;
 
+    @ModelAttribute("slot")
+    public Slot getSlot() {
+        return new Slot();
+    }
+
     // ======================== MÉDICO ========================
 
     @GetMapping("/medico")
@@ -66,7 +71,6 @@ public class ProfileController {
         model.addAttribute("usuario", usuario);
         model.addAttribute("slots", slots);
         model.addAttribute("slot", new Slot());
-
 
         return "presentation/profile/profileMedico";
     }
@@ -137,7 +141,7 @@ public class ProfileController {
 
     @PostMapping("/medico/slot")
     public String addMedicoSlot(
-            @ModelAttribute("slot") Slot slot,
+            @Valid @ModelAttribute("slot") Slot slot,
             BindingResult result,
             HttpSession session,
             Model model) {
@@ -177,6 +181,13 @@ public class ProfileController {
         if (result.hasErrors()) {
             Usuario usuario = consultorioService.buscarPorUsername(medicoId);
             Set<Slot> slots = medico.getSlots();
+
+
+            // Limpiar valores predeterminados
+            if ("PREDET".equalsIgnoreCase(medico.getEmail())) medico.setEmail("");
+            if ("PREDET".equalsIgnoreCase(medico.getHospital())) medico.setHospital("");
+            if ("PREDET".equalsIgnoreCase(medico.getTelefono())) medico.setTelefono("");
+
 
             model.addAttribute("medico", medico);
             model.addAttribute("usuario", usuario);

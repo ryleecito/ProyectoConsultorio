@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,14 +23,14 @@
         <a href="/presentation/about/show" class="nav-link">About</a>
 
 
-        <th:block th:if="${session.usuarioId == null}">
+        <th:block sec:authorize="!isAuthenticated()">
             <a href="/presentation/medicos/list" class="nav-link">Search</a>
             <a href="/presentation/login/show" class="nav-link">Login</a>
         </th:block>
 
 
-        <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'PACIENTE'}">
-            <a href="/presentation/citas/list" class="nav-link">History</a>
+        <th:block sec:authorize="isAuthenticated()" th:if="${session.usuarioRol == 'PACIENTE'}">
+            <a href="/presentation/historial/show" class="nav-link">History</a>
             <a href="/presentation/medicos/list" class="nav-link">Search</a>
 
             <div class="user-menu">
@@ -45,7 +45,7 @@
         </th:block>
 
 
-        <th:block th:if="${session.usuarioId != null && session.usuarioRol == 'MEDICO'}">
+        <th:block sec:authorize="isAuthenticated()" th:if="${session.usuarioRol == 'MEDICO'}">
             <a th:href="@{/presentation/citas/list}" class="nav-link">Appointments</a>
 
             <div class="user-menu">

@@ -51,7 +51,7 @@
     </section>
 
 
-    <section class="results-section">
+    <div class="results-section">
 
         <div th:if="${not #lists.isEmpty(medicoSearch)}" th:each="medico : ${medicoSearch}" class="doctor-card">
             <div class="doctor-info">
@@ -113,7 +113,7 @@
             </div>
             <a th:href="@{'/presentation/medicos/schedule/' + ${medico.id}}" class="btn-schedule">Schedule</a>
         </div>
-    </section>
+    </div>
 </div>
 
 <footer th:replace="presentation/fragments/fragments :: footer"></footer>
