@@ -49,6 +49,7 @@ public class SecurityConfig {
                                  .loginPage("/presentation/login/show")
                                  .loginProcessingUrl("/login")
                                  .permitAll()
+                                 .failureUrl("/presentation/login/show?error=Contrasena o usuario incorrecto")
                                  .successHandler(new RolesAuthenticationSuccessHandler(medicoRepository,pacientesRepository))
                 )
                 .logout(logout -> logout

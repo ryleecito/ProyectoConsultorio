@@ -4,6 +4,7 @@ import consultorio.data.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -174,39 +175,31 @@ public class ConsultorioService {
     }
 
     public List<Cita> citasSearch(String estado, String orden, String paciente) {
-        if ((estado == null || estado.isEmpty()) && (orden == null || orden.isEmpty()) && (paciente == null || paciente.isEmpty())) {
-            return citasRepository.findAll();
-        }
-        if (estado == null || estado.isEmpty()) {
-            if ("desc".equalsIgnoreCase(orden)) {
-                return paciente == null || paciente.isEmpty() ?
-                        citasRepository.findAllByOrderByFechaDesc() :
-                        citasRepository.findByPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaDesc(paciente);
-            } else {
-                return paciente == null || paciente.isEmpty() ?
-                        citasRepository.findAllByOrderByFechaAsc() :
-                        citasRepository.findByPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaAsc(paciente);
-            }
-        }
-        if (orden == null || orden.isEmpty()) {
-            return paciente == null || paciente.isEmpty() ?
-                    citasRepository.findByEstado(estado) :
-                    citasRepository.findByEstadoAndPacienteUsuarioNombreContainingIgnoreCase(estado, paciente);
-        }
-        if ("desc".equalsIgnoreCase(orden)) {
-            return paciente == null || paciente.isEmpty() ?
-                    citasRepository.findByEstadoOrderByFechaDesc(estado) :
-                    citasRepository.findByEstadoAndPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaDesc(estado, paciente);
+
+        Sort.Direction direccion = "desc".equalsIgnoreCase(orden) ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        Sort ordenamiento = Sort.by(
+                Sort.Order.by("fecha").with(direccion),
+                Sort.Order.by("hora_inicio").with(direccion)
+        );
+
+        if ((estado == null || estado.isEmpty()) && (paciente == null || paciente.isEmpty())) {
+            return citasRepository.findAll(ordenamiento);
+        } else if (estado == null || estado.isEmpty()) {
+            return citasRepository.findByPacienteUsuarioNombreContainingIgnoreCase(paciente, ordenamiento);
+        } else if (paciente == null || paciente.isEmpty()) {
+            return citasRepository.findByEstado(estado, ordenamiento);
         } else {
-            return paciente == null || paciente.isEmpty() ?
-                    citasRepository.findByEstadoOrderByFechaAsc(estado) :
-                    citasRepository.findByEstadoAndPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaAsc(estado, paciente);
+            return citasRepository.findByEstadoAndPacienteUsuarioNombreContainingIgnoreCase(estado, paciente, ordenamiento);
         }
     }
 
     public List<Cita> citasSearchMedico(String estado, String medico) {
+
+
+
         if ((estado == null || estado.isEmpty()) && (medico == null || medico.isEmpty())) {
-            return citasRepository.findAllByOrderByFechaAsc();
+            return obtenerCitasOrdenadas();
         }
         if (estado == null || estado.isEmpty()) {
             return citasRepository.findByMedicoUsuarioNombreContainingIgnoreCase(medico);
@@ -216,12 +209,14 @@ public class ConsultorioService {
         }
         return citasRepository.findByEstadoAndMedicoUsuarioNombreContainingIgnoreCase(estado, medico);
     }
-    
-    
 
-
-
-
+    public List<Cita> obtenerCitasOrdenadas() {
+        Sort ordenMultiple = Sort.by(
+                Sort.Order.asc("fecha"),
+                Sort.Order.asc("")
+        );
+        return citasRepository.findAll(ordenMultiple);
+    }
 
 
 
