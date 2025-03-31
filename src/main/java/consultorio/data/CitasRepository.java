@@ -41,4 +41,6 @@ public interface CitasRepository extends JpaRepository<Cita, Integer> {
     List<Cita> findByEstadoAndMedicoId(String estado, String medico);
 
     List<Cita> findByMedicoIdOrderByFechaAsc(String usuarioId);
+
+    List<Cita> findByMedicoUsuarioNombre(String medico);
 }

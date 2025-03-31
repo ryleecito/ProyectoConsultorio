@@ -203,7 +203,7 @@ public class ConsultorioService {
             return citasRepository.findAllByOrderByFechaAsc();
         }
         if(estado == null || estado.isEmpty()){
-            return citasRepository.findByMedicoId(medico);
+            return citasRepository.findByMedicoUsuarioNombre(medico);
         }
         if(medico == null || medico.isEmpty()){
             return citasRepository.findByEstado(estado);
