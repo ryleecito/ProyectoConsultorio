@@ -46,7 +46,7 @@
 
 
         <th:block sec:authorize="isAuthenticated()" th:if="${session.usuarioRol == 'MEDICO'}">
-            <a th:href="@{/presentation/citas/list}" class="nav-link">Appointments</a>
+            <a th:href="@{/presentation/pacientes/show}" class="nav-link">Appointments</a>
 
             <div class="user-menu">
                 <button class="dropdown-toggle">

@@ -1,6 +1,7 @@
 package consultorio.data;
 
 import consultorio.logic.Cita;
+import consultorio.logic.Medico;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,48 +20,19 @@ public interface CitasRepository extends JpaRepository<Cita, Integer> {
 
     Cita findByFechaAndMedicoId(LocalDateTime fechaCita, String medicoId);
 
-    List<Cita> findByEstadoOrderByFechaDesc(String estado);
-
-    List<Cita> findAllByOrderByFechaDesc();
-
-    List<Cita> findAllByOrderByFechaAsc();
-
+    // Methods with Sort parameter
     List<Cita> findByEstado(String estado, Sort sort);
+    List<Cita> findByPacienteUsuarioNombre(String paciente, Sort sort);
+    List<Cita> findByEstadoAndPacienteUsuarioNombre(String estado, String paciente, Sort sort);
+    List<Cita> findByMedicoUsuarioNombre(String medico, Sort sort);
+    List<Cita> findByEstadoAndMedicoId(String estado, String medico, Sort sort);
+    List<Cita> findByMedicoId(String usuarioId, Sort sort);
+    List<Cita> findByPacienteId(String usuarioId, Sort sort);
 
+    // Original methods without Sort for backward compatibility
     List<Cita> findByEstado(String estado);
-
-    List<Cita> findByEstadoOrderByFechaAsc(String estado);
-
-    List<Cita> findByPacienteUsuarioNombreOrderByFechaDesc(String paciente);
-
-    List<Cita> findByPacienteUsuarioNombreOrderByFechaAsc(String paciente);
-
-    List<Cita> findByEstadoAndPacienteUsuarioNombre(String estado, String paciente);
-
-    List<Cita> findByEstadoAndPacienteUsuarioNombreOrderByFechaDesc(String estado, String paciente);
-
-    List<Cita> findByEstadoAndPacienteUsuarioNombreOrderByFechaAsc(String estado, String paciente);
-
-    List<Cita> findByEstadoAndMedicoId(String estado, String medico);
-
-    List<Cita> findByMedicoIdOrderByFechaAsc(String usuarioId);
-
     List<Cita> findByMedicoUsuarioNombre(String medico);
 
-    List<Cita> findByMedicoUsuarioNombreContainingIgnoreCase(String medico);
 
-    List<Cita> findByEstadoAndMedicoUsuarioNombreContainingIgnoreCase(String estado, String medico);
-
-    List<Cita> findByPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaDesc(String paciente);
-
-    List<Cita> findByPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaAsc(String paciente);
-
-    List<Cita> findByEstadoAndPacienteUsuarioNombreContainingIgnoreCase(String estado, String nombre, Sort sort);
-
-    List<Cita> findByEstadoAndPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaDesc(String estado, String paciente);
-
-    List<Cita> findByEstadoAndPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaAsc(String estado, String paciente);
-
-
-    List<Cita> findByPacienteUsuarioNombreContainingIgnoreCase(String paciente, Sort ordenamiento);
+    List<Cita> findByMedicoIdAndPacienteUsuarioNombre(String medico, String paciente, Sort sort);
 }
