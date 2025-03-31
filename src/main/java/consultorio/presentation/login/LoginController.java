@@ -23,7 +23,7 @@ public class LoginController {
 
     @GetMapping("/show")
     public String showLogin(@RequestParam(value = "success", required = false) String successMessage,
-                            @RequestParam(value = "errorMessage", required = false) String errorMessage,
+                            @RequestParam(value = "error", required = false) String errorMessage,
                             HttpSession session, Model model) {
         if (successMessage != null) {
             model.addAttribute("successMessage", successMessage);

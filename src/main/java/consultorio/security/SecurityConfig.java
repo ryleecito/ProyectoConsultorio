@@ -31,6 +31,7 @@ public class SecurityConfig {
     @Autowired
     public PacientesRepository pacientesRepository;
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -48,7 +49,8 @@ public class SecurityConfig {
                                  .loginPage("/presentation/login/show")
                                  .loginProcessingUrl("/login")
                                  .permitAll()
-                                 .successHandler(new RolesAuthenticationSuccessHandler())
+                                 .failureUrl("/presentation/login/show?error=Contrasena o usuario incorrecto")
+                                 .successHandler(new RolesAuthenticationSuccessHandler(medicoRepository,pacientesRepository))
                 )
                 .logout(logout -> logout
                         .logoutUrl("/presentation/logout")

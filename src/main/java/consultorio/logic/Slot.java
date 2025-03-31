@@ -19,7 +19,6 @@ public class Slot {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotNull(message = "Debe seleccionar un medico")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "medico_id", nullable = false)

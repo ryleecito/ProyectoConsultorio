@@ -2,6 +2,7 @@ package consultorio.data;
 
 import consultorio.logic.Cita;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +25,8 @@ public interface CitasRepository extends JpaRepository<Cita, Integer> {
 
     List<Cita> findAllByOrderByFechaAsc();
 
+    List<Cita> findByEstado(String estado, Sort sort);
+
     List<Cita> findByEstado(String estado);
 
     List<Cita> findByEstadoOrderByFechaAsc(String estado);
@@ -43,4 +46,21 @@ public interface CitasRepository extends JpaRepository<Cita, Integer> {
     List<Cita> findByMedicoIdOrderByFechaAsc(String usuarioId);
 
     List<Cita> findByMedicoUsuarioNombre(String medico);
+
+    List<Cita> findByMedicoUsuarioNombreContainingIgnoreCase(String medico);
+
+    List<Cita> findByEstadoAndMedicoUsuarioNombreContainingIgnoreCase(String estado, String medico);
+
+    List<Cita> findByPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaDesc(String paciente);
+
+    List<Cita> findByPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaAsc(String paciente);
+
+    List<Cita> findByEstadoAndPacienteUsuarioNombreContainingIgnoreCase(String estado, String nombre, Sort sort);
+
+    List<Cita> findByEstadoAndPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaDesc(String estado, String paciente);
+
+    List<Cita> findByEstadoAndPacienteUsuarioNombreContainingIgnoreCaseOrderByFechaAsc(String estado, String paciente);
+
+
+    List<Cita> findByPacienteUsuarioNombreContainingIgnoreCase(String paciente, Sort ordenamiento);
 }
