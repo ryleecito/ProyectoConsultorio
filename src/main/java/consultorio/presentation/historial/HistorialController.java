@@ -30,7 +30,7 @@ public class HistorialController {
     @GetMapping("/show")
     public String show(Model model, HttpSession session) {
         String usuarioId = (String) session.getAttribute("usuarioId");
-        model.addAttribute("citasList", service.citasFindAll());
+        model.addAttribute("citasList", service.citasFindAllByUsuarioNombre(usuarioId));
         return "presentation/historial/View";
     }
 

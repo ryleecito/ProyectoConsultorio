@@ -24,6 +24,7 @@ public class CitasController {
 
     @GetMapping("/show")
     public String showAppointments(Model model) {
+
         return "/presentation/citas/View";
     }
 
