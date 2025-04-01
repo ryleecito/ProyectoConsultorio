@@ -87,10 +87,11 @@ public class ConsultorioService {
             medico.setId(id);
             medico.setCiudad("PREDET");
             medico.setEspecialidad("PREDET");
-            medico.setCostoConsulta(BigDecimal.valueOf(0));
+            medico.setCostoConsulta(BigDecimal.valueOf(1));
             medico.setDuracionCita(30);
             medico.setHospital("PREDET");
             medico.setEmail("PREDET");
+            medico.setTelefono("PREDET");
             medico.setUsuario(usuarioMedico);
 
             medicoRepository.save(medico);
@@ -273,5 +274,15 @@ public class ConsultorioService {
         return medicoRepository.findByIdWithSlots(usuarioId);
     }
 
-
+    public boolean emailExists(String email, String currentUserId) {
+        Medico medico = medicoRepository.findByEmail(email);
+        if (medico != null && !medico.getId().equals(currentUserId)) {
+            return true;
+        }
+        Optional<Paciente> paciente = pacientesRepository.findByEmail(email);
+        if (paciente != null && !paciente.get().equals(currentUserId)) {
+            return true;
+        }
+        return false;
+    }
 }

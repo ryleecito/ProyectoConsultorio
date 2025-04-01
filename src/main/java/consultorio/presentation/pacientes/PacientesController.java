@@ -17,38 +17,78 @@ public class PacientesController {
     @Autowired
     private ConsultorioService service;
 
+    // Constants for session attribute keys
+    private static final String SESSION_FILTER_ESTADO = "filterEstado";
+    private static final String SESSION_FILTER_ORDEN = "filterOrden";
+    private static final String SESSION_FILTER_PACIENTE = "filterPaciente";
 
     @ModelAttribute("citasSearch")
-    public Cita citasSearch() {
+    public Cita citasSearch(HttpSession session) {
         Cita citasSearch = new Cita();
-        citasSearch.setEstado("");
+
+
+        String estado = (String) session.getAttribute(SESSION_FILTER_ESTADO);
+        citasSearch.setEstado(estado != null ? estado : "");
 
         return citasSearch;
     }
 
-
     @GetMapping("/show")
     public String show(Model model, HttpSession session) {
-
         String usuarioId = (String) session.getAttribute("usuarioId");
 
-        model.addAttribute("pacientes",service.pacientesFindAll());
-        model.addAttribute("citasList", service.buscarCitasIdMedico(usuarioId));
+
+        String estado = (String) session.getAttribute(SESSION_FILTER_ESTADO);
+        String orden = (String) session.getAttribute(SESSION_FILTER_ORDEN);
+        String paciente = (String) session.getAttribute(SESSION_FILTER_PACIENTE);
+
+        List<Cita> citasList;
+
+
+        if (estado != null || orden != null || paciente != null) {
+            citasList = service.citasSearch(
+                    estado != null ? estado : "",
+                    orden != null ? orden : "",
+                    paciente != null ? paciente : "",
+                    usuarioId);
+        } else {
+
+            citasList = service.buscarCitasIdMedico(usuarioId);
+        }
+
+        model.addAttribute("pacientes", service.pacientesFindAll());
+        model.addAttribute("citasList", citasList);
+
+        Cita citasSearch = new Cita();
+        citasSearch.setEstado(estado != null ? estado : "");
+        model.addAttribute("citasSearch", citasSearch);
+        model.addAttribute("orden", orden != null ? orden : "");
+        model.addAttribute("paciente", paciente != null ? paciente : "");
 
         return "presentation/pacientes/View";
     }
 
     @PostMapping("/search")
     public String search(
-        @ModelAttribute("citasSearch") Cita citasSearch,
-        Model model,
-        @RequestParam("orden") String orden,
-
-        @RequestParam("paciente") String paciente,
-        HttpSession session
+            @ModelAttribute("citasSearch") Cita citasSearch,
+            @RequestParam("orden") String orden,
+            @RequestParam("paciente") String paciente,
+            Model model,
+            HttpSession session
     ) {
-        List<Cita> resultados = service.citasSearch(citasSearch.getEstado(), orden, paciente, (String) session.getAttribute("usuarioId"));
+        String usuarioId = (String) session.getAttribute("usuarioId");
 
+
+        session.setAttribute(SESSION_FILTER_ESTADO, citasSearch.getEstado());
+        session.setAttribute(SESSION_FILTER_ORDEN, orden);
+        session.setAttribute(SESSION_FILTER_PACIENTE, paciente);
+
+        List<Cita> resultados = service.citasSearch(
+                citasSearch.getEstado(),
+                orden,
+                paciente,
+                usuarioId
+        );
 
         if (resultados == null) {
             resultados = new ArrayList<>();
@@ -62,10 +102,9 @@ public class PacientesController {
         return "presentation/pacientes/View";
     }
 
-
     @GetMapping("/atender")
     public String attend(
-        @RequestParam("citaId") String citaId
+            @RequestParam("citaId") String citaId
     ) {
         service.citaAttend(citaId);
         return "redirect:/presentation/pacientes/show";
@@ -87,10 +126,20 @@ public class PacientesController {
     }
 
     @PostMapping("/guardarObservaciones")
-    public String guardarObservaciones(@RequestParam("citaId") String citaId,
-                                       @RequestParam("observaciones") String observaciones) {
+    public String guardarObservaciones(
+            @RequestParam("citaId") String citaId,
+            @RequestParam("observaciones") String observaciones
+    ) {
         service.guardarObservacionesCita(citaId, observaciones);
         return "redirect:/presentation/pacientes/show";
     }
 
+
+    @GetMapping("/clearFilters")
+    public String clearFilters(HttpSession session) {
+        session.removeAttribute(SESSION_FILTER_ESTADO);
+        session.removeAttribute(SESSION_FILTER_ORDEN);
+        session.removeAttribute(SESSION_FILTER_PACIENTE);
+        return "redirect:/presentation/pacientes/show";
+    }
 }

@@ -19,7 +19,7 @@
             <p><strong>Hora:</strong> <span th:text="${#temporals.format(cita.horaInicio, 'HH:mm')}">14:00</span></p>
         </div>
 
-        <!-- Editable para el médico -->
+
         <div th:if="${session.usuarioRol == 'MEDICO'}" class="observation-form-container">
             <form th:action="@{/presentation/pacientes/guardarObservaciones}" method="post" class="profile-form">
                 <div class="form-group">
@@ -34,7 +34,7 @@
             </form>
         </div>
 
-        <!-- Vista de solo lectura para el paciente -->
+
         <div th:if="${session.usuarioRol == 'PACIENTE'}" class="observation-view-container">
             <div class="observation-box">
                 <h3>Observaciones del médico:</h3>
