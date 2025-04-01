@@ -274,5 +274,15 @@ public class ConsultorioService {
         return medicoRepository.findByIdWithSlots(usuarioId);
     }
 
-
+    public boolean emailExists(String email, String currentUserId) {
+        Medico medico = medicoRepository.findByEmail(email);
+        if (medico != null && !medico.getId().equals(currentUserId)) {
+            return true;
+        }
+        Optional<Paciente> paciente = pacientesRepository.findByEmail(email);
+        if (paciente != null && !paciente.get().equals(currentUserId)) {
+            return true;
+        }
+        return false;
+    }
 }
