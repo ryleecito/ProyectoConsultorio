@@ -82,16 +82,25 @@ public class ProfileController {
             Model model,
             HttpSession session) {
 
-
         String userId = (String) session.getAttribute("usuarioId");
         if (userId == null) {
             return "redirect:/presentation/login/show";
         }
 
+        // Verifica errores de validación previos
         if (result.hasErrors()) {
             Usuario usuario = consultorioService.buscarPorUsername(userId);
             Set<Slot> slots = medico.getSlots();
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("slots", slots);
+            return "presentation/profile/profileMedico";
+        }
 
+        // Llamada al método del service para verificar email duplicado
+        if (consultorioService.emailExists(medico.getEmail(), userId)) {
+            result.rejectValue("email", "error.email", "Ya hay un usuario con este email");
+            Usuario usuario = consultorioService.buscarPorUsername(userId);
+            Set<Slot> slots = medico.getSlots();
             model.addAttribute("usuario", usuario);
             model.addAttribute("slots", slots);
             return "presentation/profile/profileMedico";
@@ -102,7 +111,7 @@ public class ProfileController {
             return "redirect:/presentation/login/show";
         }
 
-
+        // Actualización de campos
         actual.setEspecialidad(medico.getEspecialidad());
         actual.setCiudad(medico.getCiudad());
         actual.setCostoConsulta(medico.getCostoConsulta());
@@ -111,6 +120,7 @@ public class ProfileController {
         actual.setEmail(medico.getEmail());
         actual.setTelefono(medico.getTelefono());
 
+        // Actualización de foto de perfil
         if (profilePhoto != null && !profilePhoto.isEmpty()) {
             try {
                 String originalFilename = profilePhoto.getOriginalFilename();
@@ -118,16 +128,12 @@ public class ProfileController {
                 if (originalFilename != null && originalFilename.contains(".")) {
                     fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
                 }
-
                 String fileName = userId + fileExtension;
                 Path uploadPath = Paths.get(picturesPath);
                 if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
-
                 Path filePath = uploadPath.resolve(fileName);
                 Files.copy(profilePhoto.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
                 actual.getUsuario().setFoto("/image/" + fileName);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -136,6 +142,7 @@ public class ProfileController {
         consultorioService.actualizarMedico(actual);
         return "redirect:/presentation/profile/medico?success";
     }
+
 
 
     @PostMapping("/medico/slot")
@@ -284,12 +291,19 @@ public class ProfileController {
             return "presentation/profile/profilePaciente";
         }
 
+        // Verifica si el email ya existe en otro usuario
+        if (consultorioService.emailExists(paciente.getEmail(), userId)) {
+            result.rejectValue("email", "error.email", "Ya hay un usuario con este email");
+            Usuario usuario = consultorioService.buscarPorUsername(userId);
+            model.addAttribute("usuario", usuario);
+            return "presentation/profile/profilePaciente";
+        }
+
         Paciente actual = consultorioService.buscarPacientePorId(userId);
         if (actual == null) {
             return "redirect:/presentation/login/show";
         }
 
-        // Actualizar los campos válidos
         actual.setTelefono(paciente.getTelefono());
         actual.setDireccion(paciente.getDireccion());
         actual.setEmail(paciente.getEmail());
@@ -301,20 +315,14 @@ public class ProfileController {
                 if (originalFilename != null && originalFilename.contains(".")) {
                     fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
                 }
-
                 String fileName = userId + fileExtension;
-
-                String uploadDir = picturesPath;
-                Path uploadPath = Paths.get(uploadDir);
+                Path uploadPath = Paths.get(picturesPath);
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
-
                 Path filePath = uploadPath.resolve(fileName);
                 Files.copy(profilePhoto.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
                 actual.getUsuario().setFoto("/image/" + fileName);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -323,4 +331,5 @@ public class ProfileController {
         consultorioService.actualizarPaciente(actual);
         return "redirect:/presentation/profile/paciente?success";
     }
+
 }

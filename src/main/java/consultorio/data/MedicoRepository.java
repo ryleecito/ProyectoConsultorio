@@ -18,4 +18,6 @@ public interface MedicoRepository extends JpaRepository<Medico, String>{
 
     @Query("SELECT m FROM Medico m LEFT JOIN FETCH m.slots WHERE m.id = :id")
     Medico findByIdWithSlots(@Param("id") String id);
+
+    Medico findByEmail(String email);
 }
