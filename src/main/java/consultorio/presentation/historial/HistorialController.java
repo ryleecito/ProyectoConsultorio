@@ -30,7 +30,7 @@ public class HistorialController {
     @GetMapping("/show")
     public String show(Model model, HttpSession session) {
         String usuarioId = (String) session.getAttribute("usuarioId");
-        model.addAttribute("citasList", service.citasFindAll());
+        model.addAttribute("citasList", service.citasFindAllByUsuarioNombre(usuarioId));
         return "presentation/historial/View";
     }
 
@@ -38,9 +38,11 @@ public class HistorialController {
     public String search(
             @ModelAttribute("citasSearch") Cita citasSearch,
             Model model,
-            @RequestParam("medico") String medico
+            @RequestParam("medico") String medico,
+            HttpSession session
     ) {
-        List<Cita> resultados = service.citasSearchMedico(citasSearch.getEstado(), medico);
+        String usuarioId = (String) session.getAttribute("usuarioId");
+        List<Cita> resultados = service.citasSearchMedico(citasSearch.getEstado(), medico, usuarioId);
 
         if (resultados == null) {
             resultados = new ArrayList<>();

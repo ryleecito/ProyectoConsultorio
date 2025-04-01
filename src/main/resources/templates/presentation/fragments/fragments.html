@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/autentificacion.css">
-
 </head>
 
 <header th:fragment="header">
@@ -46,7 +45,7 @@
 
 
         <th:block sec:authorize="isAuthenticated()" th:if="${session.usuarioRol == 'MEDICO'}">
-            <a th:href="@{/presentation/citas/list}" class="nav-link">Appointments</a>
+            <a th:href="@{/presentation/pacientes/show}" class="nav-link">Appointments</a>
 
             <div class="user-menu">
                 <button class="dropdown-toggle">

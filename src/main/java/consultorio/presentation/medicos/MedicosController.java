@@ -5,6 +5,8 @@ import consultorio.logic.ConsultorioService;
 import consultorio.logic.Medico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @org.springframework.stereotype.Controller
 @RequestMapping("/presentation/medicos")
@@ -57,8 +56,28 @@ public class MedicosController {
         return "presentation/medicos/View";
     }
 
+//    @GetMapping("/list")
+//    public String listMedicos(Model model, @ModelAttribute("medicosSearch") Medico medicoSearch) {
+//        List<Medico> resultados = service.medicoSearch(medicoSearch.getEspecialidad(), medicoSearch.getCiudad());
+//
+//        if (resultados == null) {
+//            resultados = new ArrayList<>();
+//        }
+//        prepararDatosMedicos(resultados, model, null);
+//
+//        return "presentation/medicos/View";
+//    }
+
     @GetMapping("/list")
-    public String listMedicos(Model model, @ModelAttribute("medicosSearch") Medico medicoSearch) {
+    public String medicoList(Authentication authentication, Model model, @ModelAttribute("medicosSearch") Medico medicoSearch) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            boolean isMedicoOrAdmin = authorities.stream()
+                    .anyMatch(a -> a.getAuthority().equals("MEDICO") || a.getAuthority().equals("ADMIN"));
+            if (isMedicoOrAdmin) {
+                return "redirect:/presentation/login/access-denied";
+            }
+        }
         List<Medico> resultados = service.medicoSearch(medicoSearch.getEspecialidad(), medicoSearch.getCiudad());
 
         if (resultados == null) {
@@ -66,7 +85,8 @@ public class MedicosController {
         }
         prepararDatosMedicos(resultados, model, null);
 
-        return "presentation/medicos/View";
+
+        return "/presentation/medicos/View";
     }
 
 
