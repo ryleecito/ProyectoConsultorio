@@ -43,10 +43,12 @@ public class PacientesController {
         @ModelAttribute("citasSearch") Cita citasSearch,
         Model model,
         @RequestParam("orden") String orden,
+
         @RequestParam("paciente") String paciente,
         HttpSession session
     ) {
         List<Cita> resultados = service.citasSearch(citasSearch.getEstado(), orden, paciente, (String) session.getAttribute("usuarioId"));
+
 
         if (resultados == null) {
             resultados = new ArrayList<>();

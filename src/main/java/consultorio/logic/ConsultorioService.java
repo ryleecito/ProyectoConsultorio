@@ -87,13 +87,11 @@ public class ConsultorioService {
             medico.setId(id);
             medico.setCiudad("PREDET");
             medico.setEspecialidad("PREDET");
-            medico.setCostoConsulta(BigDecimal.valueOf(1));
+            medico.setCostoConsulta(BigDecimal.valueOf(0));
             medico.setDuracionCita(30);
             medico.setHospital("PREDET");
             medico.setEmail("PREDET");
             medico.setUsuario(usuarioMedico);
-            medico.setTelefono("PREDET");
-
 
             medicoRepository.save(medico);
         }
