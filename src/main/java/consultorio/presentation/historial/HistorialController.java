@@ -17,15 +17,12 @@ public class HistorialController {
     @Autowired
     private ConsultorioService service;
 
-
     @ModelAttribute("citasSearch")
     public Cita citasSearch() {
         Cita citasSearch = new Cita();
         citasSearch.setEstado("");
-
         return citasSearch;
     }
-
 
     @GetMapping("/show")
     public String show(Model model, HttpSession session) {

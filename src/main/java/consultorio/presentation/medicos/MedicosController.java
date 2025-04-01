@@ -56,17 +56,6 @@ public class MedicosController {
         return "presentation/medicos/View";
     }
 
-//    @GetMapping("/list")
-//    public String listMedicos(Model model, @ModelAttribute("medicosSearch") Medico medicoSearch) {
-//        List<Medico> resultados = service.medicoSearch(medicoSearch.getEspecialidad(), medicoSearch.getCiudad());
-//
-//        if (resultados == null) {
-//            resultados = new ArrayList<>();
-//        }
-//        prepararDatosMedicos(resultados, model, null);
-//
-//        return "presentation/medicos/View";
-//    }
 
     @GetMapping("/list")
     public String medicoList(Authentication authentication, Model model, @ModelAttribute("medicosSearch") Medico medicoSearch) {
@@ -228,9 +217,6 @@ public class MedicosController {
             cita.setEstado("Disponible");
         }
 
-
-
-        // Añadir al modelo para mostrar en la vista
         model.addAttribute("medico", medico);
         model.addAttribute("cita", cita);
 

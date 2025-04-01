@@ -1,63 +1,58 @@
 package consultorio.security;
 
-
 import consultorio.data.MedicoRepository;
 import consultorio.data.PacientesRepository;
-import consultorio.logic.ConsultorioService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
 
 @Controller
-public class RolesAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler
-implements AuthenticationSuccessHandler {
+public class RolesAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-
-    public MedicoRepository medicoRepository;
-
-    public PacientesRepository pacientesRepository;
+    private final MedicoRepository medicoRepository;
+    private final PacientesRepository pacientesRepository;
 
     public RolesAuthenticationSuccessHandler(MedicoRepository medicoRep, PacientesRepository pacientesRep) {
         super();
         this.setAlwaysUseDefaultTargetUrl(false);
-        medicoRepository = medicoRep;
-        pacientesRepository = pacientesRep;
+        this.medicoRepository = medicoRep;
+        this.pacientesRepository = pacientesRep;
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        // Extraemos los roles del usuario autenticado.
+        Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+
+        // Si el usuario es ADMIN, redirigimos directamente a la URL deseada.
+        if (roles.contains("ADMIN")) {
+            response.sendRedirect("/admin/medicos-pendientes");
+            return;
+        }
+
         if (response.isCommitted()) return;
+
         HttpSession session = request.getSession();
         SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
         if (savedRequest != null) {
-            try {
-                super.onAuthenticationSuccess(request, response, authentication);
-                return;
-            } catch (ServletException e) {
-                System.out.println("ERROR: " + e.getMessage());
-                throw new RuntimeException(e);
-            }
+            super.onAuthenticationSuccess(request, response, authentication);
+            return;
         }
 
         HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
         DefaultSavedRequest savedRequest1 = (DefaultSavedRequest) requestCache.getRequest(request, response);
-
 
         String loginUrl = "/login";
         if (savedRequest1 != null && !savedRequest1.getRedirectUrl().contains(loginUrl)) {
@@ -65,38 +60,27 @@ implements AuthenticationSuccessHandler {
             return;
         }
 
-
         String usuarioEstado = (String) request.getSession().getAttribute("usuarioEstado");
         String usuarioId = (String) request.getSession().getAttribute("usuarioId");
 
-
-        Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-        if (roles.contains("PACIENTE")){
-            if(Objects.equals(pacientesRepository.findById(usuarioId).get().getEmail(), "PREDET")) {
+        if (roles.contains("PACIENTE")) {
+            if (Objects.equals(pacientesRepository.findById(usuarioId).get().getEmail(), "PREDET")) {
                 response.sendRedirect("/presentation/profile/paciente");
-                }
-            else
-            {
+            } else {
                 response.sendRedirect("/presentation/medicos/list");
             }
-        }
-        else if (roles.contains("MEDICO")){
+        } else if (roles.contains("MEDICO")) {
             if (Objects.equals(usuarioEstado, "ACTIVO")) {
-                if(Objects.equals(medicoRepository.findByIdWithSlots(usuarioId).getEmail(), "PREDET")) {
+                if (Objects.equals(medicoRepository.findByIdWithSlots(usuarioId).getEmail(), "PREDET")) {
                     response.sendRedirect("/presentation/profile/medico");
-                }
-                else
-                {
+                } else {
                     response.sendRedirect("/presentation/pacientes/show");
                 }
-            }
-            else {
+            } else {
                 response.sendRedirect("/presentation/login/show?error=true&errorMessage=El medico debe ser aprobado para acceder");
             }
+        } else {
+            response.sendRedirect("/presentation/login/show");
         }
-        else if (roles.contains("ADMIN")){
-            response.sendRedirect("/admin/medicos-pendientes");
-        }
-        else response.sendRedirect("/presentation/login/show");
     }
 }

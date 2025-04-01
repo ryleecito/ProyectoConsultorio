@@ -16,7 +16,6 @@ import java.util.Optional;
 public interface UsuariosRepository extends JpaRepository<Usuario, String> {
 
     Usuario findUsuarioById(@Size(max = 20) String id);
-
     List<Usuario> findByRolAndEstado(@NotNull String rol, @NotNull String estado);
 
     @Modifying
