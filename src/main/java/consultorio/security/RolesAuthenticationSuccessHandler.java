@@ -33,12 +33,24 @@ public class RolesAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        // Extraemos los roles del usuario autenticado.
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
-        // Si el usuario es ADMIN, redirigimos directamente a la URL deseada.
         if (roles.contains("ADMIN")) {
             response.sendRedirect("/admin/medicos-pendientes");
+            return;
+        }
+        if (roles.contains("MEDICO")) {
+            String usuarioEstado = (String) request.getSession().getAttribute("usuarioEstado");
+            String usuarioId = (String) request.getSession().getAttribute("usuarioId");
+            if (Objects.equals(usuarioEstado, "ACTIVO")) {
+                if (Objects.equals(medicoRepository.findByIdWithSlots(usuarioId).getEmail(), "PREDET")) {
+                    response.sendRedirect("/presentation/profile/medico");
+                } else {
+                    response.sendRedirect("/presentation/pacientes/show");
+                }
+            } else {
+                response.sendRedirect("/presentation/login/show?error=true&errorMessage=El medico debe ser aprobado para acceder");
+            }
             return;
         }
 
@@ -53,31 +65,18 @@ public class RolesAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 
         HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
         DefaultSavedRequest savedRequest1 = (DefaultSavedRequest) requestCache.getRequest(request, response);
-
         String loginUrl = "/login";
         if (savedRequest1 != null && !savedRequest1.getRedirectUrl().contains(loginUrl)) {
             super.onAuthenticationSuccess(request, response, authentication);
             return;
         }
 
-        String usuarioEstado = (String) request.getSession().getAttribute("usuarioEstado");
         String usuarioId = (String) request.getSession().getAttribute("usuarioId");
-
         if (roles.contains("PACIENTE")) {
             if (Objects.equals(pacientesRepository.findById(usuarioId).get().getEmail(), "PREDET")) {
                 response.sendRedirect("/presentation/profile/paciente");
             } else {
                 response.sendRedirect("/presentation/medicos/list");
-            }
-        } else if (roles.contains("MEDICO")) {
-            if (Objects.equals(usuarioEstado, "ACTIVO")) {
-                if (Objects.equals(medicoRepository.findByIdWithSlots(usuarioId).getEmail(), "PREDET")) {
-                    response.sendRedirect("/presentation/profile/medico");
-                } else {
-                    response.sendRedirect("/presentation/pacientes/show");
-                }
-            } else {
-                response.sendRedirect("/presentation/login/show?error=true&errorMessage=El medico debe ser aprobado para acceder");
             }
         } else {
             response.sendRedirect("/presentation/login/show");
