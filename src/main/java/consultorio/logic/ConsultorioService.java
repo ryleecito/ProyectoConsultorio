@@ -81,7 +81,6 @@ public class ConsultorioService {
         }
         usuarioMedico.setEstado("ACTIVO");
 
-
         Optional<Medico> medicoOptional = medicoRepository.findById(id);
         if (medicoOptional.isEmpty()) {
             Medico medico = new Medico();
@@ -173,57 +172,62 @@ public class ConsultorioService {
         }
         citasRepository.save(cita);
     }
-
-    public List<Cita> citasSearch(String estado, String orden, String paciente) {
-
-        Sort.Direction direccion = "desc".equalsIgnoreCase(orden) ? Sort.Direction.DESC : Sort.Direction.ASC;
-
-        Sort ordenamiento = Sort.by(
-                Sort.Order.by("fecha").with(direccion),
-                Sort.Order.by("hora_inicio").with(direccion)
-        );
+    public List<Cita> citasSearch(String estado, String orden, String paciente, String medico) {
+        Sort sort = createSort(orden);
 
         if ((estado == null || estado.isEmpty()) && (paciente == null || paciente.isEmpty())) {
-            return citasRepository.findAll(ordenamiento);
-        } else if (estado == null || estado.isEmpty()) {
-            return citasRepository.findByPacienteUsuarioNombreContainingIgnoreCase(paciente, ordenamiento);
-        } else if (paciente == null || paciente.isEmpty()) {
-            return citasRepository.findByEstado(estado, ordenamiento);
-        } else {
-            return citasRepository.findByEstadoAndPacienteUsuarioNombreContainingIgnoreCase(estado, paciente, ordenamiento);
+            return citasRepository.findByMedicoId(medico,sort);
         }
+
+        if (estado == null || estado.isEmpty()) {
+            return paciente == null || paciente.isEmpty() ?
+                    citasRepository.findByMedicoId(medico, sort) :
+                    citasRepository.findByMedicoIdAndPacienteUsuarioNombreContainingIgnoreCase(medico, paciente, sort);
+        }
+
+        if (paciente == null || paciente.isEmpty()) {
+            return citasRepository.findByEstadoAndMedicoId(estado,medico, sort);
+        }
+
+        return citasRepository.findByMedicoIdAndEstadoAndPacienteUsuarioNombreContainingIgnoreCase(medico, estado, paciente, sort);
     }
 
-    public List<Cita> citasSearchMedico(String estado, String medico) {
-
-
+    public List<Cita> citasSearchMedico(String estado, String medico, String paciente) {
+        Sort sort = createSort("asc");
 
         if ((estado == null || estado.isEmpty()) && (medico == null || medico.isEmpty())) {
-            return obtenerCitasOrdenadas();
+            return citasRepository.findByPacienteId(paciente, sort);
         }
+
         if (estado == null || estado.isEmpty()) {
-            return citasRepository.findByMedicoUsuarioNombreContainingIgnoreCase(medico);
+            return citasRepository.findByPacienteIdAndMedicoUsuarioNombreContainingIgnoreCase(paciente,medico, sort);
         }
+
         if (medico == null || medico.isEmpty()) {
-            return citasRepository.findByEstado(estado);
+            return citasRepository.findByPacienteIdAndEstado(paciente, estado, sort);
         }
-        return citasRepository.findByEstadoAndMedicoUsuarioNombreContainingIgnoreCase(estado, medico);
+
+        return citasRepository.findByPacienteIdAndEstadoAndMedicoIdContainingIgnoreCase(paciente, estado, medico, sort);
     }
 
-    public List<Cita> obtenerCitasOrdenadas() {
-        Sort ordenMultiple = Sort.by(
-                Sort.Order.asc("fecha"),
-                Sort.Order.asc("")
+    private Sort createSort(String orden) {
+        Sort.Direction direction = "desc".equalsIgnoreCase(orden) ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
+
+        // Create a sort that orders by fecha first, then by hora
+        return Sort.by(
+                new Sort.Order(direction, "fecha"),
+                new Sort.Order(direction, "horaInicio")
         );
-        return citasRepository.findAll(ordenMultiple);
     }
-
-
 
     public List<Cita> buscarCitasIdMedico(String usuarioId) {
-        return citasRepository.findByMedicoIdOrderByFechaAsc(usuarioId);
+        Sort sort = Sort.by(
+                new Sort.Order(Sort.Direction.ASC, "fecha"),
+                new Sort.Order(Sort.Direction.ASC, "horaInicio")
+        );
+        return citasRepository.findByMedicoId(usuarioId, sort);
     }
-
     public Object buscarCitasIdPaciente(String usuarioId) {
         return citasRepository.findByPacienteId(usuarioId);
     }
@@ -259,8 +263,12 @@ public class ConsultorioService {
         citasRepository.save(cita);
     }
 
-    public Object citasFindAll() {
-        return citasRepository.findAllByOrderByFechaAsc();
+    public List<Cita> citasFindAllByUsuarioNombre(String usuarioId) {
+        Sort sort = Sort.by(
+                new Sort.Order(Sort.Direction.ASC, "fecha"),
+                new Sort.Order(Sort.Direction.ASC, "horaInicio")
+        );
+        return citasRepository.findByPacienteId(usuarioId, sort);
     }
 
     public Medico medicoEncontrarIdSlots(String usuarioId) {

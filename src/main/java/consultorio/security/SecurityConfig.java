@@ -17,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Objects;
@@ -36,13 +37,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show","/login", "/presentation/register/process", "/presentation/medicos/**","/presentation/medicos/list", "/presentation/about/**").permitAll()
-                        .requestMatchers("/css/**", "/images/**", "/js/**","/image/**").permitAll() // ✅ Archivos estáticos
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN") //  
-                        .requestMatchers("/profile/paciente/**").hasAuthority("PACIENTE")
+                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show","/login", "/presentation/register/process", "/presentation/about/show","/presentation/medicos/list").permitAll()
+                        .requestMatchers("/css/**", "/images/**","/image/**").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/presentation/medicos/appointment-details","/presentation/citas/list", "/presentation/historial/show").hasAuthority("PACIENTE")
                         .requestMatchers("/admin/medicos-pendientes").hasAuthority("ADMIN")
-                        .requestMatchers("/presentation/profile/medico", "presentation/profile/profileMedico", "presentation/citas/list").hasAuthority("MEDICO")
-                        .requestMatchers("/presentation/citas/list").hasAuthority("PACIENTE")
+                        .requestMatchers("/presentation/profile/medico", "presentation/citas/list","/presentation/pacientes/show","/presentation/pacientes/atender","/presentation/pacientes/cancelar","/presentation/pacientes/search").hasAuthority("MEDICO")
+                        .requestMatchers("/presentation/pacientes/observaciones","/presentation/pacientes/guardarObservaciones").hasAnyAuthority("MEDICO","PACIENTE")
                         .anyRequest().authenticated()
                 )
                  .formLogin(customizer -> customizer
@@ -59,6 +60,9 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
+                )
+                .exceptionHandling(customizer -> customizer
+                    .accessDeniedPage("/presentation/login/access-denied")
                 )
                 .csrf(csrf -> csrf.disable());
 
