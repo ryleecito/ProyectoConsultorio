@@ -22,7 +22,6 @@ public class PacientesController {
     public Cita citasSearch() {
         Cita citasSearch = new Cita();
         citasSearch.setEstado("");
-
         return citasSearch;
     }
 
