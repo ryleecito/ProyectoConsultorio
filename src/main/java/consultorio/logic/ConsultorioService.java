@@ -180,32 +180,32 @@ public class ConsultorioService {
         if (estado == null || estado.isEmpty()) {
             return paciente == null || paciente.isEmpty() ?
                     citasRepository.findByMedicoId(medico, sort) :
-                    citasRepository.findByMedicoIdAndPacienteUsuarioNombre(medico, paciente, sort);
+                    citasRepository.findByMedicoIdAndPacienteUsuarioNombreContainingIgnoreCase(medico, paciente, sort);
         }
 
         if (paciente == null || paciente.isEmpty()) {
             return citasRepository.findByEstadoAndMedicoId(estado,medico, sort);
         }
 
-        return citasRepository.findByEstadoAndPacienteUsuarioNombre(estado, paciente, sort);
+        return citasRepository.findByMedicoIdAndEstadoAndPacienteUsuarioNombreContainingIgnoreCase(medico, estado, paciente, sort);
     }
 
-    public List<Cita> citasSearchMedico(String estado, String medico) {
-        Sort sort = createSort("asc"); // Default to ascending order for medico search
+    public List<Cita> citasSearchMedico(String estado, String medico, String paciente) {
+        Sort sort = createSort("asc");
 
         if ((estado == null || estado.isEmpty()) && (medico == null || medico.isEmpty())) {
-            return citasRepository.findAll(sort);
+            return citasRepository.findByPacienteId(paciente, sort);
         }
 
         if (estado == null || estado.isEmpty()) {
-            return citasRepository.findByMedicoUsuarioNombre(medico, sort);
+            return citasRepository.findByPacienteIdAndMedicoUsuarioNombreContainingIgnoreCase(paciente,medico, sort);
         }
 
         if (medico == null || medico.isEmpty()) {
-            return citasRepository.findByEstado(estado, sort);
+            return citasRepository.findByPacienteIdAndEstado(paciente, estado, sort);
         }
 
-        return citasRepository.findByEstadoAndMedicoId(estado, medico, sort);
+        return citasRepository.findByPacienteIdAndEstadoAndMedicoIdContainingIgnoreCase(paciente, estado, medico, sort);
     }
 
     private Sort createSort(String orden) {
