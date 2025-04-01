@@ -38,9 +38,11 @@ public class HistorialController {
     public String search(
             @ModelAttribute("citasSearch") Cita citasSearch,
             Model model,
-            @RequestParam("medico") String medico
+            @RequestParam("medico") String medico,
+            HttpSession session
     ) {
-        List<Cita> resultados = service.citasSearchMedico(citasSearch.getEstado(), medico);
+        String usuarioId = (String) session.getAttribute("usuarioId");
+        List<Cita> resultados = service.citasSearchMedico(citasSearch.getEstado(), medico, usuarioId);
 
         if (resultados == null) {
             resultados = new ArrayList<>();

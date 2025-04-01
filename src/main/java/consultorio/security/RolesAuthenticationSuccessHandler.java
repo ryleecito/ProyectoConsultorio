@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.DefaultSavedRequest;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Controller;
@@ -39,7 +41,7 @@ implements AuthenticationSuccessHandler {
     }
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         if (response.isCommitted()) return;
         HttpSession session = request.getSession();
         SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
@@ -52,6 +54,17 @@ implements AuthenticationSuccessHandler {
                 throw new RuntimeException(e);
             }
         }
+
+        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+        DefaultSavedRequest savedRequest1 = (DefaultSavedRequest) requestCache.getRequest(request, response);
+
+
+        String loginUrl = "/login";
+        if (savedRequest1 != null && !savedRequest1.getRedirectUrl().contains(loginUrl)) {
+            super.onAuthenticationSuccess(request, response, authentication);
+            return;
+        }
+
 
         String usuarioEstado = (String) request.getSession().getAttribute("usuarioEstado");
         String usuarioId = (String) request.getSession().getAttribute("usuarioId");
