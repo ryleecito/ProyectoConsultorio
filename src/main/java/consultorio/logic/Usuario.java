@@ -18,7 +18,6 @@ public class Usuario {
     @Column(name = "id", nullable = false, length = 20)
     private String id;
 
-    @NotBlank(message = "La contraseña no puede estar vacía")
     @Size(min = 6, max = 100, message = "La contraseña debe tener entre 6 y 100 caracteres")
     @Column(name = "password", nullable = false, length = 100)
     private String password;
@@ -42,7 +41,7 @@ public class Usuario {
     @Column(name = "fecha_registro")
     private Instant fechaRegistro;
 
-    @NotNull(message = "La foto no puede ser nula")
+    @NotBlank(message = "La foto no puede ser nula")
     @Column(name = "foto", nullable = false, length = 100)
     private String foto;
 
