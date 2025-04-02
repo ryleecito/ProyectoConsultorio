@@ -214,7 +214,6 @@ public class ConsultorioService {
         Sort.Direction direction = "desc".equalsIgnoreCase(orden) ?
                 Sort.Direction.DESC : Sort.Direction.ASC;
 
-        // Create a sort that orders by fecha first, then by hora
         return Sort.by(
                 new Sort.Order(direction, "fecha"),
                 new Sort.Order(direction, "horaInicio")
@@ -282,6 +281,18 @@ public class ConsultorioService {
         }
         Paciente paciente = pacientesRepository.findByEmail(email);
         if (paciente != null && !paciente.getId().equals(currentUserId)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean telefonoExists(String telefono, String userId) {
+        Medico medico = medicoRepository.findByTelefono(telefono);
+        if (medico != null && !medico.getId().equals(userId)) {
+            return true;
+        }
+        Paciente paciente = pacientesRepository.findByTelefono(telefono);
+        if (paciente != null && !paciente.getId().equals(userId)) {
             return true;
         }
         return false;

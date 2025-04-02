@@ -94,7 +94,7 @@ public class ProfileController {
             return "redirect:/presentation/login/show";
         }
 
-        // Verifica errores de validación previos
+
         if (result.hasErrors()) {
             Usuario usuario = consultorioService.buscarPorUsername(userId);
             Set<Slot> slots = medico.getSlots();
@@ -103,9 +103,17 @@ public class ProfileController {
             return "presentation/profile/profileMedico";
         }
 
-        // Llamada al método del service para verificar email duplicado
-        if (consultorioService.emailExists(medico.getEmail(), userId)) {
-            result.rejectValue("email", "error.email", "Ya hay un usuario con este email");
+
+        if (consultorioService.emailExists(medico.getEmail(), userId) || consultorioService.telefonoExists(medico.getTelefono(), userId)) {
+
+            if(consultorioService.emailExists(medico.getEmail(), userId)) {
+                result.rejectValue("email", "error.email", "Ya hay un usuario con este email");
+            }
+
+            if(consultorioService.telefonoExists(medico.getTelefono(), userId)) {
+                result.rejectValue("telefono", "error.telefono", "Ya hay un usuario con este telefono");
+            }
+
             Usuario usuario = consultorioService.buscarPorUsername(userId);
             Set<Slot> slots = medico.getSlots();
             model.addAttribute("usuario", usuario);
@@ -113,12 +121,15 @@ public class ProfileController {
             return "presentation/profile/profileMedico";
         }
 
+
+
+
         Medico actual = medicoRepository.findById(userId).orElse(null);
         if (actual == null) {
             return "redirect:/presentation/login/show";
         }
 
-        // Actualización de campos
+
         actual.setEspecialidad(medico.getEspecialidad());
         actual.setCiudad(medico.getCiudad());
         actual.setCostoConsulta(medico.getCostoConsulta());
@@ -128,7 +139,7 @@ public class ProfileController {
         actual.setTelefono(medico.getTelefono());
         actual.setPresentacion(medico.getPresentacion());
 
-        // Actualización de foto de perfil
+
         if (profilePhoto != null && !profilePhoto.isEmpty()) {
             try {
                 String originalFilename = profilePhoto.getOriginalFilename();
@@ -302,13 +313,24 @@ public class ProfileController {
             return "presentation/profile/profilePaciente";
         }
 
-        // Verifica si el email ya existe en otro usuario
-        if (consultorioService.emailExists(paciente.getEmail(), userId)) {
-            result.rejectValue("email", "error.email", "Ya hay un usuario con este email");
+
+        if (consultorioService.emailExists(paciente.getEmail(), userId) || consultorioService.telefonoExists(paciente.getTelefono(), userId)) {
+
+            if(consultorioService.emailExists(paciente.getEmail(), userId)) {
+                result.rejectValue("email", "error.email", "Ya hay un usuario con este email");
+            }
+
+            if(consultorioService.telefonoExists(paciente.getTelefono(), userId)) {
+                result.rejectValue("telefono", "error.telefono", "Ya hay un usuario con este telefono");
+            }
+
             Usuario usuario = consultorioService.buscarPorUsername(userId);
             model.addAttribute("usuario", usuario);
             return "presentation/profile/profilePaciente";
         }
+
+
+
 
         Paciente actual = consultorioService.buscarPacientePorId(userId);
         if (actual == null) {
@@ -341,17 +363,17 @@ public class ProfileController {
 
         consultorioService.actualizarPaciente(actual);
 
-        // Segundo método: Verificar atributos personalizados en la sesión
+
         String pendingMedicoId = (String) session.getAttribute("PENDING_APPOINTMENT_MEDICO_ID");
         LocalDateTime pendingFecha = (LocalDateTime) session.getAttribute("PENDING_APPOINTMENT_FECHA");
 
         if (pendingMedicoId != null && pendingFecha != null) {
-            // Limpiar los atributos de la sesión
+
             session.removeAttribute("PENDING_APPOINTMENT_MEDICO_ID");
             session.removeAttribute("PENDING_APPOINTMENT_FECHA");
             session.removeAttribute("PENDING_APPOINTMENT_URL");
 
-            // Redirigir a la página de detalles de la cita
+
             return "redirect:/presentation/medicos/appointment-details?medicoId=" + pendingMedicoId
                     + "&fecha=" + pendingFecha.format(DateTimeFormatter.ISO_DATE_TIME);
         }
@@ -360,7 +382,7 @@ public class ProfileController {
         if (savedRequest != null && savedRequest.getRedirectUrl() != null &&
                 savedRequest.getRedirectUrl().contains("/presentation/medicos/appointment-details")) {
 
-            // Limpiar el savedRequest después de usarlo
+
             session.removeAttribute("SPRING_SECURITY_SAVED_REQUEST");
             new HttpSessionRequestCache().removeRequest(request, response);
 

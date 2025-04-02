@@ -1,23 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro de Usuario</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="/css/global.css">
-  <link rel="stylesheet" href="/css/autentificacion.css">
-  <style>
-    /* Mantén tu clase de validación, solo ajustamos el margin-top y el color */
-    .validation-message {
-      display: block;
-      margin-top: 5px;
-      color: #dc3545;  /* Rojo de error */
-      font-size: 13px;
-      text-align: left;
-    }
-  </style>
-</head>
+<head th:replace="presentation/fragments/fragments :: head"></head>
 <body>
 <header th:replace="~{presentation/fragments/fragments :: header}"></header>
 
@@ -46,7 +29,7 @@
             <input type="text" class="input-box" th:field="*{id}" placeholder="User ID">
           </div>
 
-          <span class="validation-message"
+          <span class="validation-message-register"
                 th:if="${#fields.hasErrors('id')}"
                 th:errors="*{id}">
           </span>
@@ -59,7 +42,7 @@
             </div>
             <input type="password" class="input-box" th:field="*{password}" placeholder="Password">
           </div>
-          <span class="validation-message"
+          <span class="validation-message-register"
                 th:if="${#fields.hasErrors('password')}"
                 th:errors="*{password}">
           </span>
@@ -72,7 +55,7 @@
             </div>
             <input type="password" class="input-box" name="confirmPassword" placeholder="Confirmar Password">
           </div>
-          <span class="validation-message" th:if="${confirmPasswordError}" th:text="${confirmPasswordError}">
+          <span class="validation-message-register" th:if="${confirmPasswordError}" th:text="${confirmPasswordError}">
           </span>
         </div>
 
@@ -84,7 +67,7 @@
             </div>
             <input type="text" class="input-box" th:field="*{nombre}" placeholder="Full Name">
           </div>
-          <span class="validation-message"
+          <span class="validation-message-register"
                 th:if="${#fields.hasErrors('nombre')}"
                 th:errors="*{nombre}">
           </span>
@@ -98,7 +81,7 @@
             </div>
             <input type="file" class="input-box file-input" id="profilePhoto" name="profilePhoto" accept="image/*">
           </div>
-          <span class="validation-message"
+          <span class="validation-message-register"
                 th:if="${#fields.hasErrors('foto')}"
                 th:errors="*{foto}">
           </span>

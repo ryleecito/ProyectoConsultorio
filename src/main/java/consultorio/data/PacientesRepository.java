@@ -12,4 +12,6 @@ public interface PacientesRepository extends JpaRepository<Paciente, String> {
     List<Paciente> findByDireccion(String direccion);
     Optional<Paciente> findById(String id);
     Paciente findByEmail(String email);
+
+    Paciente findByTelefono(String telefono);
 }

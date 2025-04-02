@@ -535,22 +535,6 @@ footer {
     color: #ffeb3b;
 }
 
-/*@media (max-width: 768px) {*/
-/*    .doctor-card {*/
-/*        flex-direction: column;*/
-/*        align-items: flex-start;*/
-/*        gap: 15px;*/
-/*    }*/
-
-/*    .appointment-date-column,*/
-/*    .appointment-status-column,*/
-/*    .view-button-column {*/
-/*        width: 100%;*/
-/*        text-align: left;*/
-/*        padding-left: 0;*/
-/*    }*/
-/*}*/
-
 
 @media (min-width: 768px) {
     .appointments-section {
@@ -824,4 +808,12 @@ select#dia {
 flex-direction: row;
     align-content: center;
     justify-content: center;
+}
+
+.validation-message-register {
+    display: block;
+    margin-top: 5px;
+    color: #dc3545;
+    font-size: 13px;
+    text-align: left;
 }

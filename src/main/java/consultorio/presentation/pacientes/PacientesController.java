@@ -17,7 +17,7 @@ public class PacientesController {
     @Autowired
     private ConsultorioService service;
 
-    // Constants for session attribute keys
+
     private static final String SESSION_FILTER_ESTADO = "filterEstado";
     private static final String SESSION_FILTER_ORDEN = "filterOrden";
     private static final String SESSION_FILTER_PACIENTE = "filterPaciente";
