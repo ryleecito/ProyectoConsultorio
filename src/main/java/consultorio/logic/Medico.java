@@ -77,9 +77,23 @@ public class Medico {
     @Column(name = "telefono", length = 20)
     private String telefono;
 
+    @NotBlank(message = "La presentacion no puede estar vacia")
+    @Size(max = 100, message = "La presentacion no puede tener mas de 100 caracteres")
+    @Column(name = "presentacion", length = 20)
+    private String presentacion;
+
+
     @Version
     private Long version;
 
+
+    public String getPresentacion() {
+        return presentacion;
+    }
+
+    public void setPresentacion(String presentacion) {
+        this.presentacion = presentacion;
+    }
 
     public String getTelefono() {
         return telefono;
@@ -184,42 +198,94 @@ public class Medico {
         return resultados;
     }
 
+//    public List<Cita> citasDeFecha(LocalDate fecha) {
+//        List<Cita> citasDisponibles = new ArrayList<>();
+//        int diaSemana = fecha.getDayOfWeek().getValue();
+//        LocalDateTime ahora = LocalDateTime.now();
+//
+//
+//        java.time.Instant now = java.time.Instant.now();
+//
+//        final int MAX_CITAS_POR_SLOT = 50;
+//
+//        for (Slot slot : this.slots) {
+//            if (slot.getDia() == diaSemana) {
+//                LocalTime horaActual = slot.getHoraInicio();
+//                int contadorCitas = 0;
+//
+//
+//                while (!horaActual.plus(java.time.Duration.ofMinutes(this.duracionCita)).isAfter(slot.getHoraFin())
+//                        && contadorCitas < MAX_CITAS_POR_SLOT) {
+//
+//                    Cita cita = new Cita();
+//                    cita.setMedico(this);
+//                    cita.setPaciente(null);
+//
+//                    cita.setHoraInicio(horaActual);
+//
+//
+//                    LocalTime horaFin = horaActual.plusMinutes(this.duracionCita);
+//                    cita.setHoraFin(horaFin);
+//
+//
+//                    LocalDateTime fechaHoraInicio = fecha.atTime(horaActual);
+//                    cita.setFecha(fechaHoraInicio);
+//
+//
+//                    cita.setFechaCreacion(now);
+//
+//
+//                    if (fechaHoraInicio.isBefore(ahora)) {
+//                        cita.setEstado("Pendiente");
+//                    } else {
+//                        cita.setEstado("Disponible");
+//                    }
+//
+//                    citasDisponibles.add(cita);
+//
+//
+//                    horaActual = horaActual.plusMinutes(this.duracionCita);
+//
+//                    contadorCitas++;
+//                }
+//            }
+//        }
+//        return citasDisponibles;
+//    }
     public List<Cita> citasDeFecha(LocalDate fecha) {
         List<Cita> citasDisponibles = new ArrayList<>();
         int diaSemana = fecha.getDayOfWeek().getValue();
         LocalDateTime ahora = LocalDateTime.now();
-
-
         java.time.Instant now = java.time.Instant.now();
-
-        final int MAX_CITAS_POR_SLOT = 50;
 
         for (Slot slot : this.slots) {
             if (slot.getDia() == diaSemana) {
+                // Calcular el número máximo de citas basado en la duración y el slot
+                long duracionSlotMinutos = java.time.Duration.between(slot.getHoraInicio(), slot.getHoraFin()).toMinutes();
+                int maxCitasPosibles = (int) (duracionSlotMinutos / this.duracionCita);
+
+                // Añadir límite de seguridad si es necesario
+                final int MAX_CITAS_SEGURIDAD = 100; // Un número razonable basado en tus necesidades
+                int maxCitas = Math.min(maxCitasPosibles, MAX_CITAS_SEGURIDAD)+1;
+
                 LocalTime horaActual = slot.getHoraInicio();
                 int contadorCitas = 0;
 
-
                 while (!horaActual.plus(java.time.Duration.ofMinutes(this.duracionCita)).isAfter(slot.getHoraFin())
-                        && contadorCitas < MAX_CITAS_POR_SLOT) {
+                        && contadorCitas < maxCitas) {
 
+                    // El resto del código para crear la cita...
                     Cita cita = new Cita();
                     cita.setMedico(this);
                     cita.setPaciente(null);
-
                     cita.setHoraInicio(horaActual);
-
 
                     LocalTime horaFin = horaActual.plusMinutes(this.duracionCita);
                     cita.setHoraFin(horaFin);
 
-
                     LocalDateTime fechaHoraInicio = fecha.atTime(horaActual);
                     cita.setFecha(fechaHoraInicio);
-
-
                     cita.setFechaCreacion(now);
-
 
                     if (fechaHoraInicio.isBefore(ahora)) {
                         cita.setEstado("Pendiente");
@@ -228,10 +294,7 @@ public class Medico {
                     }
 
                     citasDisponibles.add(cita);
-
-
                     horaActual = horaActual.plusMinutes(this.duracionCita);
-
                     contadorCitas++;
                 }
             }

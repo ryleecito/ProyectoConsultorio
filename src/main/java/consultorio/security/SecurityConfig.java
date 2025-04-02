@@ -37,12 +37,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show","/login", "/presentation/register/process", "/presentation/about/show","/presentation/medicos/list").permitAll()
+                        .requestMatchers("/", "/about", "/presentation/register/show", "/presentation/login/show","/login", "/presentation/register/process", "/presentation/about/show","/presentation/medicos/list","/presentation/medicos/search","/presentation/medicos/schedule/**").permitAll()
                         .requestMatchers("/css/**", "/images/**","/image/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers("/presentation/medicos/appointment-details","/presentation/citas/list", "/presentation/historial/show").hasAuthority("PACIENTE")
+                        .requestMatchers("/presentation/medicos/appointment-details","/presentation/citas/list", "/presentation/historial/show","/presentation/profile/paciente","/presentation/profile/paciente/update").hasAuthority("PACIENTE")
                         .requestMatchers("/admin/medicos-pendientes").hasAuthority("ADMIN")
-                        .requestMatchers("/presentation/profile/medico", "presentation/citas/list","/presentation/pacientes/show","/presentation/pacientes/atender","/presentation/pacientes/cancelar","/presentation/pacientes/search").hasAuthority("MEDICO")
+                        .requestMatchers("/presentation/profile/medico", "presentation/citas/list","/presentation/pacientes/show","/presentation/pacientes/atender","/presentation/pacientes/cancelar",
+                                "/presentation/pacientes/search","/presentation/profile/medico","/presentation/profile/medico/slot","/presentation/profile/medico/update","/presentation/profile/medico/slot/delete").hasAuthority("MEDICO")
                         .requestMatchers("/presentation/pacientes/observaciones","/presentation/pacientes/guardarObservaciones").hasAnyAuthority("MEDICO","PACIENTE")
                         .anyRequest().authenticated()
                 )

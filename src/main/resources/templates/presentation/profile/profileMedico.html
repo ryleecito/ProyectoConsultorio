@@ -94,10 +94,17 @@
         </div>
 
         <div class="form-group">
+          <label for="presentacion">Presentacion:</label>
+          <input type="text" id="presentacion" th:field="*{presentacion}">
+          <span class="validation-message" th:if="${#fields.hasErrors('presentacion')}" th:errors="*{presentacion}"></span>
+        </div>
+
+        <div class="form-group">
           <label for="profilePhoto">Foto de Perfil:</label>
           <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*">
         </div>
       </div>
+
 
       <div class="form-group form-submit">
         <button type="submit" class="btn-save">Guardar Cambios</button>
