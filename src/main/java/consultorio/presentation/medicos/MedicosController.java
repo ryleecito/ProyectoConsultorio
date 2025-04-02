@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpSession;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -25,10 +26,16 @@ public class MedicosController {
     private ConsultorioService service;
 
     @ModelAttribute("medicosSearch")
-    public Medico medicosSearch() {
+    public Medico medicosSearch(HttpSession session) {
         Medico medicoSearch = new Medico();
-        medicoSearch.setEspecialidad("");
-        medicoSearch.setCiudad("");
+
+        String especialidad = (String) session.getAttribute("filtroEspecialidad");
+        String ciudad = (String) session.getAttribute("filtroCiudad");
+
+
+        medicoSearch.setEspecialidad(especialidad != null ? especialidad : "");
+        medicoSearch.setCiudad(ciudad != null ? ciudad : "");
+
         return medicoSearch;
     }
 
@@ -43,33 +50,33 @@ public class MedicosController {
     }
 
     @PostMapping("/search")
-    public String search(@ModelAttribute("medicosSearch") Medico medicoSearch, Model model) {
+    public String search(
+            @ModelAttribute("medicosSearch") Medico medicoSearch,
+            Model model,
+            HttpSession session
+    ) {
+
+        session.setAttribute("filtroEspecialidad", medicoSearch.getEspecialidad());
+        session.setAttribute("filtroCiudad", medicoSearch.getCiudad());
+
         List<Medico> resultados = service.medicoSearch(medicoSearch.getEspecialidad(), medicoSearch.getCiudad());
 
         if (resultados == null) {
             resultados = new ArrayList<>();
         }
 
-
         prepararDatosMedicos(resultados, model, null);
 
         return "presentation/medicos/View";
     }
 
-//    @GetMapping("/list")
-//    public String listMedicos(Model model, @ModelAttribute("medicosSearch") Medico medicoSearch) {
-//        List<Medico> resultados = service.medicoSearch(medicoSearch.getEspecialidad(), medicoSearch.getCiudad());
-//
-//        if (resultados == null) {
-//            resultados = new ArrayList<>();
-//        }
-//        prepararDatosMedicos(resultados, model, null);
-//
-//        return "presentation/medicos/View";
-//    }
-
     @GetMapping("/list")
-    public String medicoList(Authentication authentication, Model model, @ModelAttribute("medicosSearch") Medico medicoSearch) {
+    public String medicoList(
+            Authentication authentication,
+            Model model,
+            @ModelAttribute("medicosSearch") Medico medicoSearch,
+            HttpSession session
+    ) {
         if (authentication != null && authentication.isAuthenticated()) {
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             boolean isMedicoOrAdmin = authorities.stream()
@@ -78,6 +85,20 @@ public class MedicosController {
                 return "redirect:/presentation/login/access-denied";
             }
         }
+
+
+        String especialidad = (String) session.getAttribute("filtroEspecialidad");
+        String ciudad = (String) session.getAttribute("filtroCiudad");
+
+        if (especialidad != null || ciudad != null) {
+            if (especialidad != null) {
+                medicoSearch.setEspecialidad(especialidad);
+            }
+            if (ciudad != null) {
+                medicoSearch.setCiudad(ciudad);
+            }
+        }
+
         List<Medico> resultados = service.medicoSearch(medicoSearch.getEspecialidad(), medicoSearch.getCiudad());
 
         if (resultados == null) {
@@ -85,10 +106,16 @@ public class MedicosController {
         }
         prepararDatosMedicos(resultados, model, null);
 
-
         return "/presentation/medicos/View";
     }
 
+    @GetMapping("/clearFilters")
+    public String clearFilters(HttpSession session) {
+        session.removeAttribute("filtroEspecialidad");
+        session.removeAttribute("filtroCiudad");
+
+        return "redirect:/presentation/medicos/list";
+    }
 
     private void prepararDatosMedicos(List<Medico> medicos, Model model, String semanaParam) {
 
@@ -151,11 +178,11 @@ public class MedicosController {
                 for (Cita cita : citasDelDia) {
 
 
-                        Cita citaExistente = service.findCitaByFechaAndMedicoId(cita.getFecha(), medico.getId());
+                    Cita citaExistente = service.findCitaByFechaAndMedicoId(cita.getFecha(), medico.getId());
 
-                        if (citaExistente != null) {
-                            cita.setEstado("Pendiente");
-                        }
+                    if (citaExistente != null) {
+                        cita.setEstado("Pendiente");
+                    }
 
                 }
             }
@@ -211,10 +238,7 @@ public class MedicosController {
             @RequestParam("fecha") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime fecha,
             Model model) {
 
-
         Medico medico = service.buscarMedicoPorId(medicoId);
-
-
         Cita cita = service.findCitaByFechaAndMedicoId(fecha, medicoId);
 
 
@@ -228,9 +252,6 @@ public class MedicosController {
             cita.setEstado("Disponible");
         }
 
-
-
-        // Añadir al modelo para mostrar en la vista
         model.addAttribute("medico", medico);
         model.addAttribute("cita", cita);
 

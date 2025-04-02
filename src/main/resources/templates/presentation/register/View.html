@@ -32,12 +32,12 @@
       </div>
 
       <form th:action="@{/presentation/register/process}" method="post" enctype="multipart/form-data" th:object="${usuario}">
-        <!-- Campos ocultos para mantener los valores necesarios -->
+
         <input type="hidden" th:field="*{estado}" value="TEMP">
         <input type="hidden" th:field="*{foto}" value="TEMP">
         <input type="hidden" th:field="*{rol}" value="TEMP">
 
-        <!-- USER ID -->
+
         <div class="input-group">
           <div class="input-field">
             <div class="input-icon">
@@ -45,14 +45,13 @@
             </div>
             <input type="text" class="input-box" th:field="*{id}" placeholder="User ID">
           </div>
-          <!-- Mensaje de error FUERA del .input-field para que quede debajo -->
+
           <span class="validation-message"
                 th:if="${#fields.hasErrors('id')}"
                 th:errors="*{id}">
           </span>
         </div>
 
-        <!-- PASSWORD -->
         <div class="input-group">
           <div class="input-field">
             <div class="input-icon">
@@ -66,7 +65,7 @@
           </span>
         </div>
 
-        <!-- NOMBRE -->
+
         <div class="input-group">
           <div class="input-field">
             <div class="input-icon">
@@ -80,7 +79,7 @@
           </span>
         </div>
 
-        <!-- FOTO -->
+
         <div class="input-group">
           <div class="input-field">
             <div class="input-icon">
@@ -94,7 +93,7 @@
           </span>
         </div>
 
-        <!-- ROL -->
+
         <div class="input-group">
           <label for="rolSeleccionado">Seleccione su Rol:</label>
           <select name="rolSeleccionado" id="rolSeleccionado" class="input-box">
