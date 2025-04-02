@@ -3,10 +3,17 @@ package consultorio.presentation.medicos;
 import consultorio.logic.Cita;
 import consultorio.logic.ConsultorioService;
 import consultorio.logic.Medico;
+import consultorio.logic.Paciente;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.PortResolverImpl;
+import org.springframework.security.web.savedrequest.DefaultSavedRequest;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
@@ -255,7 +262,34 @@ public class MedicosController {
     public String showAppointmentDetails(
             @RequestParam("medicoId") String medicoId,
             @RequestParam("fecha") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime fecha,
-            Model model) {
+            Model model,
+            HttpSession session,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+
+        String usuarioId = (String) session.getAttribute("usuarioId");
+        Paciente paciente = service.buscarPacientePorId(usuarioId);
+
+        if (paciente == null || paciente.getEmail().equals("PREDET")) {
+            // Crear un SavedRequest manual para almacenar la URL actual
+            HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+            SavedRequest savedRequest = requestCache.getRequest(request, response);
+
+            // Si no hay un SavedRequest existente (porque venimos de una redirección directa), crear uno
+            if (savedRequest == null) {
+                // Guardar la URL actual en el SecurityContextHolder
+                StringBuffer requestURL = request.getRequestURL();
+                if (request.getQueryString() != null) {
+                    requestURL.append("?").append(request.getQueryString());
+                }
+
+                // Crear manualmente un DefaultSavedRequest y guardarlo en la sesión
+                DefaultSavedRequest defaultSavedRequest = new DefaultSavedRequest(request, new PortResolverImpl());
+                session.setAttribute("SPRING_SECURITY_SAVED_REQUEST", defaultSavedRequest);
+            }
+
+            return "redirect:/presentation/profile/paciente?error=true";
+        }
 
         Medico medico = service.buscarMedicoPorId(medicoId);
         Cita cita = service.findCitaByFechaAndMedicoId(fecha, medicoId);

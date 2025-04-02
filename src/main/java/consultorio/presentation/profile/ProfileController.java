@@ -3,9 +3,13 @@ package consultorio.presentation.profile;
 import consultorio.data.MedicoRepository;
 import consultorio.data.SlotsRepository;
 import consultorio.logic.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +23,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -280,7 +286,10 @@ public class ProfileController {
             BindingResult result,
             @RequestParam(value = "profilePhoto", required = false) MultipartFile profilePhoto,
             Model model,
-            HttpSession session) {
+            HttpSession session,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
 
         String userId = (String) session.getAttribute("usuarioId");
         if (userId == null) {
@@ -331,6 +340,33 @@ public class ProfileController {
         }
 
         consultorioService.actualizarPaciente(actual);
+
+        // Segundo método: Verificar atributos personalizados en la sesión
+        String pendingMedicoId = (String) session.getAttribute("PENDING_APPOINTMENT_MEDICO_ID");
+        LocalDateTime pendingFecha = (LocalDateTime) session.getAttribute("PENDING_APPOINTMENT_FECHA");
+
+        if (pendingMedicoId != null && pendingFecha != null) {
+            // Limpiar los atributos de la sesión
+            session.removeAttribute("PENDING_APPOINTMENT_MEDICO_ID");
+            session.removeAttribute("PENDING_APPOINTMENT_FECHA");
+            session.removeAttribute("PENDING_APPOINTMENT_URL");
+
+            // Redirigir a la página de detalles de la cita
+            return "redirect:/presentation/medicos/appointment-details?medicoId=" + pendingMedicoId
+                    + "&fecha=" + pendingFecha.format(DateTimeFormatter.ISO_DATE_TIME);
+        }
+
+        SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+        if (savedRequest != null && savedRequest.getRedirectUrl() != null &&
+                savedRequest.getRedirectUrl().contains("/presentation/medicos/appointment-details")) {
+
+            // Limpiar el savedRequest después de usarlo
+            session.removeAttribute("SPRING_SECURITY_SAVED_REQUEST");
+            new HttpSessionRequestCache().removeRequest(request, response);
+
+            return "redirect:" + savedRequest.getRedirectUrl();
+        }
+
         return "redirect:/presentation/profile/paciente?success";
     }
 
