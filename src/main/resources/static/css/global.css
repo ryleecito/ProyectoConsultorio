@@ -783,11 +783,10 @@ select#dia {
     padding: 1rem;
     border-radius: 4px;
     min-height: 100px;
+    justify-content: flex-start;
 }
 
 .patient-info {
-    background-color: #f8f9fa;
-    padding: 1rem;
     border-radius: 6px;
     margin-bottom: 1.5rem;
 }
@@ -817,4 +816,11 @@ select#dia {
 .btn-back:hover {
     background-color: #7f8c8d;
     color: white;
+}
+
+.view-button-column{
+    display: flex;
+flex-direction: row;
+    align-content: center;
+    justify-content: center;
 }
