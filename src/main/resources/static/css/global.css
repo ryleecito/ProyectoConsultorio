@@ -813,6 +813,7 @@ select#dia {
     transition: background-color 0.2s;
 }
 
+
 .btn-back:hover {
     background-color: #7f8c8d;
     color: white;
