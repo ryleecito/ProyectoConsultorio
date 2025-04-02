@@ -25,6 +25,5 @@ public interface CitasRepository extends JpaRepository<Cita, Integer> {
     List<Cita> findByPacienteIdAndEstado(String paciente, String estado, Sort sort);
     List<Cita> findByMedicoIdAndEstadoAndPacienteUsuarioNombreContainingIgnoreCase(String medico, String estado, String paciente, Sort sort);
     List<Cita> findByPacienteIdAndMedicoUsuarioNombreContainingIgnoreCase(String paciente, String medico, Sort sort);
-    List<Cita> findByPacienteIdAndEstadoAndMedicoIdContainingIgnoreCase(String paciente, String estado, String medico, Sort sort);
-
+    List<Cita> findByPacienteIdAndEstadoAndMedicoUsuarioNombreContainingIgnoreCase(String paciente, String estado, String medico, Sort sort);
 }
