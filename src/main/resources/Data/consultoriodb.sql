@@ -1,9 +1,9 @@
--- Creación de la base de datos
+
 DROP DATABASE IF EXISTS consultoriodb;
 CREATE DATABASE IF NOT EXISTS consultoriodb;
 USE consultoriodb;
 
--- Tabla de usuarios (solo para autenticación y control de acceso)
+
 CREATE TABLE IF NOT EXISTS usuarios (
                                         id VARCHAR(20) PRIMARY KEY,
                                         password VARCHAR(100) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
                                         fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabla de médicos
+
 CREATE TABLE IF NOT EXISTS medicos (
                                        id VARCHAR(20) PRIMARY KEY,
                                        email VARCHAR(100)  NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS medicos (
                                        FOREIGN KEY (id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
--- Tabla de pacientes
+
 CREATE TABLE IF NOT EXISTS pacientes (
                                          id VARCHAR(20) PRIMARY KEY,
                                          email VARCHAR(100) NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS pacientes (
                                          FOREIGN KEY (id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
--- Tabla de administradores
+
 CREATE TABLE IF NOT EXISTS administradores (
                                                id VARCHAR(20) PRIMARY KEY,
                                                email VARCHAR(100) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS administradores (
                                                FOREIGN KEY (id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
--- Tabla de disponibilidad de médicos (slots)
+
 CREATE TABLE slots (
                        id INT PRIMARY KEY AUTO_INCREMENT,
                        medico_id VARCHAR(20) NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE slots (
                        FOREIGN KEY (medico_id) REFERENCES medicos(id) ON DELETE CASCADE
 );
 
--- Tabla de citas
+
 CREATE TABLE IF NOT EXISTS citas (
                                      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                      medico_id VARCHAR(20) NOT NULL,
@@ -73,10 +73,10 @@ CREATE TABLE IF NOT EXISTS citas (
                                      FOREIGN KEY (paciente_id) REFERENCES pacientes(id) ON DELETE CASCADE
 );
 
--- Insertar usuario admin
+
 INSERT INTO usuarios (id, password,nombre, rol, estado,foto) VALUES
     ('admin', '$2a$10$czpVQTEQFFQu09k/TdKaeOi5.x1x8lJNCgrkKwSM8ya/i61sjpLsi','Administrador del Sistema', 'ADMIN', 'ACTIVO','foto.png');
 
--- Insertar detalles del admin
+
 INSERT INTO administradores (id, email, telefono, departamento) VALUES
     ('admin', 'admin@consultorio.com', '123456789', 'TI');

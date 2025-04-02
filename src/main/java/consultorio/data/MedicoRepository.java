@@ -20,4 +20,6 @@ public interface MedicoRepository extends JpaRepository<Medico, String>{
     Medico findByIdWithSlots(@Param("id") String id);
 
     Medico findByEmail(String email);
+
+    Medico findByTelefono(String telefono);
 }

@@ -275,15 +275,15 @@ public class MedicosController {
             HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
             SavedRequest savedRequest = requestCache.getRequest(request, response);
 
-            // Si no hay un SavedRequest existente (porque venimos de una redirección directa), crear uno
+
             if (savedRequest == null) {
-                // Guardar la URL actual en el SecurityContextHolder
+
                 StringBuffer requestURL = request.getRequestURL();
                 if (request.getQueryString() != null) {
                     requestURL.append("?").append(request.getQueryString());
                 }
 
-                // Crear manualmente un DefaultSavedRequest y guardarlo en la sesión
+
                 DefaultSavedRequest defaultSavedRequest = new DefaultSavedRequest(request, new PortResolverImpl());
                 session.setAttribute("SPRING_SECURITY_SAVED_REQUEST", defaultSavedRequest);
             }

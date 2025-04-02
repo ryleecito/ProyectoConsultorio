@@ -48,13 +48,13 @@ public class RegisterController {
 
     @GetMapping("/show")
     public String showRegister(Model model) {
-        // Agregamos un objeto Usuario para el binding en la vista.
+
         if (!model.containsAttribute("usuario")) {
             System.out.println("DEBUG: Agregando nuevo objeto Usuario al modelo");
             Usuario usuario = new Usuario();
-            usuario.setEstado("TEMP"); // Valor temporal para pasar la validación
-            usuario.setFoto("TEMP");   // Valor temporal
-            usuario.setRol("TEMP");    // Valor temporal
+            usuario.setEstado("TEMP");
+            usuario.setFoto("TEMP");
+            usuario.setRol("TEMP");
             model.addAttribute("usuario", usuario);
         }
         System.out.println("DEBUG: Mostrando vista de registro");
@@ -74,7 +74,7 @@ public class RegisterController {
 
         System.out.println("DEBUG: Iniciando proceso de registro para id: " + usuario.getId());
 
-        // Asignar rol y estado basados en el parámetro "rolSeleccionado"
+
         if (rolSeleccionado.equalsIgnoreCase("Medico")) {
             usuario.setRol("MEDICO");
             usuario.setEstado("PENDIENTE");
@@ -83,7 +83,7 @@ public class RegisterController {
             usuario.setEstado("ACTIVO");
         }
 
-        // Validación manual: la foto es obligatoria.
+
         if (profilePhoto == null || profilePhoto.isEmpty()) {
             result.rejectValue("foto", "NotNull.usuario.foto", "La foto no puede ser nula");
         } else {
@@ -101,7 +101,7 @@ public class RegisterController {
             return "presentation/register/View";
         }
 
-        // Verificar si ya existe un usuario con ese ID
+
         if (service.buscarPorUsername(usuario.getId()) != null) {
             model.addAttribute("error", "El usuario ya existe.");
             return "presentation/register/View";
@@ -120,7 +120,7 @@ public class RegisterController {
 
         usuario.setFechaRegistro(java.time.Instant.now());
 
-        // Procesar la foto de perfil
+
         try {
             String originalFilename = profilePhoto.getOriginalFilename();
             String fileExtension = "";
@@ -141,10 +141,10 @@ public class RegisterController {
             return "presentation/register/View";
         }
 
-        // Guardar el usuario (la contraseña se codifica en el service)
+
         service.guardarUsuario(usuario);
 
-        // Si el rol es PACIENTE, crear el registro en la tabla de pacientes.
+
         if (usuario.getRol().equals("PACIENTE")) {
             Usuario usuarioPaciente = entityManager.find(Usuario.class, usuario.getId());
             if (usuarioPaciente == null) {
