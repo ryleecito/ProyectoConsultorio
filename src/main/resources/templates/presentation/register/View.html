@@ -65,6 +65,17 @@
           </span>
         </div>
 
+        <div class="input-group">
+          <div class="input-field">
+            <div class="input-icon">
+              <i class="fa-solid fa-key"></i>
+            </div>
+            <input type="password" class="input-box" name="confirmPassword" placeholder="Confirmar Password">
+          </div>
+          <span class="validation-message" th:if="${confirmPasswordError}" th:text="${confirmPasswordError}">
+          </span>
+        </div>
+
 
         <div class="input-group">
           <div class="input-field">

@@ -68,6 +68,7 @@ public class RegisterController {
             BindingResult result,
             @RequestParam(value = "profilePhoto", required = false) MultipartFile profilePhoto,
             @RequestParam String rolSeleccionado,
+            @RequestParam("confirmPassword") String confirmPassword,
             HttpSession session,
             Model model) throws IOException {
 
@@ -103,6 +104,11 @@ public class RegisterController {
         // Verificar si ya existe un usuario con ese ID
         if (service.buscarPorUsername(usuario.getId()) != null) {
             model.addAttribute("error", "El usuario ya existe.");
+            return "presentation/register/View";
+        }
+
+        if (!usuario.getPassword().equals(confirmPassword)) {
+            model.addAttribute("error", "Las contraseñas no coinciden");
             return "presentation/register/View";
         }
 

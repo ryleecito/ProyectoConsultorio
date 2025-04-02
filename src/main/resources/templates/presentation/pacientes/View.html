@@ -67,7 +67,7 @@
 
             <div class="view-button-column">
 
-                <div th:if="${cita.estado == 'Pendiente'}" class="action-buttons">
+                <div th:if="${cita.estado == 'Pendiente'}" class="view-button-column">
                     <a th:href="@{/presentation/pacientes/atender(citaId=${cita.id})}" class="btn-attend" th:method="get">
                         <i class="fa-solid fa-check"></i> Atender
                     </a>
@@ -76,16 +76,6 @@
                     </a>
                 </div>
             </div>
-
-<!--            <div class="doctor-notes-section">-->
-<!--                <form th:action="@{/citas/guardarNotasMedico}" method="post">-->
-<!--                    <label for="notasMedico">Anotaciones:</label>-->
-<!--                    <textarea id="notasMedico" name="notasMedico" th:text="${cita.notasMedico}"></textarea>-->
-<!--                    <input type="hidden" name="citaId" th:value="${cita.id}">-->
-<!--                    <button type="submit" class="btn-save-notes">Guardar</button>-->
-<!--                </form>-->
-<!--            </div>-->
-
         </div>
     </div>
 </div>
