@@ -62,6 +62,7 @@ public class ProfileController {
         if ("PREDET".equalsIgnoreCase(medico.getEmail())) medico.setEmail("");
         if ("PREDET".equalsIgnoreCase(medico.getHospital())) medico.setHospital("");
         if ("PREDET".equalsIgnoreCase(medico.getTelefono())) medico.setTelefono("");
+        if ("PREDET".equalsIgnoreCase(medico.getPresentacion())) medico.setPresentacion("");
 
         Usuario usuario = consultorioService.buscarPorUsername(medicoId);
         Set<Slot> slots = medico.getSlots();
@@ -119,6 +120,7 @@ public class ProfileController {
         actual.setHospital(medico.getHospital());
         actual.setEmail(medico.getEmail());
         actual.setTelefono(medico.getTelefono());
+        actual.setPresentacion(medico.getPresentacion());
 
         // Actualización de foto de perfil
         if (profilePhoto != null && !profilePhoto.isEmpty()) {

@@ -53,8 +53,17 @@ public class MedicosController {
     public String search(
             @ModelAttribute("medicosSearch") Medico medicoSearch,
             Model model,
-            HttpSession session
+            HttpSession session,
+            Authentication authentication
     ) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            boolean isMedicoOrAdmin = authorities.stream()
+                    .anyMatch(a -> a.getAuthority().equals("MEDICO") || a.getAuthority().equals("ADMIN"));
+            if (isMedicoOrAdmin) {
+                return "redirect:/presentation/login/access-denied";
+            }
+        }
 
         session.setAttribute("filtroEspecialidad", medicoSearch.getEspecialidad());
         session.setAttribute("filtroCiudad", medicoSearch.getCiudad());
@@ -206,7 +215,17 @@ public class MedicosController {
     public String showSchedule(@PathVariable String medicoId,
                                @RequestParam(required = false) String semana,
                                @RequestParam(required = false, defaultValue = "0") Integer weekOffset,
-                               Model model) {
+                               Model model, Authentication authentication) {
+
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            boolean isMedicoOrAdmin = authorities.stream()
+                    .anyMatch(a -> a.getAuthority().equals("MEDICO") || a.getAuthority().equals("ADMIN"));
+            if (isMedicoOrAdmin) {
+                return "redirect:/presentation/login/access-denied";
+            }
+        }
 
         Medico medico = service.buscarMedicoPorId(medicoId);
 

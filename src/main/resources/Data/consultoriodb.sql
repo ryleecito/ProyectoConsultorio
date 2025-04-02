@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS medicos (
                                        duracion_cita INT DEFAULT 30, -- en minutos
                                        hospital VARCHAR(100),
                                        telefono VARCHAR(20),
+                                       presentacion varchar(100),
                                        FOREIGN KEY (id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 

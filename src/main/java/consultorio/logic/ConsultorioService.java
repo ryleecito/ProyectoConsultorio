@@ -93,6 +93,7 @@ public class ConsultorioService {
             medico.setEmail("PREDET");
             medico.setTelefono("PREDET");
             medico.setUsuario(usuarioMedico);
+            medico.setPresentacion("PREDET");
 
             medicoRepository.save(medico);
         }
@@ -206,7 +207,7 @@ public class ConsultorioService {
             return citasRepository.findByPacienteIdAndEstado(paciente, estado, sort);
         }
 
-        return citasRepository.findByPacienteIdAndEstadoAndMedicoIdContainingIgnoreCase(paciente, estado, medico, sort);
+        return citasRepository.findByPacienteIdAndEstadoAndMedicoUsuarioNombreContainingIgnoreCase(paciente, estado, medico, sort);
     }
 
     private Sort createSort(String orden) {
@@ -279,8 +280,8 @@ public class ConsultorioService {
         if (medico != null && !medico.getId().equals(currentUserId)) {
             return true;
         }
-        Optional<Paciente> paciente = pacientesRepository.findByEmail(email);
-        if (paciente != null && !paciente.get().equals(currentUserId)) {
+        Paciente paciente = pacientesRepository.findByEmail(email);
+        if (paciente != null && !paciente.getId().equals(currentUserId)) {
             return true;
         }
         return false;
