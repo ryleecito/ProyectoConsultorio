@@ -1,7 +1,7 @@
 
 # 🏥 Medical Office Management System
 
-"Medical Office Management System" is a comprehensive web application for medical appointment management. Developed with **Spring Boot 3.4.3** and **Java 21**, the application is designed to connect doctors, patients, and administrators in a secure and efficient environment.
+Medical Office Management System is a comprehensive web application for medical appointment management. Developed with **Spring Boot 3.4.3** and **Java 21**, the application is designed to connect doctors, patients, and administrators in a secure and efficient environment.
 
 ---
 
